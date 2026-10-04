@@ -81,6 +81,11 @@
     const header = document.querySelector('.site-header');
     let scheduled = false;
     let lastActive = -1;
+    const updateContentsEdges = () => {
+      const horizontal = window.innerWidth <= 600 && contents.scrollWidth > contents.clientWidth;
+      contents.toggleAttribute('data-overflow-start', horizontal && contents.scrollLeft > 1);
+      contents.toggleAttribute('data-overflow-end', horizontal && contents.scrollLeft + contents.clientWidth < contents.scrollWidth - 1);
+    };
     const updateSection = () => {
       scheduled = false;
       const stickyHeight = getComputedStyle(contents).position === 'sticky' && window.innerWidth <= 600 ? contents.offsetHeight : 0;
@@ -100,6 +105,7 @@
         contents.scrollLeft += links[active].getBoundingClientRect().left - contents.getBoundingClientRect().left - 16;
       }
       lastActive = active;
+      updateContentsEdges();
     };
     const schedule = () => {
       if (!scheduled) { scheduled = true; requestAnimationFrame(updateSection); }
@@ -107,6 +113,7 @@
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule);
     window.addEventListener('load', schedule);
+    contents.addEventListener('scroll', updateContentsEdges, { passive: true });
     new ResizeObserver(schedule).observe(contents);
     updateSection();
   }

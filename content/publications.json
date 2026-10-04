@@ -64,7 +64,7 @@
         "alt": "A claim that people on Facebook promise to send $750 to a Cash App account is judged false by a base model, while the verdict is left open when the same model is given a personality, region, or identity scenario.",
         "caption": "Figure 1. One claim, four framings. A base model judges it false; the question is whether the verdict holds once the model is told it is an overconfident retail investor, a U.S. hedge-fund strategist, or a company owner of Latino background and Christian belief."
       },
-      "tldr": "MFMD-Scen asks whether large language models reach the same verdict on the same financial claim once a realistic scenario is added to the prompt: an investor’s role and personality, the market they work in, or their ethnicity and faith. Across 22 models and four languages, the answer is often no. The claim stays fixed, yet the scenario shifts the verdict.",
+      "tldr": "We built MFMD-Scen to test whether a model changes its verdict when the financial claim stays fixed but the surrounding investor story changes. We ask 22 open- and closed-source models to judge 144 claims twice—once on their own and once inside scenarios about an investor’s role, personality, market, ethnicity, or faith—in English, Chinese, Greek, and Bengali. The benchmark isolates scenario-induced bias by comparing each model’s claim judgment with and without the added context.",
       "sections": [
         {
           "id": "benchmark",
@@ -238,7 +238,7 @@
         "alt": "Three video frames of a signer performing the Bengali sign for toothpaste, each annotated with numbered parameter descriptions such as hand in fist with index finger extended, palm faces inward, and mouth is open.",
         "caption": "Figure 1. Parameter-based description of the Bengali sign for toothpaste. Numbers refer to the seven sign parameters described in the paper; these annotations illustrate the parameters and are not part of BdSLIG."
       },
-      "tldr": "Sign-language instruction generation writes step-by-step text that lets a hearing learner reproduce a sign. BdSLIG is the first dataset for this task in Bengali Sign Language, and Sign Parameter-Infused (SPI) prompting writes standard sign parameters into the prompt so vision-language models produce more structured, reproducible instructions.",
+      "tldr": "Generating sign-language instructions means turning a video into steps that someone else can follow, but Bengali Sign Language is a long-tail case likely absent from vision-language model pre-training. We created BdSLIG from one representative video for each of 60 signs, with three annotators and Bengali Sign Language expert validation, then compared ordinary prompts with prompts that explicitly named seven sign parameters such as handshape, movement, location, orientation, timing, and facial cues across four vision-language models.",
       "sections": [
         {
           "id": "parameters",
@@ -457,7 +457,7 @@
         "alt": "Flowchart. Data preprocessing: social-media comments are collected with Facepager, cleaned of noise, emoticons, tags, foreign words, and punctuation, filtered by length, and saved. Training: FastText embeddings with 3 to 6 character n-grams are passed to a model that is fine-tuned and used for prediction.",
         "caption": "Figure 1. From raw social-media comments to an informal Bangla FastText embedding, then to lightweight classifiers fine-tuned on the task data."
       },
-      "tldr": "An informal Bangla FastText embedding, trained on 3.8 million social-media comments, lets a lightweight BiLSTM detect violence-inciting text within about four macro-F1 points of BanglaBERT while training 17 times faster. The paper received the Best Shared Task Paper Award at BLP 2023.",
+      "tldr": "This shared task asked us to build a Bangla classifier for violence-inciting text. Because the task dataset was difficult to train on, we collected similar slang from social media with Facepager and trained an informal Bangla FastText embedding for use with lightweight classifiers. The approach uses character n-grams because informal Bangla contains many spelling variations and out-of-vocabulary words.",
       "sections": [
         {
           "id": "task",
@@ -655,7 +655,7 @@
         "alt": "Pipeline diagram. A prepared dataset enters the BDA framework, which applies synonym replacement, random swap, back-translation, or paraphrasing. Outputs pass an SBERT similarity and SacreBLEU filter, and those above threshold are merged and evaluated.",
         "caption": "Figure 2 in the paper. BDA generates candidates with four methods, then keeps only those that pass semantic and lexical filters."
       },
-      "tldr": "BDA augments Bangla text with two rule-based and two transformer-based methods, then keeps only outputs that preserve the meaning while changing the wording. Across five classification datasets, training on half the data plus BDA matches or beats full-data training on three.",
+      "tldr": "BDA is a Bangla text augmentation framework for classification when labeled data is scarce. It tries synonym replacement, random swapping, back-translation, and paraphrasing, then filters the generated sentences with SBERT semantic similarity and BLEU-style n-gram overlap to preserve the original meaning while adding useful variation. We evaluate it across five datasets, several model types, and 15%, 50%, and 100% training-data settings to study augmentation under different levels of data scarcity.",
       "sections": [
         {
           "id": "method",

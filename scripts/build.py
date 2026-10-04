@@ -41,6 +41,7 @@ ICONS = {
     'trending-up': '<path d="M3 17l6-6 4 4 8-8M15 7h6v6"/>',
     'bar-chart': '<path d="M6 20v-6M12 20V4M18 20v-9"/>',
     'tv': '<rect x="3" y="6" width="18" height="12" rx="2"/><path d="m8 3 4 3 4-3"/>',
+    'monitor': '<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',
     'film': '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 4v16M16 4v16M3 9h5M3 15h5M16 9h5M16 15h5"/>',
     'book-open': '<path d="M12 6.5C10 5 7.5 4.5 4 4.5v13c3.5 0 6 .5 8 2 2-1.5 4.5-2 8-2v-13c-3.5 0-6 .5-8 2z"/><path d="M12 6.5v13"/>',
     'football': '<circle cx="12" cy="12" r="9"/><path d="m12 8 3.4 2.5-1.3 4h-4.2l-1.3-4z"/><path d="M12 3v5M3.7 8.5l4.8 2M20.3 8.5l-4.8 2M7.4 17.5l2.5-3M16.6 17.5l-2.5-3"/>',
@@ -241,28 +242,28 @@ for category, entries in personal_data.items():
     cards = []
     for index, entry in enumerate(entries, 1):
         title = escape(entry['title']); destination = escape(entry['url'], quote=True)
-        artwork = escape(entry['image'], quote=True)
-        rank = f'<span class="favorite-rank" aria-hidden="true">{index:02}</span>' if ranked else ''
+        if not entry['url'].startswith('https://en.wikipedia.org/wiki/'):
+            raise ValueError(f'Personal entry {entry["title"]} must link to Wikipedia')
         author = f'<p class="favorite-author">{escape(entry["author"])}</p>' if entry.get('author') else ''
-        alt = f'{title} club crest' if category == 'sports' else f'Cover of {title}'
-        cards.append(f'<li class="favorite-card"><a class="favorite-link" href="{destination}"><div class="favorite-art"><img src="{artwork}" alt="{alt}" loading="lazy" decoding="async" width="300" height="450" referrerpolicy="no-referrer"></div><div class="favorite-title">{rank}<h3>{title}</h3></div>{author}</a></li>')
+        cards.append(f'<li class="favorite-card"><a class="favorite-link" href="{destination}"><span class="favorite-order" aria-hidden="true">{index:02}</span><div class="favorite-copy"><h3>{title}</h3>{author}</div><span class="favorite-arrow" aria-hidden="true">{icon("external", "icon icon-trail")}</span></a></li>')
     tag = 'ol' if ranked else 'ul'
-    personal_body = personal_body.replace('{{'+category.upper()+'}}', f'<{tag} class="favorites-grid favorites-{category}" role="list">'+''.join(cards)+f'</{tag}>')
+    personal_body = personal_body.replace('{{'+category.upper()+'}}', f'<{tag} class="favorites-list favorites-{category}" role="list">'+''.join(cards)+f'</{tag}>')
 
 # Home's Personal teaser: one card per topic, in personal.json order.
-TOPIC_LABELS = {'anime': 'Anime', 'movies': 'Movies', 'books': 'Books', 'sports': 'Sports'}
-TOPIC_ICONS = {'anime': 'tv', 'movies': 'film', 'books': 'book-open', 'sports': 'football'}
+TOPIC_LABELS = {'anime': 'Anime', 'movies': 'Movies', 'tv': 'TV shows', 'books': 'Books', 'sports': 'Sports'}
+TOPIC_ICONS = {'anime': 'tv', 'movies': 'film', 'tv': 'monitor', 'books': 'book-open', 'sports': 'football'}
 personal_topics = '<ul class="topic-grid" role="list">' + ''.join(
     f'<li><a href="personal.html#{c}">{icon(TOPIC_ICONS[c])}<h3>{TOPIC_LABELS[c]}</h3></a></li>' for c in personal_data) + '</ul>'
 pages = [('index', 'Home', 'Misinformation detection, LLM evaluation, low-resource Bangla NLP, and sign language accessibility research by Md. Tariquzzaman, Junior Lecturer at IUT.', read('home.html').replace('{{NEWS}}', news_html).replace('{{PERSONAL_TOPICS}}', personal_topics)),
          ('publications', 'Publications', 'Publications, preprints, code, and datasets by Md. Tariquzzaman.', pub_body),
          ('cv', 'CV', 'Education, research publications and experience, teaching experience, industry experience, and awards of Md. Tariquzzaman.', read('cv.html')),
-         ('personal', 'Personal', 'Favorite anime, movies, books, and sports beyond the academic work of Md. Tariquzzaman.', personal_body)]
+         ('personal', 'Personal', 'Favorite anime, movies, TV shows, books, and sports beyond the academic work of Md. Tariquzzaman.', personal_body)]
 
 PERSON = {'@type': 'Person', '@id': SITE + '#person', 'name': ME,
           'alternateName': ['Tariquzzaman', 'Md Tariquzzaman', 'Tariquzzaman Md'],
           'jobTitle': 'Junior Lecturer', 'url': SITE, 'image': SITE + 'profile.jpg',
           'affiliation': {'@type': 'CollegeOrUniversity', 'name': 'Islamic University of Technology', 'url': 'https://www.iutoic-dhaka.edu/'},
+          'memberOf': {'@type': 'ResearchOrganization', 'name': 'Systems and Software Lab', 'url': 'https://cse.iutoic-dhaka.edu/ssl'},
           'alumniOf': {'@type': 'CollegeOrUniversity', 'name': 'Islamic University of Technology'},
           'knowsAbout': ['Misinformation & harmful content', 'LLM evaluation & bias', 'Low-resource & Bangla NLP', 'Accessibility & sign language'],
           'sameAs': ['https://scholar.google.com/citations?user=LWB_NzwAAAAJ', 'https://github.com/mdtariquzzaman', 'https://www.linkedin.com/in/md-tariquzzaman/', 'https://bsky.app/profile/mdtariquzzaman.bsky.social', 'https://x.com/mdtariquzzaman_', 'https://orcid.org/0009-0002-3322-8741', 'https://huggingface.co/md-tariquzzaman']}
@@ -311,7 +312,7 @@ def render(slug, page_title, description, canonical, body, current=None, head_ex
                     ('arrow-up', 'Back to top', '#main')]
     footer = ''.join(f'<a href="{escape(href, quote=True)}">{icon(name, "icon footer-icon")}<span>{label}</span></a>'
                      for name, label, href in footer_links)
-    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{escape(page_title)}</title><meta name="description" content="{escape(description, quote=True)}">{robots}<meta name="google-site-verification" content="{GSC_TOKEN}"><meta name="msvalidate.01" content="{BING_TOKEN}"><meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)"><link rel="canonical" href="{canonical}"><meta property="og:type" content="website"><meta property="og:title" content="{escape(page_title, quote=True)}"><meta property="og:description" content="{escape(description, quote=True)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{SITE}profile.jpg"><meta property="og:image:alt" content="Md. Tariquzzaman"><meta name="twitter:card" content="summary"><meta name="twitter:site" content="@mdtariquzzaman_"><meta name="twitter:creator" content="@mdtariquzzaman_"><meta name="twitter:title" content="{escape(page_title, quote=True)}"><meta name="twitter:description" content="{escape(description, quote=True)}"><meta name="twitter:image" content="{SITE}profile.jpg"><link rel="icon" href="{asset}assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="{asset}assets/style.css?v=20260926k"><link rel="stylesheet" href="{asset}assets/interactions.css?v=20260926k">{head_extra}</head><body class="page-{slug}"><a class="skip-link" href="#main">Skip to content</a><header class="site-header"><div class="header-inner"><a class="wordmark" href="{asset}index.html" aria-label="Tariq, home">tariq<span>.</span></a><nav aria-label="Main navigation">{nav}</nav><button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch to dark theme"><span aria-hidden="true">◐</span></button></div></header><div class="site-shell"><main id="main">{body}</main><footer class="site-footer"><p>© 2026 Md. Tariquzzaman</p><div>{footer}</div></footer></div><script src="{asset}assets/app.js?v=20260926k"></script></body></html>'''
+    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{escape(page_title)}</title><meta name="description" content="{escape(description, quote=True)}">{robots}<meta name="google-site-verification" content="{GSC_TOKEN}"><meta name="msvalidate.01" content="{BING_TOKEN}"><meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)"><link rel="canonical" href="{canonical}"><meta property="og:type" content="website"><meta property="og:title" content="{escape(page_title, quote=True)}"><meta property="og:description" content="{escape(description, quote=True)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{SITE}profile.jpg"><meta property="og:image:alt" content="Md. Tariquzzaman"><meta name="twitter:card" content="summary"><meta name="twitter:site" content="@mdtariquzzaman_"><meta name="twitter:creator" content="@mdtariquzzaman_"><meta name="twitter:title" content="{escape(page_title, quote=True)}"><meta name="twitter:description" content="{escape(description, quote=True)}"><meta name="twitter:image" content="{SITE}profile.jpg"><link rel="icon" href="{asset}assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="{asset}assets/style.css?v=20261005b"><link rel="stylesheet" href="{asset}assets/interactions.css?v=20261005b">{head_extra}</head><body class="page-{slug}"><a class="skip-link" href="#main">Skip to content</a><header class="site-header"><div class="header-inner"><a class="wordmark" href="{asset}index.html" aria-label="Tariq, home">tariq<span>.</span></a><nav aria-label="Main navigation">{nav}</nav><button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch to dark theme"><span aria-hidden="true">◐</span></button></div></header><div class="site-shell"><main id="main">{body}</main><footer class="site-footer"><p>© 2026 Md. Tariquzzaman</p><div>{footer}</div></footer></div><script src="{asset}assets/app.js?v=20261005b"></script></body></html>'''
 
 schemas = {'index': ld({'@context': 'https://schema.org', **PERSON}),
            'publications': ld({'@context': 'https://schema.org', '@graph': [PERSON] + [publication_schema(p) for p in papers]})}

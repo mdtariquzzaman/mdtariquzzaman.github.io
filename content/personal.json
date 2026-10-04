@@ -2,179 +2,139 @@
   "anime": [
     {
       "title": "Attack on Titan",
-      "image": "https://media.kitsu.app/anime/poster_images/7442/medium.jpg",
-      "source": "https://kitsu.app/anime/attack-on-titan",
-      "provider": "Kitsu",
       "url": "https://en.wikipedia.org/wiki/Attack_on_Titan_(TV_series)"
     },
     {
       "title": "Monster",
-      "image": "https://media.kitsu.app/anime/poster_images/10/medium.jpg",
-      "source": "https://kitsu.app/anime/monster",
-      "provider": "Kitsu",
       "url": "https://en.wikipedia.org/wiki/Monster_(manga)"
     },
     {
       "title": "Death Note",
-      "image": "https://media.kitsu.app/anime/poster_images/1376/medium.jpg",
-      "source": "https://kitsu.app/anime/death-note",
-      "provider": "Kitsu",
       "url": "https://en.wikipedia.org/wiki/Death_Note"
     },
     {
       "title": "Naruto",
-      "image": "https://media.kitsu.app/anime/11/poster_image/medium-410cee5d114a5f70d69e795755e8348a.jpeg",
-      "source": "https://kitsu.app/anime/naruto",
-      "provider": "Kitsu",
       "url": "https://en.wikipedia.org/wiki/Naruto"
     },
     {
       "title": "Dragon Ball Z",
-      "image": "https://media.kitsu.app/anime/720/poster_image/medium-05eada51035c41796b6ed65fc5add636.jpeg",
-      "source": "https://kitsu.app/anime/dragon-ball-z",
-      "provider": "Kitsu",
       "url": "https://en.wikipedia.org/wiki/Dragon_Ball_Z"
     },
     {
       "title": "One Piece",
-      "image": "https://media.kitsu.app/anime/poster_images/12/medium.jpg",
-      "source": "https://kitsu.app/anime/one-piece",
-      "provider": "Kitsu",
       "url": "https://en.wikipedia.org/wiki/One_Piece"
     },
     {
       "title": "Jujutsu Kaisen",
-      "image": "https://media.kitsu.app/anime/42765/poster_image/medium-d34c203fcd7c3a03a29645f1e44ce747.jpeg",
-      "source": "https://kitsu.app/anime/jujutsu-kaisen",
-      "provider": "Kitsu",
       "url": "https://en.wikipedia.org/wiki/Jujutsu_Kaisen"
     },
     {
       "title": "Tokyo Ghoul",
-      "image": "https://media.kitsu.app/anime/poster_images/8271/medium.jpg",
-      "source": "https://kitsu.app/anime/tokyo-ghoul",
-      "provider": "Kitsu",
       "url": "https://en.wikipedia.org/wiki/Tokyo_Ghoul"
     },
     {
       "title": "Ace of Diamond",
-      "image": "https://media.kitsu.app/anime/poster_images/7699/medium.jpg",
-      "source": "https://kitsu.app/anime/diamond-no-ace",
-      "provider": "Kitsu",
       "url": "https://en.wikipedia.org/wiki/Ace_of_Diamond"
     },
     {
       "title": "Fullmetal Alchemist",
-      "image": "https://media.kitsu.app/anime/poster_images/100/medium.jpg",
-      "source": "https://kitsu.app/anime/fullmetal-alchemist",
-      "provider": "Kitsu",
       "url": "https://en.wikipedia.org/wiki/Fullmetal_Alchemist_(TV_series)"
     }
   ],
   "movies": [
     {
       "title": "Fight Club",
-      "image": "https://upload.wikimedia.org/wikipedia/en/f/fc/Fight_Club_poster.jpg",
-      "source": "https://en.wikipedia.org/wiki/Fight_Club",
-      "provider": "Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Fight_Club"
     },
     {
       "title": "The Matrix",
-      "image": "https://upload.wikimedia.org/wikipedia/en/d/db/The_Matrix.png",
-      "source": "https://en.wikipedia.org/wiki/The_Matrix",
-      "provider": "Wikipedia",
       "url": "https://en.wikipedia.org/wiki/The_Matrix"
     },
     {
       "title": "Interstellar",
-      "image": "https://upload.wikimedia.org/wikipedia/en/b/bc/Interstellar_film_poster.jpg",
-      "source": "https://en.wikipedia.org/wiki/Interstellar_(film)",
-      "provider": "Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Interstellar_(film)"
     },
     {
       "title": "Edge of Tomorrow",
-      "image": "https://upload.wikimedia.org/wikipedia/en/f/f9/Edge_of_Tomorrow_Poster.jpg",
-      "source": "https://en.wikipedia.org/wiki/Edge_of_Tomorrow",
-      "provider": "Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Edge_of_Tomorrow"
     },
     {
       "title": "Coherence",
-      "image": "https://upload.wikimedia.org/wikipedia/en/9/9d/Coherence_2013_theatrical_poster.jpg",
-      "source": "https://en.wikipedia.org/wiki/Coherence_(film)",
-      "provider": "Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Coherence_(film)"
     },
     {
       "title": "Avengers: Infinity War",
-      "image": "https://upload.wikimedia.org/wikipedia/en/4/4d/Avengers_Infinity_War_poster.jpg",
-      "source": "https://en.wikipedia.org/wiki/Avengers%3A_Infinity_War",
-      "provider": "Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Avengers%3A_Infinity_War"
     },
     {
       "title": "Spider-Man: Into the Spider-Verse",
-      "image": "https://upload.wikimedia.org/wikipedia/en/f/fa/Spider-Man_Into_the_Spider-Verse_poster.png",
-      "source": "https://en.wikipedia.org/wiki/Spider-Man%3A_Into_the_Spider-Verse",
-      "provider": "Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Spider-Man%3A_Into_the_Spider-Verse"
     },
     {
       "title": "Your Name",
-      "image": "https://upload.wikimedia.org/wikipedia/en/0/0b/Your_Name_poster.png",
-      "source": "https://en.wikipedia.org/wiki/Your_Name",
-      "provider": "Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Your_Name"
     },
     {
       "title": "Gone Girl",
-      "image": "https://upload.wikimedia.org/wikipedia/en/0/05/Gone_Girl_Poster.jpg",
-      "source": "https://en.wikipedia.org/wiki/Gone_Girl_(film)",
-      "provider": "Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Gone_Girl_(film)"
     },
     {
       "title": "Eternal Sunshine of the Spotless Mind",
-      "image": "https://upload.wikimedia.org/wikipedia/en/a/a4/Eternal_Sunshine_of_the_Spotless_Mind.png",
-      "source": "https://en.wikipedia.org/wiki/Eternal_Sunshine_of_the_Spotless_Mind",
-      "provider": "Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Eternal_Sunshine_of_the_Spotless_Mind"
+    }
+  ],
+  "tv": [
+    {
+      "title": "The Mentalist",
+      "url": "https://en.wikipedia.org/wiki/The_Mentalist"
+    },
+    {
+      "title": "Dark",
+      "url": "https://en.wikipedia.org/wiki/Dark_(TV_series)"
+    },
+    {
+      "title": "Silicon Valley",
+      "url": "https://en.wikipedia.org/wiki/Silicon_Valley_(TV_series)"
+    },
+    {
+      "title": "Chernobyl",
+      "url": "https://en.wikipedia.org/wiki/Chernobyl_(miniseries)"
+    },
+    {
+      "title": "The Simpsons",
+      "url": "https://en.wikipedia.org/wiki/The_Simpsons"
     }
   ],
   "books": [
     {
       "title": "Meditations",
       "author": "Marcus Aurelius",
-      "image": "https://covers.openlibrary.org/b/id/211529-M.jpg",
-      "source": "https://openlibrary.org/works/OL1317211W",
-      "provider": "Open Library",
       "url": "https://en.wikipedia.org/wiki/Meditations"
     },
     {
       "title": "Deep Work",
       "author": "Cal Newport",
-      "image": "https://covers.openlibrary.org/b/id/8763269-M.jpg",
-      "source": "https://openlibrary.org/books/OL27281494M/Deep_Work",
-      "provider": "Open Library",
       "url": "https://en.wikipedia.org/wiki/Cal_Newport#Books"
     },
     {
       "title": "Letters from a Stoic",
       "author": "Seneca the Younger",
-      "image": "https://covers.openlibrary.org/b/id/103759-M.jpg",
-      "source": "https://openlibrary.org/works/OL102290W/Letters_from_a_Stoic",
-      "provider": "Open Library",
       "url": "https://en.wikipedia.org/wiki/Epistulae_Morales_ad_Lucilium"
+    },
+    {
+      "title": "The Hitchhiker's Guide to the Galaxy",
+      "author": "Douglas Adams",
+      "url": "https://en.wikipedia.org/wiki/The_Hitchhiker%27s_Guide_to_the_Galaxy_(novel)"
+    },
+    {
+      "title": "Project Hail Mary",
+      "author": "Andy Weir",
+      "url": "https://en.wikipedia.org/wiki/Project_Hail_Mary"
     }
   ],
   "sports": [
     {
       "title": "Bayern Munich",
-      "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/FC_Bayern_M%C3%BCnchen_logo_%282024%29.svg/330px-FC_Bayern_M%C3%BCnchen_logo_%282024%29.svg.png",
-      "source": "https://en.wikipedia.org/wiki/FC_Bayern_Munich",
-      "provider": "Wikipedia",
       "url": "https://en.wikipedia.org/wiki/FC_Bayern_Munich"
     }
   ]
