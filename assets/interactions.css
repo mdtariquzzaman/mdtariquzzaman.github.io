@@ -233,7 +233,15 @@ html{scroll-padding-top:calc(var(--header-h) + 64px)}
 .portrait figcaption{max-width:340px}
 .portrait-name{display:none}
 .interest-grid{grid-template-columns:1fr}
-.favorites-list{grid-template-columns:1fr}
+.personal-panel{padding:16px 14px;margin-bottom:18px}
+.personal-panel h2{font-size:1.15rem;gap:8px}
+.personal-panel h2 .icon{width:18px;height:18px}
+.personal-panel>.favorites-label{font-size:.64rem}
+.personal-panel>p:not(.favorites-label){font-size:.8rem}
+.favorites-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px;margin-top:10px}
+.favorite-link{grid-template-columns:24px minmax(0,1fr) 12px;gap:7px;min-height:44px;padding:7px 0}
+.favorite-copy h3{font-size:.82rem}
+.favorite-card .favorite-author{font-size:.66rem}
 .publications-summary{flex-direction:column;align-items:stretch}
 .publication-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
 .publication-sections .publication{grid-template-columns:1fr;gap:8px;padding:20px}
@@ -246,9 +254,7 @@ html{scroll-padding-top:calc(var(--header-h) + 64px)}
 .intro-copy .link-row{display:flex;flex-direction:column;gap:8px}
 .intro-copy .link-row .btn{flex:0 0 auto;width:100%;justify-content:center}
 .pub-year{padding-top:0}
-.page-contents{position:sticky;top:var(--header-h);z-index:20;display:flex;flex-direction:row;flex-wrap:nowrap;gap:2px;overflow-x:auto;margin:0 0 20px;padding:8px;background:var(--card);scrollbar-width:none;box-shadow:inset 8px 0 8px -8px var(--contents-start-shadow,transparent),inset -8px 0 8px -8px var(--contents-end-shadow,transparent)}
-.page-contents[data-overflow-start]{--contents-start-shadow:var(--contents-edge)}
-.page-contents[data-overflow-end]{--contents-end-shadow:var(--contents-edge)}
+.page-contents{position:sticky;top:var(--header-h);z-index:20;display:flex;flex-direction:row;flex-wrap:nowrap;gap:2px;overflow-x:auto;margin:0 0 20px;padding:0 0 6px;background:var(--bg);border:0;border-bottom:1px solid var(--rule);border-radius:0;scrollbar-width:none;box-shadow:none}
 .page-contents::-webkit-scrollbar{display:none}
 .page-contents .eyebrow{display:none}
 .page-contents a{flex-shrink:0;white-space:nowrap;padding:9px 12px;font-size:.8125rem}
