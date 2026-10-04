@@ -34,6 +34,8 @@ html[data-theme="dark"]{--ok:#30d158;--ok-bg:rgba(48,209,88,.16)}
 .publication h3 a{color:var(--ink)}
 .publication h3 a:hover{color:var(--accent-strong);text-decoration:none}
 .pub-status{font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-strong);margin:0 0 6px}
+.pub-areas{display:flex;align-items:center;gap:7px;font-size:.8125rem;color:var(--muted);margin:10px 0 0}
+.pub-areas .icon{width:14px;height:14px;flex:none;opacity:.85}
 .authors{font-size:.9375rem;line-height:1.6;color:var(--muted);margin:0 0 6px}
 .authors strong{color:var(--ink);font-weight:600}
 .venue{font-size:.9375rem;font-style:italic;color:var(--muted);margin:0 0 8px}
