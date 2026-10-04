@@ -37,6 +37,21 @@ ICONS = {
     'badge-check': '<path d="m12 2.5 2.4 1.8 3-.1.9 2.9 2.4 1.8-1 2.8 1 2.8-2.4 1.8-.9 2.9-3-.1L12 21.5l-2.4-1.8-3 .1-.9-2.9-2.4-1.8 1-2.8-1-2.8 2.4-1.8.9-2.9 3 .1z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
     'overview': '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/>',
     'arrow-up': '<path d="M12 19V5M6 11l6-6 6 6"/>',
+    'quote': '<path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/>',
+    'trending-up': '<path d="M3 17l6-6 4 4 8-8M15 7h6v6"/>',
+    'bar-chart': '<path d="M6 20v-6M12 20V4M18 20v-9"/>',
+    'tv': '<rect x="3" y="6" width="18" height="12" rx="2"/><path d="m8 3 4 3 4-3"/>',
+    'film': '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 4v16M16 4v16M3 9h5M3 15h5M16 9h5M16 15h5"/>',
+    'book-open': '<path d="M12 6.5C10 5 7.5 4.5 4 4.5v13c3.5 0 6 .5 8 2 2-1.5 4.5-2 8-2v-13c-3.5 0-6 .5-8 2z"/><path d="M12 6.5v13"/>',
+    'football': '<circle cx="12" cy="12" r="9"/><path d="m12 8 3.4 2.5-1.3 4h-4.2l-1.3-4z"/><path d="M12 3v5M3.7 8.5l4.8 2M20.3 8.5l-4.8 2M7.4 17.5l2.5-3M16.6 17.5l-2.5-3"/>',
+    'graduation': '<path d="M2.6 9.1 12 5.2l9.4 3.9-9.4 3.9z"/><path d="M6 12.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-3.5"/><path d="M22 10v5"/>',
+    'flask': '<path d="M10 2v6.5L4.5 18a2 2 0 0 0 1.7 3h11.6a2 2 0 0 0 1.7-3L14 8.5V2"/><path d="M8.5 2h7M7 15h10"/>',
+    'blackboard': '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/><path d="m7 8.5 3 2-3 2M12.5 12.5H17"/>',
+    'briefcase': '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 12.5h18"/>',
+    'trophy': '<path d="M6 4h12v5a6 6 0 0 1-12 0z"/><path d="M12 15v6M8 21h8"/><path d="M6 5H4a2 2 0 0 0 2 2M18 5h2a2 2 0 0 1-2 2"/>',
+    'presentation': '<rect x="3" y="4" width="18" height="11" rx="2"/><path d="M12 15v5M8 20h8"/>',
+    'journal': '<path d="M6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5V4.5A2.5 2.5 0 0 1 6.5 2z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20"/>',
+    'users': '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.2A6.5 6.5 0 0 1 21.5 20"/>',
     # Filled brand marks (Simple Icons) for the footer identity links.
     'linkedin': '<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>',
     'bluesky': '<path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/>',
@@ -165,11 +180,12 @@ groups = [('conference', 'conference-papers', 'Conference papers', 'C'),
           ('journal', 'journal-articles', 'Journal articles', 'J'),
           ('workshop', 'workshop-papers', 'Workshop papers', 'W'),
           ('preprint', 'preprints', 'Preprints', 'P')]
-metric_items = [(len(papers), 'Publications'), (metrics['citations'], 'Citations'),
-                (metrics['h_index'], 'h-index'), (metrics['i10_index'], 'i10-index')]
+GROUP_ICONS = {'conference': 'presentation', 'journal': 'journal', 'workshop': 'users', 'preprint': 'paper'}
+metric_items = [(len(papers), 'Publications', 'paper'), (metrics['citations'], 'Citations', 'quote'),
+                (metrics['h_index'], 'h-index', 'trending-up'), (metrics['i10_index'], 'i10-index', 'bar-chart')]
 unavailable_metric = '<span aria-label="Unavailable">—</span>'
-metric_html = ''.join(f'<div><dt>{name}</dt><dd>{value if value is not None else unavailable_metric}</dd></div>' for value, name in metric_items)
-missing_metrics = [name for value, name in metric_items if value is None]
+metric_html = ''.join(f'<div><dt>{icon(kind)}<span>{name}</span></dt><dd>{value if value is not None else unavailable_metric}</dd></div>' for value, name, kind in metric_items)
+missing_metrics = [name for value, name, _ in metric_items if value is None]
 metric_note = ('Google Scholar metrics refreshed' if metrics.get('source') == 'google-scholar' else 'Google Scholar metrics supplied by the author')
 if metrics.get('verified_on'): metric_note += ' on ' + escape(metrics['verified_on'])
 metric_note += '.'
@@ -185,7 +201,7 @@ for item in news:
         if is_preprint(p) and f'publications.html#{p["id"]}"' in item['text'] and 'accept' in item['text'].lower():
             raise SystemExit(f'news.json calls preprint "{p["id"]}" accepted: {item["date"]}')
 news_html = news_list(sorted(news, key=lambda x: datetime.strptime(x['date'], '%b %Y'), reverse=True))
-contents = ''.join(f'<a href="#{anchor}">{escape(heading)}</a>' for _, anchor, heading, _ in groups)
+contents = ''.join(f'<a href="#{anchor}">{icon(GROUP_ICONS[kind])}<span>{escape(heading)}</span></a>' for kind, anchor, heading, _ in groups)
 # Home's interest cards link to the four research-area anchors. Entries are grouped by type,
 # so each area anchor is placed before the first paper carrying it, in render order.
 AREA_ANCHORS = ['misinformation', 'evaluation', 'bangla', 'accessibility']
@@ -213,7 +229,7 @@ for kind, anchor, heading, prefix in groups:
     sections += f'{legacy_anchor}<section class="publication-group" id="{anchor}" aria-labelledby="{anchor}-heading"><h2 id="{anchor}-heading">{escape(heading)} <span class="group-count">{len(entries)}</span></h2>{listing}</section>'
 pub_body = f'''<header class="page-heading publications-heading"><p class="eyebrow">Research output</p><h1>Publications</h1><p class="lead">A record of my research, in print and in progress.</p></header>
 <div class="publications-summary"><dl class="publication-metrics">{metric_html}</dl><div class="publication-actions"><a class="btn" data-kind="scholar" href="https://scholar.google.com/citations?user=LWB_NzwAAAAJ">{icon("scholar")}<span>Google Scholar</span>{icon("external", "icon icon-trail")}</a><a class="btn" data-kind="cv" href="files/cv/tariq.pdf" target="_blank" rel="noopener">{icon("pdf")}<span>Download CV</span>{icon("external", "icon icon-trail")}</a></div></div><p class="metrics-note">{metric_note}</p>
-<div class="reading-layout publications-layout"><nav class="contents page-contents" aria-label="On this page"><p class="eyebrow">On this page</p>{contents}<a href="#resources">Code &amp; data</a></nav><div class="publication-sections">{sections}<section class="section" id="resources"><h2>Code &amp; data</h2><div class="resource-list"><article><h3><a href="https://huggingface.co/datasets/aplycaebous/BdSLIG">BdSLIG{icon("external", "icon icon-trail")}</a></h3><p>Bangla Sign Language instruction generation dataset.</p></article><article><h3><a href="https://github.com/mdtariquzzaman/SPIP">SPIP{icon("external", "icon icon-trail")}</a></h3><p>Sign Parameter Informed Prompting: reference implementation.</p></article><article><h3><a href="https://github.com/mdtariquzzaman/VITD">VITD{icon("external", "icon icon-trail")}</a></h3><p>Informal Bangla embeddings and violence-inciting text detection.</p></article></div></section></div></div>'''
+<div class="reading-layout publications-layout"><nav class="contents page-contents" aria-label="On this page"><p class="eyebrow">On this page</p>{contents}<a href="#resources">{icon("code")}<span>Code &amp; data</span></a></nav><div class="publication-sections">{sections}<section class="section" id="resources"><h2>Code &amp; data</h2><div class="resource-list"><article><h3><a href="https://github.com/lzw108/FMD">{icon("code")}FMD{icon("external", "icon icon-trail")}</a></h3><p>Scenario-induced bias benchmarking for multilingual financial misinformation detection.</p></article><article><h3><a href="https://huggingface.co/datasets/aplycaebous/BdSLIG">{icon("dataset")}BdSLIG{icon("external", "icon icon-trail")}</a></h3><p>Bangla Sign Language instruction generation dataset.</p></article><article><h3><a href="https://github.com/mdtariquzzaman/SPIP">{icon("code")}SPIP{icon("external", "icon icon-trail")}</a></h3><p>Sign Parameter Informed Prompting: reference implementation.</p></article><article><h3><a href="https://github.com/mdtariquzzaman/VITD">{icon("code")}VITD{icon("external", "icon icon-trail")}</a></h3><p>Informal Bangla embeddings and violence-inciting text detection.</p></article></div></section></div></div>'''
 
 personal_data = json.loads(read('personal.json'))
 personal_body = read('personal.html')
@@ -232,8 +248,9 @@ for category, entries in personal_data.items():
 
 # Home's Personal teaser: one card per topic, in personal.json order.
 TOPIC_LABELS = {'anime': 'Anime', 'movies': 'Movies', 'books': 'Books', 'sports': 'Sports'}
+TOPIC_ICONS = {'anime': 'tv', 'movies': 'film', 'books': 'book-open', 'sports': 'football'}
 personal_topics = '<ul class="topic-grid" role="list">' + ''.join(
-    f'<li><a href="personal.html#{c}"><h3>{TOPIC_LABELS[c]}</h3></a></li>' for c in personal_data) + '</ul>'
+    f'<li><a href="personal.html#{c}">{icon(TOPIC_ICONS[c])}<h3>{TOPIC_LABELS[c]}</h3></a></li>' for c in personal_data) + '</ul>'
 pages = [('index', 'Home', 'Misinformation detection, LLM evaluation, low-resource Bangla NLP, and sign language accessibility research by Md. Tariquzzaman, Junior Lecturer at IUT.', read('home.html').replace('{{NEWS}}', news_html).replace('{{PERSONAL_TOPICS}}', personal_topics)),
          ('publications', 'Publications', 'Publications, preprints, code, and datasets by Md. Tariquzzaman.', pub_body),
          ('cv', 'CV', 'Education, research publications and experience, teaching experience, industry experience, and awards of Md. Tariquzzaman.', read('cv.html')),
