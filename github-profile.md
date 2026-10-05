@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Inter&weight=500&size=19&pause=900&color=1c4f8f&center=true&vCenter=true&width=760&lines=Low-resource+Bangla+NLP;Misinformation+and+Harmful+Content+Detection;LLM+Evaluation+and+Bias;Sign+Language+and+Accessibility)](https://mdtariquzzaman.github.io/)
+<a href="https://mdtariquzzaman.github.io/"><img width="760" src="https://mdtariquzzaman.github.io/assets/tagline-fade.svg" alt="Low-resource Bangla NLP · Misinformation and Harmful Content Detection · LLM Evaluation and Bias · Sign Language and Accessibility"/></a>
 
 <strong>Junior Lecturer</strong> · Computer Science &amp; Engineering<br>
 <a href="https://www.iutoic-dhaka.edu/">Islamic University of Technology</a> · Gazipur, Bangladesh<br>
