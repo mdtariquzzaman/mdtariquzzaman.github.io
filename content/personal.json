@@ -47,6 +47,10 @@
       "url": "https://en.wikipedia.org/wiki/Fight_Club"
     },
     {
+      "title": "Arrival",
+      "url": "https://en.wikipedia.org/wiki/Arrival_(film)"
+    },
+    {
       "title": "The Matrix",
       "url": "https://en.wikipedia.org/wiki/The_Matrix"
     },
@@ -71,16 +75,12 @@
       "url": "https://en.wikipedia.org/wiki/Spider-Man%3A_Into_the_Spider-Verse"
     },
     {
-      "title": "Your Name",
-      "url": "https://en.wikipedia.org/wiki/Your_Name"
-    },
-    {
       "title": "Gone Girl",
       "url": "https://en.wikipedia.org/wiki/Gone_Girl_(film)"
     },
     {
-      "title": "Eternal Sunshine of the Spotless Mind",
-      "url": "https://en.wikipedia.org/wiki/Eternal_Sunshine_of_the_Spotless_Mind"
+      "title": "Project Hail Mary",
+      "url": "https://en.wikipedia.org/wiki/Project_Hail_Mary_(film)"
     }
   ],
   "tv": [
@@ -125,11 +125,6 @@
       "title": "The Hitchhiker's Guide to the Galaxy",
       "author": "Douglas Adams",
       "url": "https://en.wikipedia.org/wiki/The_Hitchhiker%27s_Guide_to_the_Galaxy_(novel)"
-    },
-    {
-      "title": "Project Hail Mary",
-      "author": "Andy Weir",
-      "url": "https://en.wikipedia.org/wiki/Project_Hail_Mary"
     }
   ],
   "sports": [
