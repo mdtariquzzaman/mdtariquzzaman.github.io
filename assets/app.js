@@ -4,6 +4,12 @@
   const themeButton = document.querySelector('.theme-toggle');
   const menuButton = document.querySelector('.nav-burger');
   const nav = document.querySelector('.site-header nav');
+  const siteHeader = document.querySelector('.site-header');
+  const measureHeader = () => {
+    if (siteHeader) root.style.setProperty('--header-h', `${siteHeader.offsetHeight}px`);
+  };
+  if (siteHeader) new ResizeObserver(measureHeader).observe(siteHeader);
+  measureHeader();
 
   try {
     const savedTheme = localStorage.getItem('tariq-theme');
@@ -11,15 +17,20 @@
   } catch (_) { /* Reading controls still work when storage is unavailable. */ }
 
   if (themeButton) {
-    const SUN = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.8v2.4M12 18.8v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.8 12h2.4M18.8 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>';
-    const MOON = '<svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M20.6 14.5A8.6 8.6 0 0 1 9.5 3.4a.7.7 0 0 0-.9-.9A10 10 0 1 0 21.5 15.4a.7.7 0 0 0-.9-.9Z"/></svg>';
+    const SUN = '<svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 1h4v3h-4zM10 20h4v3h-4zM1 10h3v4H1zM20 10h3v4h-3zM4 4h3v3H4zM17 4h3v3h-3zM4 17h3v3H4zM17 17h3v3h-3zM8 6h8v2H8zM6 8h2v8H6zM16 8h2v8h-2zM8 16h8v2H8z"/></svg>';
+    const MOON = '<svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 2h6v2H8zM6 4h4v2H6zM4 6h4v2H4zM2 8h4v8H2zM4 16h4v2H4zM6 18h12v2H6zM8 20h8v2H8zM10 4h2v6h-2zM12 10h2v2h-2zM14 12h6v2h-6zM18 14h4v2h-4zM16 16h4v2h-4z"/></svg>';
     const media = window.matchMedia('(prefers-color-scheme: dark)');
     const effectiveDark = () => root.dataset.theme === 'dark' || (!root.dataset.theme && media.matches);
     const updateThemeLabel = () => {
       const dark = effectiveDark();
-      themeButton.innerHTML = dark ? SUN : MOON;
+      themeButton.innerHTML = dark ? `${SUN}<span>Day</span>` : `${MOON}<span>Night</span>`;
       themeButton.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
       themeButton.title = dark ? 'Switch to light theme' : 'Switch to dark theme';
+      document.querySelectorAll('meta[name="theme-color"]').forEach(meta => {
+        meta.content = dark ? '#181d30' : '#e8e5ed';
+      });
+      const studySource = document.querySelector('.study-picture source');
+      if (studySource) studySource.media = dark ? 'all' : 'not all';
     };
     media.addEventListener?.('change', () => { if (!root.dataset.theme) updateThemeLabel(); });
     updateThemeLabel();
@@ -63,8 +74,8 @@
       if (hit && hit !== pressed) {
         release();
         pressed = hit;
-        pressed.style.transform = 'scale(.97)';
-        pressed.style.transition = 'transform .15s ease';
+        pressed.style.transform = 'translateY(2px)';
+        pressed.style.transition = 'none';
       }
     };
     const release = () => {
