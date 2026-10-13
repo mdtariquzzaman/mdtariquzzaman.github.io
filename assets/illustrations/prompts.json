@@ -10,5 +10,17 @@
     "file": "reading-corner-night.webp",
     "prompt": "Use case: lighting-weather.\nInput image 1: edit target, the approved new daytime pixel-art corner. Make its matching NIGHT version for the same portfolio.\nChange ONLY time of day, lighting, and colors. Preserve exactly this composition, bookshelf and every book, window/frame/windowsill dimensions, the single coffee cup and handle, object positions, landscape 3:2 aspect ratio, and pixel style.\nThe window shows a plain peaceful deep indigo night sky; no new scenery or objects. Remove daylight streaks and bright sun patches on the wall and sill. Keep the room softly readable in muted indigo/slate shades with quiet warm wood and a cream-colored coffee cup. Integrate the website's night palette #181d30, #262c43, and warm paper #f0eadb. Light is gentle ambient light from off-screen, not a new lamp. No theatrical glow.\nThe ONLY content stays the bookshelf with books, window, coffee cup, and plain wall. No human, face, chair, desk, computer, loose books, notebooks, plants, lamps, posters, text, labels or game UI. Retain crisp GBA-era pixel clusters and the same visual style; no blur, smooth digital painting, dramatic lighting or extra detail."
   },
-  "encoding": "Optimized WebP export at quality 92; original 1536x1024 dimensions and composition preserved."
+    "encoding": "The still source images remain optimized WebP at quality 92 and 1536x1024. The Home uses 512x341 optimized GIF variants with four looping frames, a shared 64-color palette per theme, no dithering, and delta-friendly disposal for a crisp compact pixel look.",
+  "animation": {
+    "files": [
+      "reading-corner-day.gif",
+      "reading-corner-night.gif"
+    ],
+    "base_files": [
+      "reading-corner-day.webp",
+      "reading-corner-night.webp"
+    ],
+    "prompt": "Add one small, blocky 16-bit GBA pixel cat sitting on the windowsill beside the coffee cup and looking out the window. Preserve the bookshelf, books, window, cup, wall, sky, lighting, crop, and composition. Use hard square pixel clusters, a limited flat palette, no anti-aliasing, and no realistic fur or painterly shading.",
+    "tail_frames": "Four-frame loop: the tail shifts two pixels left, returns to center, shifts two pixels right, then returns to center. It stays almost flat on the sill; only the tail tip changes between frames."
+  }
 }

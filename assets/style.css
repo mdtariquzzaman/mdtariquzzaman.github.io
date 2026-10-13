@@ -93,7 +93,7 @@ main{padding:24px 0 8px;min-height:60vh}
 .page-heading h1{margin-bottom:10px}
 .page-heading p:last-child{margin-bottom:0}
 .page-heading .btn{margin-top:12px}
-.introduction{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:20px;min-width:0;align-items:start}
+.introduction{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;min-width:0;align-items:start}
 .profile-window,.social-window{min-width:0}
 .profile-body{padding:24px}
 .profile-content{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px 20px;min-width:0}
@@ -101,7 +101,7 @@ main{padding:24px 0 8px;min-height:60vh}
 .social-window .window-title h2{font-size:26px;font-weight:400}
 .social-body{display:flex;flex-direction:column;gap:20px;padding:18px}
 .profile-art{margin:0;border:1px solid var(--frame-mid);background:var(--fill);overflow:hidden}
-.profile-art img{width:100%;height:auto;aspect-ratio:3/2;object-fit:contain;image-rendering:pixelated}
+.profile-art img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;object-position:center;image-rendering:pixelated}
 .study-picture{display:block;width:100%}
 .social-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .social-links>.btn{font-size:22px;padding:6px;gap:5px}
@@ -196,7 +196,7 @@ a.btn:hover,button.btn:hover{background:var(--fill-hover);color:var(--ink);text-
 .skip-link{position:absolute;left:16px;top:-100px;z-index:100;padding:12px;background:var(--card);border:3px solid var(--frame);color:var(--ink)}
 .skip-link:focus{top:12px}
 @media(max-width:1000px){
-.introduction{grid-template-columns:minmax(0,1fr) 320px;gap:16px}
+.introduction{grid-template-columns:minmax(0,1fr) 340px;gap:16px}
 .profile-body{padding:20px}
 .social-body{padding:14px}
 .social-links>.btn{font-size:20px;padding:6px 4px;gap:4px}
