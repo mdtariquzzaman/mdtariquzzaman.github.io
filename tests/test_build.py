@@ -223,6 +223,12 @@ class BuildTests(unittest.TestCase):
                     self.assertIn('noopener', action.attrs['rel'].split())
                     self.assertNotIn('download', action.attrs)
                     self.assertEqual(action.find('span')[0].text(), 'Download CV')
+        header = parse(build['render']('index', 'Home', 'Description', build['SITE'], '<p>Body</p>', current='index'))
+        site_header = header.find('header', 'site-header')[0]
+        home_link = site_header.find('a', 'home-link')[0]
+        self.assertEqual(home_link.attrs['href'], 'index.html')
+        self.assertEqual(home_link.find('span')[0].text(), 'Home')
+        self.assertEqual([link.text() for link in site_header.find('nav')[0].find('a')], ['Publications', 'CV', 'Personal'])
         cv = parse((ROOT / 'cv.html').read_text())
         for anchor in ('experience', 'appointments', 'teaching'):
             self.assertTrue(cv.find(id=anchor))
