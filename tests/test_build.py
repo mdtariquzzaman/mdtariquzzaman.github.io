@@ -171,6 +171,17 @@ class BuildTests(unittest.TestCase):
                 self.assertEqual(values, [str(len(context['papers']))] + [('0' if value == 0 else '—')] * 3)
                 self.assertEqual(len(tree.find('span', **{'aria-label': 'Unavailable'})), 0 if value == 0 else 3)
 
+    def test_empty_journal_group_is_hidden_until_a_journal_entry_exists(self):
+        self.assertNotIn('journal-articles', self.build['contents'])
+        self.assertNotIn('Journal articles', self.build['pub_body'])
+
+        papers = deepcopy(self.build['papers'])
+        journal = deepcopy(papers[0])
+        journal.update(type='journal', id='test-journal')
+        context = builder_context(papers=papers + [journal])
+        self.assertIn('journal-articles', context['contents'])
+        self.assertIn('Journal articles', context['pub_body'])
+
     def test_favorites_retain_every_entry_in_one_wikipedia_list_row(self):
         tree = parse(self.build['expand_icons'](self.build['personal_body']))
         for category, entries in self.build['personal_data'].items():

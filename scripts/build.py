@@ -207,6 +207,7 @@ groups = [('conference', 'conference-papers', 'Conference papers', 'C'),
           ('workshop', 'workshop-papers', 'Workshop papers', 'W'),
           ('preprint', 'preprints', 'Preprints', 'P')]
 GROUP_ICONS = {'conference': 'presentation', 'journal': 'journal', 'workshop': 'users', 'preprint': 'paper'}
+active_groups = [group for group in groups if any(p['type'] == group[0] for p in papers)]
 metric_items = [(len(papers), 'Publications', 'paper'), (metrics['citations'], 'Citations', 'quote'),
                 (metrics['h_index'], 'h-index', 'trending-up'), (metrics['i10_index'], 'i10-index', 'bar-chart')]
 unavailable_metric = '<span aria-label="Unavailable">—</span>'
@@ -232,7 +233,7 @@ if len(ordered_news) > 3:
     news_html += (f'<details class="news-archive"><summary>Earlier updates '
                   f'<span class="archive-count">({len(ordered_news)-3})</span></summary>'
                   f'{news_list(ordered_news[3:])}</details>')
-contents = ''.join(f'<a href="#{anchor}">{icon(GROUP_ICONS[kind])}<span>{escape(heading)}</span></a>' for kind, anchor, heading, _ in groups)
+contents = ''.join(f'<a href="#{anchor}">{icon(GROUP_ICONS[kind])}<span>{escape(heading)}</span></a>' for kind, anchor, heading, _ in active_groups)
 # Home's interest cards link to the four research-area anchors. Entries are grouped by type,
 # so each area anchor is placed before the first paper carrying it, in render order.
 # New interest areas get stable anchors as their publication records arrive. Keep the
@@ -243,7 +244,7 @@ AREA_ANCHOR_FOR = {'LLM safety': 'safety', 'Cultural bias': 'cultural-bias',
                    'AI creativity & storytelling': 'creativity', 'Accessibility': 'accessibility',
                    'Misinformation': 'misinformation', 'LLM evaluation': 'evaluation',
                    'Bangla NLP': 'bangla'}
-ordered = [p for kind, _, _, _ in groups
+ordered = [p for kind, _, _, _ in active_groups
            for p in sorted((x for x in papers if x['type'] == kind), key=lambda x: int(x['year']), reverse=True)]
 first_anchor = {}
 for p in ordered:
@@ -257,10 +258,9 @@ def area_anchors(p):
                    for key in AREA_ANCHORS if first_anchor.get(key) == p['id'])
 
 sections = ''
-for kind, anchor, heading, prefix in groups:
+for kind, anchor, heading, prefix in active_groups:
     entries = sorted((p for p in papers if p['type'] == kind), key=lambda p: int(p['year']), reverse=True)
     listing = ''.join(area_anchors(p) + publication(p, f'{prefix}{len(entries)-i}') for i, p in enumerate(entries))
-    if not entries: listing = '<p class="empty-publications">No journal articles listed yet.</p>'
     legacy_anchor = '<span id="peer-reviewed" class="legacy-anchor"></span>' if kind == 'conference' else ''
     sections += f'{legacy_anchor}<section class="publication-group" id="{anchor}" aria-labelledby="{anchor}-heading"><h2 id="{anchor}-heading">{escape(heading)} <span class="group-count">{len(entries)}</span></h2>{listing}</section>'
 pub_body = f'''<header class="page-heading publications-heading"><p class="eyebrow">Research output</p><h1>Publications</h1><p class="lead">A record of my research, in print and in progress.</p></header>
