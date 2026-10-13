@@ -1,7 +1,7 @@
 (() => {
   const root = document.documentElement;
   root.classList.add('js');
-  const themeButton = document.querySelector('.theme-toggle');
+  const themeButtons = [...document.querySelectorAll('.theme-toggle')];
   const menuButton = document.querySelector('.nav-burger');
   const nav = document.querySelector('.site-header nav');
   const siteHeader = document.querySelector('.site-header');
@@ -16,16 +16,18 @@
     if (savedTheme === 'dark' || savedTheme === 'light') root.dataset.theme = savedTheme;
   } catch (_) { /* Reading controls still work when storage is unavailable. */ }
 
-  if (themeButton) {
+  if (themeButtons.length) {
     const SUN = '<svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 1h4v3h-4zM10 20h4v3h-4zM1 10h3v4H1zM20 10h3v4h-3zM4 4h3v3H4zM17 4h3v3h-3zM4 17h3v3H4zM17 17h3v3h-3zM8 6h8v2H8zM6 8h2v8H6zM16 8h2v8h-2zM8 16h8v2H8z"/></svg>';
     const MOON = '<svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 2h6v2H8zM6 4h4v2H6zM4 6h4v2H4zM2 8h4v8H2zM4 16h4v2H4zM6 18h12v2H6zM8 20h8v2H8zM10 4h2v6h-2zM12 10h2v2h-2zM14 12h6v2h-6zM18 14h4v2h-4zM16 16h4v2h-4z"/></svg>';
     const media = window.matchMedia('(prefers-color-scheme: dark)');
     const effectiveDark = () => root.dataset.theme === 'dark' || (!root.dataset.theme && media.matches);
     const updateThemeLabel = () => {
       const dark = effectiveDark();
-      themeButton.innerHTML = dark ? `${SUN}<span>Day</span>` : `${MOON}<span>Night</span>`;
-      themeButton.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
-      themeButton.title = dark ? 'Switch to light theme' : 'Switch to dark theme';
+      themeButtons.forEach(themeButton => {
+        themeButton.innerHTML = dark ? `${SUN}<span>Day</span>` : `${MOON}<span>Night</span>`;
+        themeButton.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+        themeButton.title = dark ? 'Switch to light theme' : 'Switch to dark theme';
+      });
       document.querySelectorAll('meta[name="theme-color"]').forEach(meta => {
         meta.content = dark ? '#181d30' : '#e8e5ed';
       });
@@ -34,11 +36,11 @@
     };
     media.addEventListener?.('change', () => { if (!root.dataset.theme) updateThemeLabel(); });
     updateThemeLabel();
-    themeButton.addEventListener('click', () => {
+    themeButtons.forEach(themeButton => themeButton.addEventListener('click', () => {
       root.dataset.theme = effectiveDark() ? 'light' : 'dark';
       try { localStorage.setItem('tariq-theme', root.dataset.theme); } catch (_) {}
       updateThemeLabel();
-    });
+    }));
   }
 
   if (menuButton && nav) {

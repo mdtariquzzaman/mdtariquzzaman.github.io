@@ -49,6 +49,7 @@ body{margin:0;color:var(--ink);background-color:var(--bg);background-image:var(-
 ::selection{background:var(--contents-active-fill);color:var(--ink)}
 img{display:block;max-width:100%;height:auto}
 h1,h2,h3,p,figure{margin:0}
+.nowrap{white-space:nowrap}
 h1,h2{font-family:var(--pixel);font-weight:700;line-height:1.1;letter-spacing:0}
 h1{font-size:var(--t-page)}
 h2{font-size:var(--t-section)}
@@ -66,16 +67,17 @@ button{font:inherit}
 .site-shell{width:min(var(--shell),calc(100% - 64px));margin:0 auto}
 .site-header{position:sticky;top:0;z-index:50;width:min(var(--shell),calc(100% - 64px));margin:20px auto 0;border:2px solid var(--frame);border-radius:4px;background:var(--card);box-shadow:inset 0 0 0 2px var(--frame-light),0 2px 0 var(--frame)}
 .header-title-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--strip-bg);color:var(--strip-ink);padding:2px 16px;border-bottom:2px solid var(--frame);font-family:var(--pixel);font-size:20px;line-height:24px}
+.header-title{flex:0 0 auto;white-space:nowrap}
 .header-status{font-size:18px;opacity:.9}
 .header-inner{height:64px;padding:8px 16px;display:flex;align-items:center;gap:16px}
-.home-link{display:flex;gap:4px;align-items:center;min-height:44px;padding:6px 12px 6px 4px;color:var(--ink);font-family:var(--pixel);font-size:24px;line-height:1;text-decoration:none;border:2px solid transparent;white-space:nowrap}
-.site-header nav{display:flex;gap:4px;margin-left:auto;align-items:center}
+.site-header nav{display:flex;gap:4px;margin:0;align-items:center}
 .site-header nav a{display:flex;gap:4px;align-items:center;min-height:44px;padding:6px 12px 6px 4px;color:var(--ink);font-family:var(--pixel);font-size:24px;line-height:1;text-decoration:none;border:2px solid transparent}
 .nav-cursor{width:16px;height:16px;visibility:hidden}
-.home-link[aria-current=page],.home-link:hover,.home-link:focus-visible,.site-header nav a[aria-current=page],.site-header nav a:hover,.site-header nav a:focus-visible{background:var(--fill)}
-.home-link[aria-current=page] .nav-cursor,.home-link:hover .nav-cursor,.home-link:focus-visible .nav-cursor,.site-header nav a[aria-current=page] .nav-cursor,.site-header nav a:hover .nav-cursor,.site-header nav a:focus-visible .nav-cursor{visibility:visible}
-.theme-toggle{display:none;align-items:center;justify-content:center;gap:5px;min-height:44px;padding:5px 10px;background:var(--title-bg);color:var(--title-ink);border:2px solid var(--frame);border-radius:2px;font-family:var(--pixel);font-size:20px;line-height:1;cursor:pointer}
-.js .theme-toggle{display:inline-flex}
+.site-header nav a[aria-current=page],.site-header nav a:hover,.site-header nav a:focus-visible{background:var(--fill)}
+.site-header nav a[aria-current=page] .nav-cursor,.site-header nav a:hover .nav-cursor,.site-header nav a:focus-visible .nav-cursor{visibility:visible}
+.theme-toggle{display:none;align-items:center;justify-content:center;gap:5px;min-height:44px;margin-left:auto;padding:5px 10px;background:var(--title-bg);color:var(--title-ink);border:2px solid var(--frame);border-radius:2px;font-family:var(--pixel);font-size:20px;line-height:1;cursor:pointer}
+.js .theme-toggle-desktop{display:inline-flex}
+.js .theme-toggle-mobile{display:none}
 .theme-toggle .icon{width:20px;height:20px}
 .nav-burger{display:none}
 main{padding:24px 0 8px;min-height:60vh}
@@ -209,7 +211,6 @@ a.btn:hover,button.btn:hover{background:var(--fill-hover);color:var(--ink);text-
 .page-contents a{font-size:20px;gap:6px}
 .header-inner{gap:10px;padding:8px 12px}
 .site-header nav a{padding-right:8px;font-size:22px}
-.home-link{font-size:22px}
 }
 @media(max-width:900px){
 .introduction{grid-template-columns:minmax(0,1fr);gap:20px}
@@ -226,11 +227,11 @@ a.btn:hover,button.btn:hover{background:var(--fill-hover);color:var(--ink);text-
 }
 @media(max-width:760px){
 .header-title-strip{padding:1px 10px;font-size:18px;line-height:22px}
-.header-inner{height:100px;flex-wrap:wrap;gap:0 12px;padding:6px 8px}
-.home-link{font-size:22px}
+.header-inner{height:auto;flex-wrap:wrap;gap:0 12px;padding:6px 8px}
 .theme-toggle{order:1;margin-left:auto;min-height:44px;font-size:20px;padding:2px 8px}
-.site-header nav{order:2;flex:1 1 100%;margin:0;justify-content:space-between;gap:0}
-.site-header nav a{min-height:44px;padding:6px 4px 6px 0;font-size:22px;gap:0}
+.site-header nav{order:2;flex:1 1 100%;margin:0;justify-content:space-between;gap:0;overflow-x:auto;scrollbar-width:none}
+.site-header nav::-webkit-scrollbar{display:none}
+.site-header nav a{flex:0 0 auto;min-height:44px;padding:6px 4px 6px 0;font-size:22px;gap:0;white-space:nowrap}
 .nav-cursor{width:12px;height:12px}
 }
 @media(max-width:600px){
@@ -239,12 +240,12 @@ body{background-size:960px 427px}
 .site-shell,.site-header{width:calc(100% - 24px)}
 .site-header{margin-top:12px}
 .header-title-strip{padding:1px 10px;font-size:18px;line-height:22px}
-.header-inner{height:100px;flex-wrap:wrap;gap:0 12px;padding:6px 8px}
-.home-link{font-size:22px}
-.theme-toggle{order:1;margin-left:auto;min-height:44px;font-size:20px;padding:2px 8px}
-.site-header nav{order:2;flex:1 1 100%;margin:0;justify-content:space-between;gap:0}
-.site-header nav a{min-height:44px;padding:6px 2px 6px 0;font-size:18px;gap:0}
-.home-link{min-height:44px;padding:6px 2px 6px 0;font-size:18px;gap:0}
+.header-inner{height:auto;flex-wrap:wrap;gap:0 12px;padding:6px 8px}
+.js .theme-toggle-desktop{display:none}
+.js .theme-toggle-mobile{display:inline-flex;min-height:26px;font-size:14px;padding:1px 5px;gap:3px}
+.theme-toggle .icon{width:16px;height:16px}
+.site-header nav{order:2;flex:1 1 100%;margin:0;justify-content:space-between;gap:0;overflow-x:auto;scrollbar-width:none}
+.site-header nav a{flex:0 0 auto;min-height:44px;padding:6px 2px 6px 0;font-size:18px;gap:0;white-space:nowrap}
 .nav-cursor{width:12px;height:12px}
 main{padding-top:16px}
 .profile-body{padding:16px}
@@ -306,7 +307,6 @@ main{padding-top:16px}
 .profile-content h1{font-size:32px}
 .profile-role{font-size:20px}
 .site-header nav a{font-size:16px;padding-right:2px}
-.home-link{font-size:16px;padding-right:2px}
 .nav-cursor{width:10px;height:10px}
 .intro-copy .btn{font-size:20px}
 .contact-note>a{font-size:13px}

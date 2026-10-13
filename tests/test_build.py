@@ -225,10 +225,11 @@ class BuildTests(unittest.TestCase):
                     self.assertEqual(action.find('span')[0].text(), 'Download CV')
         header = parse(build['render']('index', 'Home', 'Description', build['SITE'], '<p>Body</p>', current='index'))
         site_header = header.find('header', 'site-header')[0]
-        home_link = site_header.find('a', 'home-link')[0]
-        self.assertEqual(home_link.attrs['href'], 'index.html')
-        self.assertEqual(home_link.find('span')[0].text(), 'Home')
-        self.assertEqual([link.text() for link in site_header.find('nav')[0].find('a')], ['Publications', 'CV', 'Personal'])
+        self.assertEqual([link.text() for link in site_header.find('nav')[0].find('a')], ['Home', 'Publications', 'CV', 'Personal'])
+        self.assertEqual(site_header.find('nav')[0].find('a')[0].attrs['aria-current'], 'page')
+        self.assertEqual(len(site_header.find('div', 'header-title-strip')[0].find('button', 'theme-toggle-mobile')), 1)
+        self.assertEqual(len(site_header.find('div', 'header-inner')[0].find('button', 'theme-toggle-desktop')), 1)
+        self.assertFalse(site_header.find('a', 'home-link'))
         cv = parse((ROOT / 'cv.html').read_text())
         for anchor in ('experience', 'appointments', 'teaching'):
             self.assertTrue(cv.find(id=anchor))
