@@ -42,7 +42,7 @@ Open [localhost:8765](http://127.0.0.1:8765). Stop the server with `Ctrl+C`.
 
 After changing content or the build script, run `python3 scripts/build.py` and keep regenerated root files synchronized with source changes. CSS-only edits do not require rebuilding. Check affected pages at desktop and mobile widths, including keyboard focus, anchor offsets, no-JavaScript disclosures, and reduced motion. Run `git diff --check` before completion.
 
-Publication records retain complete ordered author lists. The catalogue condenses lists of more than ten authors into a native disclosure; accepted work and preprints remain distinct. Personal collections keep the supplied rankings and use five, three, or two columns at desktop, tablet, or phone widths. Home topic links, the Personal contents menu, and Personal panel headings share the same five inline SVG icons. The Personal introduction provides collection context once, without repeated ranking/favorites labels beneath panel headings.
+Publication records retain complete ordered author lists. The catalogue condenses lists of more than ten authors into a native disclosure; accepted work and preprints remain distinct. Personal collections keep the supplied rankings and render as compact linked list rows. Home topic links, the Personal contents menu, and Personal panel headings share the same five inline SVG icons. The Personal introduction provides collection context once, without repeated ranking/favorites labels beneath panel headings.
 
 ### IUT publication CSV
 
@@ -110,6 +110,6 @@ Day uses `#e8e5ed` surroundings, `#fff9ee` panels, `#303548` ink, and `#884f46` 
 | IBM Plex Mono regular and medium | [Official Google Fonts distribution](https://github.com/google/fonts/tree/main/ofl/ibmplexmono) | [SIL Open Font License](assets/licenses/ibm-plex-mono-OFL.txt) |
 | Pixelarticons UI SVG paths | [Pixelarticons, pinned revision](https://github.com/halfmage/pixelarticons/tree/c9ecc2da61afde85dbe539025e3d931c6152ad75) | [MIT](assets/licenses/pixelarticons.txt) |
 
-Favorite collections use typographic initial artwork unless license-clear public-domain/CC0 images and provenance are supplied. Do not add fair-use posters or ripped game artwork.
+Favorite collections use text-only list rows. Do not add fair-use posters or ripped game artwork.
 
 Bundled Literata is distributed under the [SIL Open Font License](assets/fonts/OFL.txt). It is not used by the web pages: `literata.ttf` and `literata-light.ttf` remain because the protected LaTeX CV compiles from them, and `literata.woff2` remains unreferenced. Do not delete or re-encode these CV fonts.

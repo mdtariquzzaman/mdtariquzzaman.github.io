@@ -62,11 +62,12 @@
       if (event.target.closest('a')) closeMenu();
     });
   }
-  // Subtle tap feedback on touch: brief press state for nav links, buttons,
-  // topic chips, and favorite cards, so taps feel responsive on phones/tablets.
+  // Subtle tap feedback on touch: brief press state for buttons, topic chips,
+  // and favorite cards, so taps feel responsive on phones/tablets. The main
+  // page tabs stay still while navigating between documents.
   // Skipped when reduced motion is preferred.
   if (window.matchMedia('(hover: none)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const pressable = 'a.btn, button.btn, .site-header nav a, .page-contents a, .personal-topics a, .topic-grid a, .interest-grid > a';
+    const pressable = 'a.btn, button.btn, .page-contents a, .personal-topics a, .topic-grid a, .interest-grid > a';
     let pressed = null;
     const press = (target) => {
       const el = target?.closest ? target.closest(pressable) : target?.parentElement?.closest?.(pressable);

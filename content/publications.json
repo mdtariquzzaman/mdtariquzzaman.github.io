@@ -38,6 +38,7 @@
     "award": "",
     "type": "conference",
     "areas": [
+      "Cultural bias",
       "LLM evaluation",
       "Misinformation"
     ],

@@ -162,7 +162,7 @@ a.btn:hover,button.btn:hover{background:var(--fill-hover);color:var(--ink);text-
 .topic-grid h3{min-width:0;font-family:var(--pixel);font-size:24px;line-height:1;font-weight:400}
 .contact-note{margin-top:24px;padding:20px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
 .contact-note .eyebrow{font-size:28px;margin:0;color:var(--ink)}
-.contact-note p{font-size:14px;margin:0;flex:1}
+.contact-note p{font-size:14px;margin:0;flex:0 1 auto}
 .contact-note>a{display:inline-flex;align-items:center;gap:6px;font-size:14px;overflow-wrap:anywhere}
 .site-footer{display:flex;justify-content:space-between;gap:16px;align-items:start;margin:24px 0;padding:18px 20px;font-size:14px}
 .site-footer p{margin:0;white-space:nowrap}

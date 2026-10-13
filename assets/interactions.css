@@ -84,19 +84,17 @@
 .personal-content{min-width:0}
 .personal-panel h2{justify-content:flex-start;gap:10px}
 .personal-panel h2 .icon{width:24px;height:24px}
-.favorites-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));list-style:none;gap:12px;margin:16px 0 0;padding:0}
-.favorite-card{min-width:0}
-.favorite-link{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-height:184px;height:100%;padding:12px 10px;border:2px solid var(--frame-mid);background:var(--fill);color:var(--ink);text-decoration:none}
-.favorite-order{position:absolute;top:6px;right:8px;font-size:20px;color:var(--muted)}
-.favorite-initial{display:grid;place-items:center;width:48px;height:48px;background:var(--card);color:var(--accent);border:2px solid var(--frame);box-shadow:inset 0 0 0 2px var(--frame-light);font-family:var(--pixel);font-size:28px;font-weight:700;line-height:1;margin-top:10px}
-.favorite-copy{min-width:0}
-.favorite-copy h3{font-size:14px;line-height:1.65;font-weight:500;overflow-wrap:anywhere}
-.favorite-author{font-size:14px;line-height:1.65;color:var(--muted);margin:6px 0 0}
-.favorite-arrow{margin-top:auto;align-self:flex-end;color:var(--muted);line-height:1}
-.favorite-link:hover,.favorite-link:focus-visible{color:var(--accent-strong)}
-@media(hover:hover) and (prefers-reduced-motion:no-preference){
-.favorite-link{transition:transform .12s steps(2,end),box-shadow .12s steps(2,end)}
-.favorite-link:hover{transform:translateY(-3px);box-shadow:0 3px 0 var(--frame-mid)}
+.favorites-list{display:flex;flex-direction:column;list-style:none;gap:0;margin:16px 0 0;padding:0;border-top:1px solid var(--rule)}
+.favorite-row{min-width:0;border-bottom:1px solid var(--rule)}
+.favorite-link{display:grid;grid-template-columns:48px minmax(0,1fr) auto;align-items:center;gap:12px;padding:10px 6px;color:var(--ink);text-decoration:none}
+.favorite-order{font-family:var(--pixel);font-size:24px;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.favorite-copy{display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 12px;min-width:0}
+.favorite-copy h3{font-size:16px;line-height:1.45;font-weight:500;overflow-wrap:anywhere}
+.favorite-author{font-size:14px;line-height:1.6;color:var(--muted);margin:0;overflow-wrap:anywhere}
+.favorite-arrow{color:var(--muted);line-height:1}
+.favorite-link:focus-visible{background:var(--fill)}
+@media(hover:hover){
+.favorite-link:hover{background:var(--fill-hover);color:var(--accent-strong)}
 }
 @media(max-width:1000px){
 .publications-summary{padding:16px;align-items:start}
@@ -105,7 +103,6 @@
 .publication-metrics dt .icon{width:16px;height:16px}
 .publication-actions{width:220px;max-width:220px}
 .publication-actions .btn{font-size:20px}
-.favorites-list{grid-template-columns:repeat(3,minmax(0,1fr))}
 .personal-layout{grid-template-columns:160px minmax(0,1fr);gap:16px}
 }
 @media(max-width:800px){
@@ -136,8 +133,25 @@
 .carousel-dots{display:none}
 .carousel-status{font-size:24px}
 .personal-layout{display:block}
-.favorites-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.favorite-link{min-height:168px;padding:10px}
+.personal-panel{padding:2px 10px 12px}
+.personal-panel>h2{margin-left:-7px;margin-right:-7px;padding:7px 9px;font-size:24px}
+.personal-panel h2 .icon{width:20px;height:20px}
+.personal-nav a{font-size:20px;padding-left:10px;padding-right:10px}
+.favorites-list{margin-top:10px}
+.favorite-link{grid-template-columns:32px minmax(0,1fr) 16px;gap:8px;padding:8px 2px}
+.favorite-order{font-size:20px}
+.favorite-copy{display:block}
+.favorite-copy h3{font-size:15px;line-height:1.45}
+.favorite-author{font-size:13px;line-height:1.45}
+.favorite-arrow .icon{width:16px;height:16px}
+}
+@media(max-width:360px){
+.personal-panel>h2{font-size:22px}
+.favorite-link{grid-template-columns:28px minmax(0,1fr) 14px;gap:6px;padding:7px 0}
+.favorite-order{font-size:18px}
+.favorite-copy h3{font-size:14px}
+.favorite-author{font-size:12px}
+.favorite-arrow .icon{width:14px;height:14px}
 }
 @media print{
 :root{color-scheme:light;--card:#fff;--ink:#000;--muted:#333;--accent:#000;--rule:#bbb;--fill:#fff;--frame:#333;--frame-light:#fff;--frame-mid:#ddd}

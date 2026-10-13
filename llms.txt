@@ -2,7 +2,7 @@
 
 Academic website: https://mdtariquzzaman.github.io/
 
-Research: misinformation and harmful content; LLM evaluation and bias; low-resource and Bangla NLP; accessibility and sign language.
+Research: LLM safety; cultural bias; AI creativity in storytelling; accessibility. I am particularly interested in applying language models to real-world problems.
 
 ## Profiles
 - [Bluesky](https://bsky.app/profile/mdtariquzzaman.bsky.social)

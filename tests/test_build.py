@@ -171,23 +171,23 @@ class BuildTests(unittest.TestCase):
                 self.assertEqual(values, [str(len(context['papers']))] + [('0' if value == 0 else '—')] * 3)
                 self.assertEqual(len(tree.find('span', **{'aria-label': 'Unavailable'})), 0 if value == 0 else 3)
 
-    def test_favorites_retain_every_entry_in_one_wikipedia_card(self):
+    def test_favorites_retain_every_entry_in_one_wikipedia_list_row(self):
         tree = parse(self.build['expand_icons'](self.build['personal_body']))
         for category, entries in self.build['personal_data'].items():
             section = tree.find('section', id=category)[0]
-            cards = section.find('li', 'favorite-card')
+            rows = section.find('li', 'favorite-row')
             with self.subTest(category=category):
-                self.assertEqual(len(cards), len(entries))
+                self.assertEqual(len(rows), len(entries))
                 self.assertEqual(section.find('span', 'group-count')[0].text(), str(len(entries)))
-                for index, (card, entry) in enumerate(zip(cards, entries), 1):
-                    links = card.find('a')
+                for index, (row, entry) in enumerate(zip(rows, entries), 1):
+                    links = row.find('a')
                     self.assertEqual(len(links), 1)
                     link = links[0]
                     self.assertEqual(link.attrs['href'], entry['url'])
                     self.assertTrue(link.attrs['href'].startswith('https://en.wikipedia.org/wiki/'))
                     self.assertEqual(link.find('h3')[0].text(), entry['title'])
                     self.assertEqual(link.find('span', 'favorite-order')[0].text(), f'{index:02}')
-                    self.assertTrue(link.find('span', 'favorite-initial')[0].text())
+                    self.assertFalse(link.find('span', 'favorite-initial'))
                     if entry.get('author'):
                         self.assertEqual(link.find('p', 'favorite-author')[0].text(), entry['author'])
 

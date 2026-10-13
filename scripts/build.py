@@ -235,9 +235,14 @@ if len(ordered_news) > 3:
 contents = ''.join(f'<a href="#{anchor}">{icon(GROUP_ICONS[kind])}<span>{escape(heading)}</span></a>' for kind, anchor, heading, _ in groups)
 # Home's interest cards link to the four research-area anchors. Entries are grouped by type,
 # so each area anchor is placed before the first paper carrying it, in render order.
-AREA_ANCHORS = ['misinformation', 'evaluation', 'bangla', 'accessibility']
-AREA_ANCHOR_FOR = {'Misinformation': 'misinformation', 'LLM evaluation': 'evaluation',
-                   'Bangla NLP': 'bangla', 'Accessibility': 'accessibility'}
+# New interest areas get stable anchors as their publication records arrive. Keep the
+# older anchors because existing links may still point to the historical topics.
+AREA_ANCHORS = ['safety', 'cultural-bias', 'creativity', 'accessibility',
+                'misinformation', 'evaluation', 'bangla']
+AREA_ANCHOR_FOR = {'LLM safety': 'safety', 'Cultural bias': 'cultural-bias',
+                   'AI creativity & storytelling': 'creativity', 'Accessibility': 'accessibility',
+                   'Misinformation': 'misinformation', 'LLM evaluation': 'evaluation',
+                   'Bangla NLP': 'bangla'}
 ordered = [p for kind, _, _, _ in groups
            for p in sorted((x for x in papers if x['type'] == kind), key=lambda x: int(x['year']), reverse=True)]
 first_anchor = {}
@@ -266,24 +271,21 @@ personal_data = json.loads(read('personal.json'))
 personal_body = read('personal.html')
 for category, entries in personal_data.items():
     ranked = category in ('anime', 'movies')
-    cards = []
+    rows = []
     for index, entry in enumerate(entries, 1):
         title = escape(entry['title']); destination = escape(entry['url'], quote=True)
         if not entry['url'].startswith('https://en.wikipedia.org/wiki/'):
             raise ValueError(f'Personal entry {entry["title"]} must link to Wikipedia')
         author = f'<p class="favorite-author">{escape(entry["author"])}</p>' if entry.get('author') else ''
-        words = re.findall(r'\w+', entry['title'], flags=re.UNICODE)
-        initials = ''.join(word[0] for word in words[:2]).upper() or '?'
-        cards.append(f'<li class="favorite-card"><a class="favorite-link" href="{destination}">'
-                     f'<span class="favorite-order" aria-hidden="true">{index:02}</span>'
-                     f'<span class="favorite-initial" aria-hidden="true">{escape(initials)}</span>'
-                     f'<div class="favorite-copy"><h3>{title}</h3>{author}</div>'
-                     f'<span class="favorite-arrow" aria-hidden="true">{icon("external", "icon icon-trail")}</span></a></li>')
+        rows.append(f'<li class="favorite-row"><a class="favorite-link" href="{destination}">'
+                    f'<span class="favorite-order">{index:02}</span>'
+                    f'<div class="favorite-copy"><h3>{title}</h3>{author}</div>'
+                    f'<span class="favorite-arrow" aria-hidden="true">{icon("external", "icon icon-trail")}</span></a></li>')
     tag = 'ol' if ranked else 'ul'
-    personal_body = personal_body.replace('{{'+category.upper()+'}}', f'<{tag} class="favorites-list favorites-{category}" role="list">'+''.join(cards)+f'</{tag}>')
+    personal_body = personal_body.replace('{{'+category.upper()+'}}', f'<{tag} class="favorites-list favorites-{category}" role="list">'+''.join(rows)+f'</{tag}>')
     personal_body = personal_body.replace('{{'+category.upper()+'_COUNT}}', str(len(entries)))
 
-# Home's Personal teaser: one card per topic, in personal.json order.
+# Home's Personal teaser: one topic link per category, in personal.json order.
 TOPIC_LABELS = {'anime': 'Anime', 'movies': 'Movies', 'tv': 'TV shows', 'books': 'Books', 'sports': 'Sports'}
 TOPIC_ICONS = {'anime': 'tv', 'movies': 'film', 'tv': 'monitor', 'books': 'book-open', 'sports': 'football'}
 personal_topics = '<ul class="topic-grid" role="list">' + ''.join(
@@ -291,7 +293,7 @@ personal_topics = '<ul class="topic-grid" role="list">' + ''.join(
 social_links = ''.join(f'<a class="btn" data-kind="{name}" href="{escape(href, quote=True)}">'
                        f'{icon(name)}<span>{label}</span>{icon("external", "icon icon-trail")}</a>'
                        for name, label, href in SOCIAL_LINKS)
-pages = [('index', 'Home', 'Misinformation detection, LLM evaluation, low-resource Bangla NLP, and sign language accessibility research by Md. Tariquzzaman, Junior Lecturer at IUT.', read('home.html').replace('{{NEWS}}', news_html).replace('{{PERSONAL_TOPICS}}', personal_topics).replace('{{SOCIAL_LINKS}}', social_links)),
+pages = [('index', 'Home', 'LLM safety, cultural bias, AI creativity in storytelling, and accessibility research by Md. Tariquzzaman, Junior Lecturer at IUT.', read('home.html').replace('{{NEWS}}', news_html).replace('{{PERSONAL_TOPICS}}', personal_topics).replace('{{SOCIAL_LINKS}}', social_links)),
          ('publications', 'Publications', 'Publications, preprints, code, and datasets by Md. Tariquzzaman.', pub_body),
          ('cv', 'CV', 'Education, research publications and experience, teaching experience, industry experience, and awards of Md. Tariquzzaman.', read('cv.html')),
          ('personal', 'Personal', 'Favorite anime, movies, TV shows, books, and sports beyond the academic work of Md. Tariquzzaman.', personal_body)]
@@ -302,7 +304,7 @@ PERSON = {'@type': 'Person', '@id': SITE + '#person', 'name': ME,
           'affiliation': {'@type': 'CollegeOrUniversity', 'name': 'Islamic University of Technology', 'url': 'https://www.iutoic-dhaka.edu/'},
           'memberOf': {'@type': 'ResearchOrganization', 'name': 'Systems and Software Lab', 'url': 'https://cse.iutoic-dhaka.edu/ssl'},
           'alumniOf': {'@type': 'CollegeOrUniversity', 'name': 'Islamic University of Technology'},
-          'knowsAbout': ['Misinformation & harmful content', 'LLM evaluation & bias', 'Low-resource & Bangla NLP', 'Accessibility & sign language'],
+          'knowsAbout': ['LLM safety', 'Cultural bias', 'AI creativity & storytelling', 'Accessibility'],
           'sameAs': ['https://scholar.google.com/citations?user=LWB_NzwAAAAJ', 'https://github.com/mdtariquzzaman', 'https://www.linkedin.com/in/md-tariquzzaman/', 'https://bsky.app/profile/mdtariquzzaman.bsky.social', 'https://x.com/mdtariquzzaman_', 'https://orcid.org/0009-0002-3322-8741', 'https://huggingface.co/md-tariquzzaman']}
 
 def ld(payload):
@@ -393,6 +395,6 @@ Allow: /
 
 Sitemap: {SITE}sitemap.xml
 ''')
-llms = '# Md. Tariquzzaman\n\nAcademic website: '+SITE+'\n\nResearch: misinformation and harmful content; LLM evaluation and bias; low-resource and Bangla NLP; accessibility and sign language.\n\n## Profiles\n- [Bluesky](https://bsky.app/profile/mdtariquzzaman.bsky.social)\n- [X](https://x.com/mdtariquzzaman_)\n\n## Pages\n- [Publications]('+SITE+'publications.html)\n- [CV]('+SITE+'cv.html)\n\n## Publications\n' + ''.join(f'- [{p["title"]}]({SITE}publications.html#{p["id"]})\n' for p in papers)
+llms = '# Md. Tariquzzaman\n\nAcademic website: '+SITE+'\n\nResearch: LLM safety; cultural bias; AI creativity in storytelling; accessibility. I am particularly interested in applying language models to real-world problems.\n\n## Profiles\n- [Bluesky](https://bsky.app/profile/mdtariquzzaman.bsky.social)\n- [X](https://x.com/mdtariquzzaman_)\n\n## Pages\n- [Publications]('+SITE+'publications.html)\n- [CV]('+SITE+'cv.html)\n\n## Publications\n' + ''.join(f'- [{p["title"]}]({SITE}publications.html#{p["id"]})\n' for p in papers)
 (ROOT / 'llms.txt').write_text(llms)
 print(f'Built {len(pages)} static pages, {len(papers)} paper redirects, plus 404.html, sitemap.xml, robots.txt, and llms.txt.')
