@@ -202,6 +202,25 @@ class BuildTests(unittest.TestCase):
                     if entry.get('author'):
                         self.assertEqual(link.find('p', 'favorite-author')[0].text(), entry['author'])
 
+    def test_section_navigation_keeps_native_anchors_for_mobile_enhancement(self):
+        expected = {
+            'publications': ['Conference papers', 'Workshop papers', 'Preprints', 'Code & data'],
+            'cv': ['Education', 'Research experience', 'Teaching experience', 'Industry experience', 'Awards'],
+            'personal': ['Anime', 'Movies', 'TV shows', 'Books', 'Sports'],
+        }
+        for slug, labels in expected.items():
+            tree = parse((ROOT / f'{slug}.html').read_text())
+            nav = tree.find('nav', 'page-contents')[0]
+            self.assertEqual([link.text() for link in nav.find('a')], labels)
+            self.assertFalse(nav.find('p', 'contents-current'))
+        app = (ROOT / 'assets' / 'app.js').read_text()
+        css = (ROOT / 'assets' / 'style.css').read_text()
+        self.assertIn('contents-current', app)
+        self.assertIn('contentsEnhanced', app)
+        self.assertIn('hashCorrectionPending', app)
+        self.assertIn('.page-contents[data-contents-enhanced]', css)
+        self.assertIn('@keyframes contents-current-in', css)
+
     def test_generated_main_pages_match_current_sources_and_keep_cv_actions(self):
         build = self.build
         schemas = {'index': build['ld']({'@context': 'https://schema.org', **build['PERSON']}),

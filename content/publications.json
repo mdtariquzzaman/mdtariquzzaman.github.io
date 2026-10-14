@@ -442,7 +442,8 @@
     "award_url": "https://blp-workshop.github.io/2023/awards",
     "type": "workshop",
     "areas": [
-      "Bangla NLP"
+      "Bangla NLP",
+      "LLM safety"
     ],
     "pdf": "https://aclanthology.org/2023.banglalp-1.26.pdf",
     "abstract": "This paper introduces a novel informal Bangla word embedding for designing a cost-efficient solution for the task “Violence Inciting Text Detection,” which focuses on developing classification systems to categorize violence that can potentially incite further violent actions. We propose a semi-supervised learning approach by training an informal Bangla FastText embedding, which is further fine-tuned on lightweight models on the task-specific dataset and yielded competitive results to our initial method using BanglaBERT, which secured the 7th position with an F1-score of 73.98%. We conduct extensive experiments to assess the efficiency of the proposed embedding and how well it generalizes in terms of violence classification, along with its coverage on the task’s dataset. Our proposed Bangla IFT embedding achieved a competitive macro average F1 score of 70.45%. Additionally, we provide a detailed analysis of our findings, delving into potential causes of misclassification in the detection of violence-inciting text.",

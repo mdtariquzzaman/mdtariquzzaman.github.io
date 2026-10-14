@@ -93,18 +93,65 @@
     const links = [...contents.querySelectorAll('a[href^="#"]')];
     const sections = links.map(link => document.getElementById(link.hash.slice(1)));
     const header = document.querySelector('.site-header');
+    const currentPlaque = document.createElement('p');
+    currentPlaque.className = 'contents-current';
+    const currentContent = document.createElement('span');
+    currentContent.className = 'contents-current-content';
+    currentPlaque.append(currentContent);
+    contents.prepend(currentPlaque);
     let scheduled = false;
     let lastActive = -1;
-    const updateContentsEdges = () => {
-      const horizontal = window.innerWidth <= 600 && contents.scrollWidth > contents.clientWidth;
-      contents.toggleAttribute('data-overflow-start', horizontal && contents.scrollLeft > 1);
-      contents.toggleAttribute('data-overflow-end', horizontal && contents.scrollLeft + contents.clientWidth < contents.scrollWidth - 1);
+    let mobileMode = false;
+    let hashCorrectionPending = Boolean(location.hash);
+    const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const syncMode = () => {
+      const mobile = window.innerWidth <= 600;
+      if (mobile === mobileMode) return mobile;
+      mobileMode = mobile;
+      if (mobile) {
+        contents.dataset.contentsEnhanced = 'true';
+        contents.setAttribute('aria-label', 'Current section');
+        lastActive = -1;
+      } else {
+        delete contents.dataset.contentsEnhanced;
+        contents.setAttribute('aria-label', contents.getAttribute('data-desktop-label') || 'On this page');
+        root.style.setProperty('--contents-height', '0px');
+      }
+      return mobile;
+    };
+    contents.setAttribute('data-desktop-label', contents.getAttribute('aria-label') || 'On this page');
+    syncMode();
+    const renderCurrent = (index, animate) => {
+      const link = links[index];
+      if (!link) return;
+      const icon = link.querySelector('svg');
+      const label = document.createElement('span');
+      label.textContent = link.textContent.trim();
+      currentContent.replaceChildren(...(icon ? [icon.cloneNode(true), label] : [label]));
+      currentPlaque.dataset.section = link.hash.slice(1);
+      currentContent.classList.remove('is-changing');
+      if (animate && !reduceMotion()) {
+        void currentContent.offsetWidth;
+        currentContent.classList.add('is-changing');
+      }
+    };
+    const correctHashTarget = (stickyHeight) => {
+      if (!hashCorrectionPending || !mobileMode) return;
+      const target = document.getElementById(location.hash.slice(1));
+      if (!target) return;
+      const headerBottom = header ? header.getBoundingClientRect().bottom : 0;
+      const desiredTop = headerBottom + stickyHeight + 20;
+      const delta = target.getBoundingClientRect().top - desiredTop;
+      if (Math.abs(delta) > 1) window.scrollBy({top: delta, behavior: 'auto'});
+      hashCorrectionPending = false;
     };
     const updateSection = () => {
       scheduled = false;
-      const stickyHeight = getComputedStyle(contents).position === 'sticky' && window.innerWidth <= 600 ? contents.offsetHeight : 0;
+      const mobile = syncMode();
+      const stickyHeight = mobile ? currentPlaque.offsetHeight : 0;
       root.style.setProperty('--contents-height', `${stickyHeight}px`);
-      const threshold = header.getBoundingClientRect().bottom + stickyHeight + 45;
+      const headerBottom = header ? header.getBoundingClientRect().bottom : 0;
+      const threshold = headerBottom + stickyHeight + 45;
       let active = 0;
       sections.forEach((section, index) => {
         if (section && section.getBoundingClientRect().top <= threshold) active = index;
@@ -114,21 +161,20 @@
         if (index === active) link.setAttribute('aria-current', 'location');
         else link.removeAttribute('aria-current');
       });
-      // On phones the paper-page contents is one swipeable row; keep the active link in view.
-      if (active !== lastActive && contents.scrollWidth > contents.clientWidth) {
-        contents.scrollLeft += links[active].getBoundingClientRect().left - contents.getBoundingClientRect().left - 16;
-      }
+      if (active !== lastActive && mobile) renderCurrent(active, lastActive !== -1);
       lastActive = active;
-      updateContentsEdges();
+      correctHashTarget(stickyHeight);
     };
     const schedule = () => {
       if (!scheduled) { scheduled = true; requestAnimationFrame(updateSection); }
     };
     window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule);
-    window.addEventListener('load', schedule);
-    contents.addEventListener('scroll', updateContentsEdges, { passive: true });
+    window.addEventListener('resize', () => { syncMode(); schedule(); });
+    window.addEventListener('load', () => { hashCorrectionPending = Boolean(location.hash); schedule(); });
+    window.addEventListener('pageshow', () => { hashCorrectionPending = Boolean(location.hash); schedule(); });
+    window.addEventListener('hashchange', () => { hashCorrectionPending = Boolean(location.hash); schedule(); });
     new ResizeObserver(schedule).observe(contents);
+    if (header) new ResizeObserver(schedule).observe(header);
     updateSection();
   }
   // Publication drawers: the link-row buttons open the <details> below them, whose own
