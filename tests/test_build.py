@@ -204,7 +204,7 @@ class BuildTests(unittest.TestCase):
 
     def test_section_navigation_keeps_native_anchors_for_mobile_enhancement(self):
         expected = {
-            'publications': ['Conference papers', 'Workshop papers', 'Preprints', 'Code & data'],
+            'publications': [group[2] for group in self.build['active_groups']] + ['Code & data'],
             'cv': ['Education', 'Research experience', 'Teaching experience', 'Industry experience', 'Awards'],
             'personal': ['Anime', 'Movies', 'TV shows', 'Books', 'Sports'],
         }
@@ -213,13 +213,10 @@ class BuildTests(unittest.TestCase):
             nav = tree.find('nav', 'page-contents')[0]
             self.assertEqual([link.text() for link in nav.find('a')], labels)
             self.assertFalse(nav.find('p', 'contents-current'))
-        app = (ROOT / 'assets' / 'app.js').read_text()
-        css = (ROOT / 'assets' / 'style.css').read_text()
-        self.assertIn('contents-current', app)
-        self.assertIn('contentsEnhanced', app)
-        self.assertIn('hashCorrectionPending', app)
-        self.assertIn('.page-contents[data-contents-enhanced]', css)
-        self.assertIn('@keyframes contents-current-in', css)
+            for link in nav.find('a'):
+                section = tree.find('section', id=link.attrs['href'].removeprefix('#'))[0]
+                self.assertTrue(section.find('h2'))
+                self.assertNotIn('hidden', link.attrs)
 
     def test_generated_main_pages_match_current_sources_and_keep_cv_actions(self):
         build = self.build

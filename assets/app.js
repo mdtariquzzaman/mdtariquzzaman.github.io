@@ -92,6 +92,7 @@
   if (contents) {
     const links = [...contents.querySelectorAll('a[href^="#"]')];
     const sections = links.map(link => document.getElementById(link.hash.slice(1)));
+    const headings = sections.map(section => section?.querySelector(':scope > h2'));
     const header = document.querySelector('.site-header');
     const currentPlaque = document.createElement('p');
     currentPlaque.className = 'contents-current';
@@ -102,26 +103,32 @@
     let scheduled = false;
     let lastActive = -1;
     let mobileMode = false;
+    let plaqueVisible = false;
     let hashCorrectionPending = Boolean(location.hash);
     const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const syncMode = () => {
       const mobile = window.innerWidth <= 600;
       if (mobile === mobileMode) return mobile;
       mobileMode = mobile;
+      plaqueVisible = false;
+      delete contents.dataset.contentsVisible;
+      currentPlaque.classList.remove('is-changing');
       if (mobile) {
         contents.dataset.contentsEnhanced = 'true';
         contents.setAttribute('aria-label', 'Current section');
+        contents.setAttribute('aria-hidden', 'true');
         lastActive = -1;
       } else {
         delete contents.dataset.contentsEnhanced;
         contents.setAttribute('aria-label', contents.getAttribute('data-desktop-label') || 'On this page');
+        contents.removeAttribute('aria-hidden');
         root.style.setProperty('--contents-height', '0px');
       }
       return mobile;
     };
     contents.setAttribute('data-desktop-label', contents.getAttribute('aria-label') || 'On this page');
     syncMode();
-    const renderCurrent = (index, animate) => {
+    const renderCurrent = (index) => {
       const link = links[index];
       if (!link) return;
       const icon = link.querySelector('svg');
@@ -129,41 +136,54 @@
       label.textContent = link.textContent.trim();
       currentContent.replaceChildren(...(icon ? [icon.cloneNode(true), label] : [label]));
       currentPlaque.dataset.section = link.hash.slice(1);
-      currentContent.classList.remove('is-changing');
-      if (animate && !reduceMotion()) {
-        void currentContent.offsetWidth;
-        currentContent.classList.add('is-changing');
-      }
     };
-    const correctHashTarget = (stickyHeight) => {
+    const correctHashTarget = () => {
       if (!hashCorrectionPending || !mobileMode) return;
+      hashCorrectionPending = false;
       const target = document.getElementById(location.hash.slice(1));
       if (!target) return;
-      const headerBottom = header ? header.getBoundingClientRect().bottom : 0;
-      const desiredTop = headerBottom + stickyHeight + 20;
+      const section = target.closest('section');
+      const heading = section?.querySelector(':scope > h2');
+      // A section link exposes its own heading; content links leave room for the plaque.
+      const atHeading = target === section || target === heading ||
+        (heading && target.getBoundingClientRect().top <= heading.getBoundingClientRect().bottom);
+      const plaqueHeight = atHeading ? 0 : currentPlaque.offsetHeight;
+      const desiredTop = (header?.offsetHeight || 0) + plaqueHeight + 20;
       const delta = target.getBoundingClientRect().top - desiredTop;
-      if (Math.abs(delta) > 1) window.scrollBy({top: delta, behavior: 'auto'});
-      hashCorrectionPending = false;
+      if (Math.abs(delta) > 1) window.scrollBy({top: delta, behavior: 'instant'});
     };
     const updateSection = () => {
       scheduled = false;
       const mobile = syncMode();
-      const stickyHeight = mobile ? currentPlaque.offsetHeight : 0;
-      root.style.setProperty('--contents-height', `${stickyHeight}px`);
+      correctHashTarget();
       const headerBottom = header ? header.getBoundingClientRect().bottom : 0;
-      const threshold = headerBottom + stickyHeight + 45;
-      let active = 0;
+      const threshold = mobile ? headerBottom : headerBottom + 45;
+      let active = mobile ? -1 : 0;
       sections.forEach((section, index) => {
         if (section && section.getBoundingClientRect().top <= threshold) active = index;
       });
-      if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 3) active = links.length - 1;
+      if (!mobile && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 3) active = links.length - 1;
       links.forEach((link, index) => {
         if (index === active) link.setAttribute('aria-current', 'location');
         else link.removeAttribute('aria-current');
       });
-      if (active !== lastActive && mobile) renderCurrent(active, lastActive !== -1);
+      if (mobile) {
+        const heading = headings[active];
+        const visible = Boolean(heading && heading.getBoundingClientRect().bottom <= headerBottom);
+        const reveal = visible && (!plaqueVisible || active !== lastActive);
+        if (active !== lastActive && active >= 0) renderCurrent(active);
+        contents.toggleAttribute('data-contents-visible', visible);
+        contents.setAttribute('aria-hidden', String(!visible));
+        if (!visible) currentPlaque.classList.remove('is-changing');
+        else if (reveal && !reduceMotion()) {
+          currentPlaque.classList.remove('is-changing');
+          void currentPlaque.offsetWidth;
+          currentPlaque.classList.add('is-changing');
+        }
+        plaqueVisible = visible;
+        root.style.setProperty('--contents-height', `${visible ? currentPlaque.offsetHeight : 0}px`);
+      }
       lastActive = active;
-      correctHashTarget(stickyHeight);
     };
     const schedule = () => {
       if (!scheduled) { scheduled = true; requestAnimationFrame(updateSection); }
@@ -171,7 +191,7 @@
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', () => { syncMode(); schedule(); });
     window.addEventListener('load', () => { hashCorrectionPending = Boolean(location.hash); schedule(); });
-    window.addEventListener('pageshow', () => { hashCorrectionPending = Boolean(location.hash); schedule(); });
+    window.addEventListener('pageshow', schedule);
     window.addEventListener('hashchange', () => { hashCorrectionPending = Boolean(location.hash); schedule(); });
     new ResizeObserver(schedule).observe(contents);
     if (header) new ResizeObserver(schedule).observe(header);
