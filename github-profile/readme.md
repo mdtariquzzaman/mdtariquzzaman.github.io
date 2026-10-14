@@ -3,7 +3,7 @@
 # Md. Tariquzzaman
 
 <strong>Junior Lecturer</strong> · Computer Science &amp; Engineering<br>
-<a href="https://www.iutoic-dhaka.edu/">Islamic University of Technology</a> · Gazipur, Bangladesh
+<a href="https://www.iutoic-dhaka.edu/">Islamic University of Technology</a> · Dhaka, Bangladesh
 
 [![Website](https://img.shields.io/badge/mdtariquzzaman.github.io-425b46?style=flat-square&logo=githubpages&logoColor=white)](https://mdtariquzzaman.github.io/)
 [![Google Scholar](https://img.shields.io/badge/Google_Scholar-425b46?style=flat-square&logo=googlescholar&logoColor=white)](https://scholar.google.com/citations?user=LWB_NzwAAAAJ)
