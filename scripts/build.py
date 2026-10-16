@@ -15,7 +15,7 @@ SITE = 'https://mdtariquzzaman.github.io/'
 ME = 'Md. Tariquzzaman'
 GSC_TOKEN = 'boT_CMjz6ow5mcyZhAbCVE0JK2v9CAJwCu424PfT1U0'
 BING_TOKEN = 'E9CE5F8AA8FFFD3C486CAF3DAAAACB56'
-ASSET_VERSION = '20261014gba5'
+ASSET_VERSION = '20261017nonlinear'
 SOCIAL_LINKS = (
     ('linkedin', 'LinkedIn', 'https://www.linkedin.com/in/md-tariquzzaman/'),
     ('bluesky', 'Bluesky', 'https://bsky.app/profile/mdtariquzzaman.bsky.social'),
@@ -91,8 +91,8 @@ def expand_icons(html):
     return re.sub(r'\{\{icon:([a-z-]+)\}\}',
                   lambda m: icon(m.group(1), 'icon icon-trail' if m.group(1) in trailing else 'icon'), html)
 
-# Paper resource labels map to an icon and a colour cue, so Paper, Code, and Dataset look different.
-LINK_KIND = {'Paper': 'paper', 'Code': 'code', 'Dataset': 'dataset', 'Video': 'video'}
+# Paper resource labels map to an icon and a colour cue, so Paper, Website, Code, and Dataset look different.
+LINK_KIND = {'Paper': 'paper', 'Website': 'monitor', 'Code': 'code', 'Code & Data': 'code', 'Dataset': 'dataset', 'Video': 'video'}
 
 def resource_button(label, href):
     kind = LINK_KIND.get(label, 'paper')
@@ -190,11 +190,12 @@ def publication(p, label):
         buttons += (f'<button class="btn drawer-toggle" data-kind="overview" type="button" aria-expanded="false" aria-controls="{pid}-overview" hidden>'
                     f'{icon("overview")}<span>Overview</span>{chevron}</button>')
     if paper: buttons += resource_button('Paper', paper)
+    if links.get('Website'): buttons += resource_button('Website', links['Website'])
     if cite:
         buttons += (f'<span class="btn-split" hidden><button class="btn copy-citation" data-kind="copy" type="button" data-copy-target="{pid}-bibtex">'
                     f'{icon("copy")}<span class="copy-label">Copy BibTeX</span></button>'
                     f'<button class="btn drawer-toggle" data-kind="copy" type="button" aria-expanded="false" aria-controls="{pid}-cite" aria-label="Show BibTeX">{chevron}</button></span>')
-    buttons += ''.join(resource_button(label, links[label]) for label in ('Video', 'Dataset', 'Code') if links.get(label))
+    buttons += ''.join(resource_button(label, links[label]) for label in ('Video', 'Dataset', 'Code', 'Code & Data') if links.get(label))
     return (f'<article class="publication" id="{pid}"><div class="pub-year">{escape(label)}</div><div class="pub-main">{status}<h3>{title}</h3>'
             f'{authors_html}{venue}{award_html(p)}{areas_html}'
             f'<div class="link-row paper-links">{buttons}</div>{overview}{cite}</div></article>')

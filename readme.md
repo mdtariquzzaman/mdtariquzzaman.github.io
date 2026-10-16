@@ -114,6 +114,8 @@ Day uses `#e8e5ed` surroundings, `#fff9ee` panels, `#303548` ink, and `#884f46` 
 | IBM Plex Mono regular and medium | [Official Google Fonts distribution](https://github.com/google/fonts/tree/main/ofl/ibmplexmono) | [SIL Open Font License](assets/licenses/ibm-plex-mono-OFL.txt) |
 | Pixelarticons UI SVG paths | [Pixelarticons, pinned revision](https://github.com/halfmage/pixelarticons/tree/c9ecc2da61afde85dbe539025e3d931c6152ad75) | [MIT](assets/licenses/pixelarticons.txt) |
 
+The nonlinear narrative publication includes all 13 numbered figures from [arXiv:2610.21468v1](https://arxiv.org/pdf/2610.21468v1), by Syed Rifat Raiyan, Md. Tariquzzaman, Md Farhan Ishmam, and Tenghao Huang. The crops in `files/papers/nonlinear-narrative/figure-01.webp` through `figure-13.webp` are rendered directly from that published PDF at 300 DPI and encoded as lossless WebP. Only surrounding page text and main captions are removed; legends, labels, subpanels, colors, and plotted values remain intact, with standalone captions rendered below each image. The seven-panel Figure 6 remains one image. These figure crops retain the paper’s [CC BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+
 Favorite collections use text-only list rows. Do not add fair-use posters or ripped game artwork.
 
 Bundled Literata is distributed under the [SIL Open Font License](assets/fonts/OFL.txt). It is not used by the web pages: `literata.ttf` and `literata-light.ttf` remain because the protected LaTeX CV compiles from them, and `literata.woff2` remains unreferenced. Do not delete or re-encode these CV fonts.

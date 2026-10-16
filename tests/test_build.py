@@ -133,12 +133,34 @@ class BuildTests(unittest.TestCase):
                                  '\n'.join(line.rstrip() for line in paper['bibtex'].strip().splitlines()))
                 self.assertTrue(tree.find('details', id=f'{paper["id"]}-overview'))
                 links = {**paper.get('links', {}), **paper.get('page', {}).get('links', {})}
-                for label, kind in [('Video', 'video'), ('Dataset', 'dataset'), ('Code', 'code')]:
+                for labels, kind in [(('Website',), 'monitor'), (('Video',), 'video'),
+                                     (('Dataset',), 'dataset'), (('Code', 'Code & Data'), 'code')]:
                     buttons = tree.find('a', **{'data-kind': kind})
-                    self.assertEqual([button.attrs['href'] for button in buttons], [links[label]] if label in links else [])
+                    self.assertEqual([button.attrs['href'] for button in buttons], [links[label] for label in labels if label in links])
+                    self.assertEqual([button.text() for button in buttons], [label for label in labels if label in links])
                 expected_figures = self.build['paper_figures'](paper)
                 self.assertEqual([image.attrs['src'] for image in tree.find('img')], [figure['src'] for figure in expected_figures])
                 self.assertEqual(len(tree.find('a', 'figure-zoom')), len(expected_figures))
+
+    def test_nonlinear_entry_includes_combined_repository_and_all_published_figures(self):
+        paper = next(p for p in self.build['papers'] if p['id'] == 'nonlinear-narrative')
+        tree = parse(self.build['publication'](paper, 'TEST'))
+        code = tree.find('a', **{'data-kind': 'code'})
+        self.assertEqual(len(code), 1)
+        self.assertEqual(code[0].text(), 'Code & Data')
+        self.assertEqual(code[0].attrs['href'], 'https://github.com/Starscream-11813/LLM-nonlinear-storytelling')
+        figures = self.build['paper_figures'](paper)
+        self.assertEqual([figure['src'] for figure in figures],
+                         [f'files/papers/nonlinear-narrative/figure-{number:02}.webp' for number in range(1, 14)])
+        for number, figure in enumerate(figures, 1):
+            with self.subTest(figure=number):
+                self.assertTrue((ROOT / figure['src']).is_file())
+                self.assertTrue(figure['caption'].startswith(f'Figure {number}. '))
+                self.assertTrue(figure['alt'])
+        self.assertEqual(len(tree.find('figure', 'carousel-slide')), 13)
+        self.assertEqual(len(tree.find('button', 'carousel-dot')), 13)
+        self.assertEqual(tree.find('span', 'carousel-status')[0].text(), '1 / 13')
+        self.assertNotIn('open', tree.find('details', 'paper-abstract')[0].attrs)
 
     def test_preprints_never_receive_accepted_band(self):
         for paper in self.build['papers']:

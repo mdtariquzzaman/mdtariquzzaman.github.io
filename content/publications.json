@@ -862,5 +862,169 @@
         }
       ]
     }
+  },
+  {
+    "id": "nonlinear-narrative",
+    "title": "Can LLMs Tell Stories Out of Order? A Corpus and Benchmark for Nonlinear Narrative Generation",
+    "authors": [
+      "Syed Rifat Raiyan",
+      "Md. Tariquzzaman",
+      "Md Farhan Ishmam",
+      "Tenghao Huang"
+    ],
+    "year": "2026",
+    "venue": "arXiv preprint arXiv:2610.21468 (2026)",
+    "status": "Preprint",
+    "links": {
+      "Paper": "https://arxiv.org/abs/2610.21468",
+      "Website": "https://nonlinear-narrative.github.io",
+      "Code & Data": "https://github.com/Starscream-11813/LLM-nonlinear-storytelling"
+    },
+    "award": "",
+    "type": "preprint",
+    "areas": [
+      "AI creativity & storytelling"
+    ],
+    "arxiv": "2610.21468",
+    "pdf": "https://arxiv.org/pdf/2610.21468",
+    "abstract": "Every story has two orders: the order in which its events happen and the order in which they are told. A story is nonlinear when the two differ. We introduce a benchmark of 83 published works that measures whether language models can tell nonlinear stories. For each work, we annotate one list of events in both orders, together with a story graph of causal dependencies, character knowledge, and the questions the telling raises and resolves. Given events in chronological order, all 19 models tell them, on average, more chronologically than the published works do; asked for a specific structure, they land within the human range about half the time. We then compare a model's stories of the same events under different conditions, using both an automated judge and 71 human readers. Both prefer the chronological story a model writes by default to the nonlinear one it writes on request, which readers find harder to follow in 81% of decisive judgments. Readers also prefer stories written from the story graph to stories constrained to the published telling order (72% of decisive judgments), a difference the judge does not detect. Our results suggest that following an instruction to reorder a story is not yet the same as telling it well out of order.",
+    "summary": "A benchmark of 83 published works records chronological and telling orders with story graphs, and tests 19 language models. Models favor chronological storytelling and match the human range for requested structures about half the time; a 71-reader study compares their stories and the reliability of automated judging.",
+    "bibtex": "@misc{raiyan2026nonlinearnarrative,\n  title={Can LLMs Tell Stories Out of Order? A Corpus and Benchmark for Nonlinear Narrative Generation},\n  author={Syed Rifat Raiyan and Md. Tariquzzaman and Md Farhan Ishmam and Tenghao Huang},\n  year={2026},\n  eprint={2610.21468},\n  archivePrefix={arXiv},\n  primaryClass={cs.CL},\n  url={https://arxiv.org/abs/2610.21468},\n}",
+    "page": {
+      "tldr": "Stories can present events in a different order from when they happened, for example through flashbacks. We annotated 83 published works with both event orders and story graphs tracking causes, character knowledge, and withheld explanations, then tested 19 language models. Models tend toward chronological storytelling and match the human range for requested structures about half the time. In a 71-reader study, readers found instructed nonlinear stories harder to follow and preferred graph-guided stories to stories constrained to a supplied telling order; automated judging missed that preference.",
+      "figure_source": {
+        "url": "https://arxiv.org/pdf/2610.21468v1",
+        "sha256": "288a240976150f33cb2dcdd4b5cf83c9e0966ee2b875e9d04958632be0e15c58",
+        "version": "arXiv:2610.21468v1 (15 October 2026)",
+        "license": "CC BY-NC-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+      },
+      "teaser": {
+        "src": "files/papers/nonlinear-narrative/figure-01.webp",
+        "width": 926,
+        "height": 684,
+        "alt": "Three tellings of the same story: the model stays near chronology without a cue, reverses the event order exactly under a backward cue, and the published telling retains forward runs within its backward structure.",
+        "caption": "Figure 1. Without a cue, the model stays near chronological order; a backward cue yields an exact reversal, while the published telling preserves forward scene runs. Kendall’s τ measures agreement with chronology: +1 is chronological order and −1 is exact reversal.",
+        "source": "https://arxiv.org/pdf/2610.21468v1#page=1",
+        "source_caption": "Figure 1: Without a cue, the model stays near chronology; a backward cue yields exact reversal, while the published telling preserves forward scene runs. Kendall’s τ measures agreement with chronology: +1 denotes chronological order and −1 exact reversal."
+      },
+      "sections": [
+        {
+          "id": "paper-figures",
+          "heading": "Paper figures",
+          "nav": "Figures",
+          "figures": [
+            {
+              "src": "files/papers/nonlinear-narrative/figure-02.webp",
+              "width": 1905,
+              "height": 810,
+              "alt": "Eighteen story events paired between chronological and telling orders, with four event cards tracing how a death at the start of the telling is explained by a false record revealed at the end.",
+              "caption": "Figure 2. The same events, two orders. An explanation precedes its consequence in chronology but arrives last in the telling. Opening with Roy’s death and withholding why he became the target across 16 intervening events turns a known outcome into an unresolved question.",
+              "source": "https://arxiv.org/pdf/2610.21468v1#page=2",
+              "source_caption": "Figure 2: The same events, two orders: the explanation precedes the consequence in chronology but arrives last in the telling. Opening with Roy’s death and withholding why he became the target across 16 intervening events turns a known outcome into an unresolved question."
+            },
+            {
+              "src": "files/papers/nonlinear-narrative/figure-03.webp",
+              "width": 1905,
+              "height": 406,
+              "alt": "Story graph of 14 events in work S60. Circles show chronological ranks, numbers below show telling positions, upper arcs show causes and foreshadowing, and four lower reveal arcs answer reader questions.",
+              "caption": "Figure 3. Story graph of work S60, labeled zigzag. Events are arranged chronologically, with their telling positions beneath. Causes and foreshadowing run above the line; reveal arcs below link a later-told explanation to the earlier-told event it explains. The four questions concern a casting rejection, success becoming distance, resentment of that success, and an empty flat explained by a farewell letter. Shared-content edges are omitted.",
+              "source": "https://arxiv.org/pdf/2610.21468v1#page=4",
+              "source_caption": "Figure 3: Story graph of work S60, a musical labeled ZIGZAG, with events in chronological order and told positions beneath. CAUSES and FORESHADOWS arcs run above the line; each REVEALS arc below points from a later-told explanation to the earlier-told event it explains, answering the reader question qi it carries (SHARES edges omitted). Events: 1 a novelist meets an actress; 2 she tells him of the man she nearly settled for; 3 his first book is accepted; 4 a casting panel ignores her; 5 he promises never to leave; 6 they marry; 7 she takes a provincial engagement; 8 his book succeeds; 9 she confronts his absence; 10 a guest propositions him; 11 she resents his success; 12 he is unfaithful; 13 he leaves a letter; 14 she finds the flat empty. Questions: q1 what professional hurt lies beneath her accusation; q2 how his success became distance; q3 why she can no longer be glad for him; q4 why the flat is empty."
+            },
+            {
+              "src": "files/papers/nonlinear-narrative/figure-04.webp",
+              "width": 926,
+              "height": 539,
+              "alt": "Two panels comparing model chronology-reconstruction scores against solvers given events without the telling, and paired reconstruction scores with and without the telling in de-dating controls.",
+              "caption": "Figure 4. The no-story floor. Above, model reconstruction scores are compared with solvers given the events but no telling; these separate runs calibrate the scores rather than rank the models. Below, the same solvers are compared with and without the telling in the de-dating runs.",
+              "source": "https://arxiv.org/pdf/2610.21468v1#page=6",
+              "source_caption": "Figure 4: The no-story floor. Top: T3 τrec for each model, against a solver given the events with the telling deleted (dashed). The two come from separate runs, so the panel calibrates the scores and does not rank the models. Bottom: the same solvers with and without the telling, from the de-dating runs."
+            },
+            {
+              "src": "files/papers/nonlinear-narrative/figure-05.webp",
+              "width": 896,
+              "height": 350,
+              "alt": "Preference estimates and 95 percent intervals for readers and an automated judge, comparing instructed with free stories and full graphs with telling orders, event lists, or one-layer graph ablations.",
+              "caption": "Figure 5. Unadjusted preference rates. Readers favor graph-guided stories over those given a telling order or an event list, while the judge’s ties on two comparisons miss clear reader preferences. “Layer removed” pools the five one-layer ablations.",
+              "source": "https://arxiv.org/pdf/2610.21468v1#page=8",
+              "source_caption": "Figure 5: Unadjusted preference rates. Readers favor graph-guided stories over those given a telling order or an event list, and the judge’s ties on two comparisons miss clear reader preferences. “Layer removed” pools the five one-layer ablations."
+            },
+            {
+              "src": "files/papers/nonlinear-narrative/figure-06.webp",
+              "width": 1905,
+              "height": 906,
+              "alt": "Seven story-curve panels labeled chronicle, analepsis, prolepsis, zigzag, syllepsis, retrograde, and achrony, plotting chronological rank against telling position with chronological reference diagonals.",
+              "caption": "Figure 6. The seven narrative shapes, each illustrated by the corpus work nearest its category’s median in the structural plane. Telling position runs across and chronological position up; the dotted diagonal represents chronological order. Published retrograde tellings descend in steps with short forward runs.",
+              "source": "https://arxiv.org/pdf/2610.21468v1#page=16",
+              "source_caption": "Figure 6: The seven shapes, each drawn from the corpus work nearest its category’s median in (τ, LIS). Told position runs across and chronological position up, so chronological order is the dotted diagonal. Published RETROGRADE descends in steps with short forward runs, not in the straight corner-to-corner line models return (§5.1.2). Colors match Figure 8."
+            },
+            {
+              "src": "files/papers/nonlinear-narrative/figure-07.webp",
+              "width": 924,
+              "height": 625,
+              "alt": "Story curve for one annotated work above a second curve counting unresolved reader questions. Colored rises and falls show jumps through chronology, and the question count peaks at six before returning to zero.",
+              "caption": "Figure 7. Story curve of one annotated work. Above, telling position runs across and chronological rank up; color and slope show jump direction, and dashed lines mark withheld explanations. Below, the number of open reader questions follows the telling. This work opens six questions and closes all of them.",
+              "source": "https://arxiv.org/pdf/2610.21468v1#page=21",
+              "source_caption": "Figure 7: Story curve of one annotated work. Top: told position across, chronological rank up. Color and slope both encode jump direction, and dashed rules mark where a withheld explanation lands. Bottom: reader questions left open after each told position. This work opens six and closes all of them."
+            },
+            {
+              "src": "files/papers/nonlinear-narrative/figure-08.webp",
+              "width": 1905,
+              "height": 1961,
+              "alt": "Seven panels of Kendall tau versus normalized longest increasing subsequence, comparing published works, requested model tellings, human-range boxes, and concentrated identity or reversal outputs.",
+              "caption": "Figure 8. The structural plane by requested shape. Dashed boxes mark the region occupied by published works; large marks represent those works and small dots represent valid instructed tellings. Exact chronological orders and reversals stack at single coordinates, shown in violet with area proportional to their share. Chronicle and retrograde failures cluster at the extremes.",
+              "source": "https://arxiv.org/pdf/2610.21468v1#page=22",
+              "source_caption": "Figure 8: The structural plane, one panel per requested structure: the (τ, LIS) region the gold annotations occupy (dashed box), those works (large marks), and every valid cued telling (small dots). Outputs that are the exact identity or reversal stack on one coordinate and are drawn once, in violet, with area proportional to their share. The two failing categories are dense stacks at the ends of the scale, not near-misses. Ticks along the two axes give the marginal distribution of the valid tellings, which the overlapping cloud inside the panel obscures."
+            },
+            {
+              "src": "files/papers/nonlinear-narrative/figure-09.webp",
+              "width": 926,
+              "height": 505,
+              "alt": "Diverging bars showing automated-judge win, loss, and tie counts for full story graphs against no graph, a supplied telling order, and five graph-layer ablations, with exact binomial p values.",
+              "caption": "Figure 9. Automated-judge verdicts for the scaffolding comparisons, with ties centered and exact binomial tests over decisive pairs. The full graph beats no graph; no other difference is detected. Reader judgments revise two of these comparisons.",
+              "source": "https://arxiv.org/pdf/2610.21468v1#page=23",
+              "source_caption": "Figure 9: Judge verdicts for every scaffolding comparison: blind judgment counts with ties centered, and two-sided exact binomial p over decisive pairs. G1 beats G0 and no other difference is detected. Readers revise two of these rows (§5.5)."
+            },
+            {
+              "src": "files/papers/nonlinear-narrative/figure-10.webp",
+              "width": 924,
+              "height": 756,
+              "alt": "Preference panels comparing 71 readers with an automated judge on four conditions, including 95 percent intervals and reader preference estimates adjusted for story length.",
+              "caption": "Figure 10. Preference shares from 71 readers and the automated judge, with 95% intervals. The right panel repeats reader rates after length adjustment. Judge and reader rates align on instructed versus free stories and graph versus event list, while the judge’s ties miss reader differences on supplied telling orders and graph-layer removal.",
+              "source": "https://arxiv.org/pdf/2610.21468v1#page=23",
+              "source_caption": "Figure 10: Share of decisive verdicts favoring the first-named condition, from 71 readers and from the judge, with 95% intervals (reader-clustered bootstrap for readers, exact binomial for the judge). The right panel repeats the reader rates after length adjustment. The judge’s rate matches the readers’ on instructed versus free and on graph versus event list. On the other two comparisons, graph versus told order and graph versus one layer removed, the judge returns ties, and these are where readers found the clearest differences."
+            },
+            {
+              "src": "files/papers/nonlinear-narrative/figure-11.webp",
+              "width": 926,
+              "height": 687,
+              "alt": "Scatter plot of reversed within-scene pairs against reversed between-scene pairs for ten retrograde works and instructed model tellings, with published works at the left and model tellings concentrated near the upper right.",
+              "caption": "Figure 11. Where reversals happen in the ten retrograde works. Published tellings reverse the order of scenes while preserving events within them. Instructed model tellings tend to reverse both scenes and their contents; the populations separate on the within-scene axis.",
+              "source": "https://arxiv.org/pdf/2610.21468v1#page=24",
+              "source_caption": "Figure 11: Where a reversal happens, for the 10 RETROGRADE works. Each point is one telling: the share of its within-scene event pairs told in reverse against the share of its between-scene pairs. Published tellings sit on the left wall, reversing scenes and leaving their contents alone. Cued model outputs pile into the top right corner, reversing both. The two populations differ on the horizontal axis only."
+            },
+            {
+              "src": "files/papers/nonlinear-narrative/figure-12.webp",
+              "width": 855,
+              "height": 434,
+              "alt": "Reveal positions for each story and condition, paired with bars showing the share of stories whose designated explanation appears before three events have been narrated.",
+              "caption": "Figure 12. Premature disclosure as the scorer counts it. Left, reveal positions with condition means; right, the share of stories with fewer than three events before the reveal. The bars include one work without a designated reveal and one chronicle whose explanation is naturally third; these inflate the early-disclosure counts.",
+              "source": "https://arxiv.org/pdf/2610.21468v1#page=29",
+              "source_caption": "Figure 12: Premature disclosure (§5.4) as the scorer counts it. Left: where each story narrates the reveal, with a tick at the condition mean. Right: share of stories with fewer than three events before the reveal. The bars include a work whose graph designates no reveal, which is scored early in every condition, and a chronicle whose explanation any chronological telling narrates third. §J gives the rates without these two works."
+            },
+            {
+              "src": "files/papers/nonlinear-narrative/figure-13.webp",
+              "width": 924,
+              "height": 760,
+              "alt": "Row-normalized confusion matrix for seven narrative-shape labels pooled over 19 models, showing frequent predictions of analepsis across other categories.",
+              "caption": "Figure 13. Narrative-shape classification confusion, normalized by row and pooled over 19 models. Five of the six other classes send 29–46% of their predictions to analepsis. Achrony is recognized 7.1% of the time.",
+              "source": "https://arxiv.org/pdf/2610.21468v1#page=30",
+              "source_caption": "Figure 13: T4 confusion, row-normalized and pooled over 19 models. 5 of the six other classes send 29–46% of their mass to ANALEPSIS, and ACHRONY is recognized 7.1% of the time."
+            }
+          ]
+        }
+      ]
+    }
   }
 ]

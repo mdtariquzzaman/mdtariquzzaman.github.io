@@ -232,6 +232,11 @@
     controls.hidden = false;
     let current = 0;
     let heading = null; // The slide a smooth scroll is on its way to, so quick repeat presses keep counting.
+    const sizeTrack = () => {
+      const height = slides[current].getBoundingClientRect().height;
+      const scrollbar = track.offsetHeight - track.clientHeight;
+      if (height > 0) track.style.height = `${Math.ceil(height) + scrollbar}px`;
+    };
     const show = (index) => {
       heading = Math.max(0, Math.min(slides.length - 1, index));
       const target = slides[heading];
@@ -244,6 +249,7 @@
       dots.forEach((dot, i) => dot.setAttribute('aria-current', String(i === current)));
       // Off-screen slides leave the tab order and the accessibility tree.
       slides.forEach((slide, i) => { slide.inert = i !== current; });
+      sizeTrack();
       status.textContent = `${current + 1} / ${slides.length}`;
       prev.disabled = current === 0;
       next.disabled = current === slides.length - 1;
@@ -262,6 +268,9 @@
         show(from() + (event.key === 'ArrowRight' ? 1 : -1));
       }
     });
+    // Remeasure after a drawer opens, images load, fonts settle, or the layout changes.
+    const slideResize = new ResizeObserver(sizeTrack);
+    slides.forEach(slide => slideResize.observe(slide));
     update();
   });
   function reduceMotion() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }

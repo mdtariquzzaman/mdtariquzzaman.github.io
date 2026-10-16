@@ -61,22 +61,24 @@
 .paper-abstract>summary{font-family:var(--pixel);font-size:24px;line-height:1.2;min-height:44px;padding:8px 0;color:var(--accent);cursor:pointer}
 .paper-abstract p{font-size:14px;line-height:1.8;margin-top:10px}
 .figure-carousel{margin-top:18px;min-width:0}
-.carousel-track{display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin;position:relative}
+.carousel-track{display:flex;align-items:flex-start;gap:0;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:thin;position:relative}
 .carousel-slide{flex:0 0 100%;min-width:0;margin:0;scroll-snap-align:start}
 .figure-frame{display:flex;align-items:center;justify-content:center;background:#fff;padding:10px;border:1px solid var(--frame-mid);min-height:200px}
 .figure-frame img{max-width:100%;height:auto;max-height:420px;object-fit:contain}
 .is-single .figure-frame{min-height:0}
 .carousel-slide figcaption{margin-top:10px;font-size:14px;line-height:1.7;color:var(--muted)}
 .figure-zoom{display:inline-block;margin-left:4px}
-.carousel-controls{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:12px}
+.carousel-controls{display:grid;grid-template-columns:minmax(44px,1fr) auto minmax(44px,1fr);align-items:center;gap:8px;margin-top:12px}
 .carousel-step{display:inline-grid;place-items:center;min-width:44px;height:44px;border:2px solid var(--frame);background:var(--card);color:var(--ink);border-radius:2px;cursor:pointer}
+.carousel-step:first-child{grid-column:1;grid-row:1;justify-self:end}
+.carousel-step:last-child{grid-column:3;grid-row:1;justify-self:start}
 .carousel-step:disabled{opacity:.45;cursor:default}
-.carousel-dots{display:flex;gap:0}
+.carousel-dots{display:flex;flex-wrap:wrap;justify-content:center;grid-column:1/-1;grid-row:2;justify-self:center;gap:0;min-width:0;max-width:100%}
 .carousel-dot{display:grid;place-items:center;width:32px;height:44px;background:none;border:0;color:var(--frame);cursor:pointer}
 .carousel-dot::after{content:'';width:8px;height:8px;background:currentColor}
 .carousel-dot[aria-current=true]{color:var(--accent-strong)}
 .carousel-dot[aria-current=true]::after{width:12px;height:12px;box-shadow:0 0 0 2px var(--fill),0 0 0 4px currentColor}
-.carousel-status{min-width:3em;font-family:var(--pixel);font-size:22px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.carousel-status{grid-column:2;grid-row:1;min-width:3em;text-align:center;font-family:var(--pixel);font-size:22px;font-variant-numeric:tabular-nums;color:var(--ink)}
 .pub-cite pre{font-family:var(--mono);font-size:14px;line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere;max-height:320px;overflow:auto;margin:0}
 .is-copied{background:var(--contents-active-fill)!important;color:var(--ink)!important}
 #resources>h2{font-size:32px;background:var(--title-bg);color:var(--title-ink);border:2px solid var(--frame);padding:8px 12px}
