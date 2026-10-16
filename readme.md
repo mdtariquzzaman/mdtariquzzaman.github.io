@@ -92,7 +92,11 @@ git push
 
 ## GitHub profile README
 
-[github-profile/readme.md](github-profile/readme.md) is the profile README for the separate profile repository. When publication is requested, copy it to the root of that repository as `README.md`.
+[github-profile/readme.md](github-profile/readme.md) is the prepared README for the separate `mdtariquzzaman/mdtariquzzaman` profile repository. It mirrors the website's approved biography, four research interests, publications, and profile links. When publication is requested, copy it to the root of that repository as `README.md` **and copy `github-profile/assets/` to that repository's `assets/` directory**, preserving the relative header paths. Existing reading-corner images use absolute website URLs so they need no duplicate copies. Updating this prepared version does not publish it.
+
+The profile's paired [day header](github-profile/assets/header-day.svg) and [night header](github-profile/assets/header-night.svg) are original coded SVGs using the website's palettes, stepped frames, cursor, and quiet sky motifs. Their “Hello!” lettering is outlined from the bundled Pixel Operator Mono Bold by Jayvee Enaguas ([CC0](assets/licenses/pixel-operator-CC0.txt)); the SVGs require no external fonts, scripts, or resources. The profile reuses the original static reading-corner WebPs described below, switching both header and scene through GitHub's theme-aware `<picture>` support. Biography and publication text remain selectable Markdown.
+
+Shields.io badges use `style=flat-square`: green `425b46` for identity and venues, gold `a3864e` for interests and the paper award, and grey `68665d` for resources. Supported brand logos are supplied by Shields.io; LinkedIn is text-only because its logo is unavailable. Keep blank lines between a paper's title, description, and badge row so GitHub renders them as separate blocks. Verify the rendered SVG contains an embedded image whenever adding a new `logo=` slug.
 
 ## Artwork and fonts
 

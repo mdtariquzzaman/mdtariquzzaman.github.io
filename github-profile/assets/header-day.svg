@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="96" viewBox="0 0 840 96" role="img" aria-labelledby="title desc" shape-rendering="crispEdges">
+  <title id="title">Hello!</title>
+  <desc id="desc">A quiet pixel menu greeting in the website's day palette.</desc>
+  <!-- Pixel Operator Mono Bold by Jayvee Enaguas, CC0; lettering is outlined. -->
+  <path fill="#60667d" d="M4 0h832v4h4v88h-4v4H4v-4H0V4h4z"/>
+  <path fill="#f4f0e8" d="M6 2h828v4h4v84h-4v4H6v-4H2V6h4z"/>
+  <path fill="#b9bed1" d="M8 4h824v4h4v80h-4v4H8v-4H4V8h4z"/>
+  <path fill="#fff9ee" d="M10 6h820v4h4v76h-4v4H10v-4H6V10h4z"/>
+  <path fill="#d6dbea" d="M10 10h820v6H10z"/>
+  <path fill="#884f46" d="M24 36h4v4h4v4h4v4h4v4h-4v4h-4v4h-4v4h-4z"/>
+  <path fill="#303548" d="M64.0 30.0H72.0V46.0H80.0V30.0H88.0V66.0H80.0V50.0H72.0V66.0H64.0ZM112.0 42.0H104.0V50.0H112.0ZM100.0 38.0H116.0V42.0H120.0V54.0H104.0V62.0H112.0V58.0H120.0V62.0H116.0V66.0H100.0V62.0H96.0V42.0H100.0ZM128.0 30.0H144.0V62.0H152.0V66.0H128.0V62.0H136.0V34.0H128.0ZM160.0 30.0H176.0V62.0H184.0V66.0H160.0V62.0H168.0V34.0H160.0ZM196.0 38.0H212.0V42.0H216.0V62.0H212.0V66.0H196.0V62.0H192.0V42.0H196.0ZM208.0 42.0H200.0V62.0H208.0ZM232.0 30.0H240.0V58.0H232.0ZM232.0 62.0H240.0V66.0H232.0Z"/>
+  <path fill="#e8e5ed" d="M556 70h36v-4h44v4h48v4h40v4H556z"/>
+  <path fill="#d6dbea" d="M592 48h8v-8h24v8h12v8h-44zm96 14h12v-8h32v8h16v8h-60z"/>
+  <path fill="#aa8644" d="M748 28h16v4h4v16h-4v4h-16v-4h-4V32h4z"/>
+  <path fill="#f5e7b4" d="M748 32h16v16h-16z"/>
+</svg>
