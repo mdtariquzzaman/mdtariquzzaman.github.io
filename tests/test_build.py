@@ -348,6 +348,34 @@ class BuildTests(unittest.TestCase):
                 self.assertTrue(section.find('h2'))
                 self.assertNotIn('hidden', link.attrs)
 
+    def test_header_offers_motion_toggles_and_loads_scenes_after_app(self):
+        page = parse(self.build['render']('index', 'Home', 'Description', self.build['SITE'], '<p>Body</p>', current='index'))
+        header = page.find('header', 'site-header')[0]
+        for strip, cls in (('header-title-strip', 'motion-toggle-mobile'), ('header-inner', 'motion-toggle-desktop')):
+            with self.subTest(button=cls):
+                buttons = header.find('div', strip)[0].find('button', cls)
+                self.assertEqual(len(buttons), 1)
+                self.assertEqual(buttons[0].attrs['aria-label'], 'Pause animations')
+                self.assertEqual(buttons[0].attrs['aria-pressed'], 'false')
+        # scenes.js reads window.siteMotion, which app.js defines.
+        sources = [script.attrs.get('src', '').split('?')[0] for script in page.find('script')]
+        self.assertLess(sources.index('assets/app.js'), sources.index('assets/scenes.js'))
+        home = parse((ROOT / 'index.html').read_text())
+        scene = home.find('figure', 'profile-art')[0]
+        self.assertEqual(scene.attrs.get('data-scene'), 'reading-corner')
+        self.assertEqual(len(scene.find('img')), 1)
+
+    def test_theme_color_meta_matches_page_backgrounds(self):
+        css = (ROOT / 'assets' / 'style.css').read_text()
+        day = css.split(':root{', 1)[1].split('--bg:', 1)[1][:7]
+        night = css.split('html[data-theme=dark]{', 1)[1].split('--bg:', 1)[1][:7]
+        page = parse(self.build['render']('index', 'Home', 'Description', self.build['SITE'], '<p>Body</p>', current='index'))
+        colors = {meta.attrs['media']: meta.attrs['content'] for meta in page.find('meta', name='theme-color')}
+        self.assertEqual(colors['(prefers-color-scheme: light)'], day)
+        self.assertEqual(colors['(prefers-color-scheme: dark)'], night)
+        app = (ROOT / 'assets' / 'app.js').read_text()
+        self.assertIn(f"dark ? '{night}' : '{day}'", app)
+
     def test_generated_main_pages_match_current_sources_and_keep_cv_actions(self):
         build = self.build
         schemas = {'index': build['ld']({'@context': 'https://schema.org', **build['PERSON']}),

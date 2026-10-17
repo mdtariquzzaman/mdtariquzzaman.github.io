@@ -1,5 +1,45 @@
 /* Menus, field records and native drawers share the same frame language. */
-.btn:active,.theme-toggle:active{transform:translateY(2px);box-shadow:inset 0 0 0 2px var(--frame-light)}
+.btn:active,.theme-toggle:active,.motion-toggle:active{transform:translateY(2px);box-shadow:inset 0 0 0 2px var(--frame-light)}
+/* Pixel scenes (assets/scenes.js). The Home still-life's canvas lies over the
+   GIF; a still frame paints the whole picture into it and hides the GIF. */
+.profile-art{position:relative}
+.scene-canvas{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;pointer-events:none}
+.profile-art.is-still img{opacity:0}
+/* Small motions, all in whole steps: a menu cursor nudges while an item is
+   pointed at, icons hop once, drawers open like a game window, and an accepted
+   seal catches the light the first time it scrolls into view (app.js). */
+@keyframes cursor-nudge{50%{transform:translateX(2px)}}
+.site-header nav a:hover .nav-cursor,.site-header nav a:focus-visible .nav-cursor,.interest-grid>a:hover .menu-cursor,.interest-grid>a:focus-visible .menu-cursor{animation:cursor-nudge .8s steps(1,end) infinite}
+@keyframes icon-hop{0%{transform:translateY(-2px)}}
+.social-links>.btn:hover>.icon:first-child,.topic-grid a:hover .icon,.personal-topics a:hover .icon,.back-to-top:hover .icon{animation:icon-hop .2s steps(1,end)}
+@keyframes window-open{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0)}}
+.pub-drawer[open],.news-archive[open]{animation:window-open .16s steps(4,start)}
+.accepted-head{position:relative}
+.accepted-venue.is-glinting .accepted-head::before{content:'';position:absolute;left:16px;top:0;width:2px;height:2px;pointer-events:none;animation:seal-glint .72s steps(1,end) both}
+@keyframes seal-glint{
+  0%,100%{background:transparent;box-shadow:none}
+  16%,84%{background:var(--glint);box-shadow:none}
+  32%,68%{background:var(--glint);box-shadow:-2px 0 var(--glint),2px 0 var(--glint),0 -2px var(--glint),0 2px var(--glint)}
+  50%{background:var(--glint);box-shadow:-2px 0 var(--glint),2px 0 var(--glint),0 -2px var(--glint),0 2px var(--glint),-4px 0 var(--gold-rule),4px 0 var(--gold-rule),0 -4px var(--gold-rule),0 4px var(--gold-rule)}
+}
+/* Day and night: the new palette dissolves in through a 4×4 ordered dither, two
+   CSS pixels per mask pixel, in eight steps (View Transitions; app.js switches
+   instantly without them or while motion is reduced or held). */
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+::view-transition-new(root){animation:theme-dither .44s linear both;-webkit-mask-size:8px 8px;mask-size:8px 8px;-webkit-mask-repeat:repeat;mask-repeat:repeat}
+@keyframes theme-dither{
+  0%{-webkit-mask-image:linear-gradient(transparent,transparent);mask-image:linear-gradient(transparent,transparent)}
+  12.5%{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1H0zM2 2h1v1H2z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1H0zM2 2h1v1H2z'/%3E%3C/svg%3E")}
+  25.0%{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1H0zM2 0h1v1H2zM0 2h1v1H0zM2 2h1v1H2z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1H0zM2 0h1v1H2zM0 2h1v1H0zM2 2h1v1H2z'/%3E%3C/svg%3E")}
+  37.5%{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1H0zM2 0h1v1H2zM1 1h1v1H1zM0 2h1v1H0zM2 2h1v1H2zM3 3h1v1H3z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1H0zM2 0h1v1H2zM1 1h1v1H1zM0 2h1v1H0zM2 2h1v1H2zM3 3h1v1H3z'/%3E%3C/svg%3E")}
+  50.0%{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1H0zM2 0h1v1H2zM1 1h1v1H1zM3 1h1v1H3zM0 2h1v1H0zM2 2h1v1H2zM1 3h1v1H1zM3 3h1v1H3z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1H0zM2 0h1v1H2zM1 1h1v1H1zM3 1h1v1H3zM0 2h1v1H0zM2 2h1v1H2zM1 3h1v1H1zM3 3h1v1H3z'/%3E%3C/svg%3E")}
+  62.5%{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1H0zM1 0h1v1H1zM2 0h1v1H2zM1 1h1v1H1zM3 1h1v1H3zM0 2h1v1H0zM2 2h1v1H2zM3 2h1v1H3zM1 3h1v1H1zM3 3h1v1H3z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1H0zM1 0h1v1H1zM2 0h1v1H2zM1 1h1v1H1zM3 1h1v1H3zM0 2h1v1H0zM2 2h1v1H2zM3 2h1v1H3zM1 3h1v1H1zM3 3h1v1H3z'/%3E%3C/svg%3E")}
+  75.0%{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1H0zM1 0h1v1H1zM2 0h1v1H2zM3 0h1v1H3zM1 1h1v1H1zM3 1h1v1H3zM0 2h1v1H0zM1 2h1v1H1zM2 2h1v1H2zM3 2h1v1H3zM1 3h1v1H1zM3 3h1v1H3z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1H0zM1 0h1v1H1zM2 0h1v1H2zM3 0h1v1H3zM1 1h1v1H1zM3 1h1v1H3zM0 2h1v1H0zM1 2h1v1H1zM2 2h1v1H2zM3 2h1v1H3zM1 3h1v1H1zM3 3h1v1H3z'/%3E%3C/svg%3E")}
+  87.5%{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1H0zM1 0h1v1H1zM2 0h1v1H2zM3 0h1v1H3zM0 1h1v1H0zM1 1h1v1H1zM3 1h1v1H3zM0 2h1v1H0zM1 2h1v1H1zM2 2h1v1H2zM3 2h1v1H3zM1 3h1v1H1zM2 3h1v1H2zM3 3h1v1H3z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1H0zM1 0h1v1H1zM2 0h1v1H2zM3 0h1v1H3zM0 1h1v1H0zM1 1h1v1H1zM3 1h1v1H3zM0 2h1v1H0zM1 2h1v1H1zM2 2h1v1H2zM3 2h1v1H3zM1 3h1v1H1zM2 3h1v1H2zM3 3h1v1H3z'/%3E%3C/svg%3E")}
+  100%{-webkit-mask-image:none;mask-image:none}
+}
+/* The header's motion button holds every animation still. */
+html[data-motion=still] *,html[data-motion=still] *::before,html[data-motion=still] *::after{animation:none!important}
 .publications-summary{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 24px;background:var(--card);border:2px solid var(--frame);border-radius:3px;box-shadow:inset 0 0 0 2px var(--frame-light),inset 0 0 0 3px var(--frame-mid);margin-bottom:8px}
 .publication-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;margin:0;flex:1}
 .publication-metrics>div{display:flex;flex-direction:column-reverse}
@@ -156,6 +196,11 @@ a.back-to-top{position:static;flex:0 0 auto;width:44px;height:44px;padding:8px}
 .favorite-arrow .icon{width:16px;height:16px}
 }
 @media(max-width:360px){
+/* Publications also holds the back-to-top arrow in the title strip; its theme
+   button keeps only the icon there (the label stays in aria-label and title). */
+.header-title-strip{gap:8px}
+.header-controls{gap:6px}
+.page-publications .theme-toggle-mobile span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .personal-panel>h2{font-size:22px}
 .favorite-link{grid-template-columns:28px minmax(0,1fr) 14px;gap:6px;padding:7px 0}
 .favorite-order{font-size:18px}
@@ -165,8 +210,8 @@ a.back-to-top{position:static;flex:0 0 auto;width:44px;height:44px;padding:8px}
 }
 @media print{
 :root{color-scheme:light;--card:#fff;--ink:#000;--muted:#333;--accent:#000;--rule:#bbb;--fill:#fff;--frame:#333;--frame-light:#fff;--frame-mid:#ddd}
-body{background:#fff;color:#000;font-size:11pt}
-.site-header,.page-contents,.site-footer,.social-window,.theme-toggle,.drawer-toggle,.btn-split,.carousel-controls,.personal-topics,.contact-note,.back-to-top{display:none!important}
+body,html.sky-live body{background:#fff;color:#000;font-size:11pt}
+.site-header,.page-contents,.site-footer,.social-window,.theme-toggle,.motion-toggle,.drawer-toggle,.btn-split,.carousel-controls,.personal-topics,.contact-note,.back-to-top,.pixel-sky{display:none!important}
 .site-shell{width:100%;max-width:none}
 main{padding:0}
 .reading-layout,.personal-layout,.introduction{display:block}

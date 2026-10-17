@@ -5,15 +5,18 @@
 :root{
 color-scheme:light;
 --font:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;--mono:var(--font);--pixel:'Pixel Operator Mono',ui-monospace,monospace;
---bg:#e8e5ed;--card:#fff9ee;--ink:#303548;--muted:#626779;
---frame:#60667d;--frame-mid:#b9bed1;--frame-light:#f4f0e8;
---rule:#d2cfdb;--hairline:var(--rule);--fill:#f0edf5;--fill-hover:#e5e0ee;
---accent:#884f46;--accent-strong:#713d36;--accent-soft:#f2ddd3;
---button-bg:#884f46;--button-hover:#713d36;--button-ink:#fff9ee;
---title-bg:#d6dbea;--title-ink:#384056;--strip-bg:#606a87;--strip-ink:#fff9ee;
---gold:#755323;--gold-bg:#f5e7b4;--gold-rule:#aa8644;
---contents-marker:#884f46;--contents-active-fill:#f2ddd3;--contents-label:var(--muted);
+--bg:#f2e9d8;--card:#fff7e8;--ink:#1e2a32;--muted:#59666b;
+--frame:#29434a;--frame-mid:#9cb4ac;--frame-light:#fffdf4;
+--rule:#d6d0be;--hairline:var(--rule);--fill:#e9efe8;--fill-hover:#dbe6de;
+--accent:#a64a35;--accent-strong:#843526;--accent-soft:#f6d2b8;
+--button-bg:#a64a35;--button-hover:#843526;--button-ink:#fff7e8;
+--title-bg:#bdd3c7;--title-ink:#1e2a32;--strip-bg:#203d43;--strip-ink:#fff7e8;
+--gold:#795a26;--gold-bg:#f3e5aa;--gold-rule:#a88745;--glint:#fff;
+--contents-marker:#a64a35;--contents-active-fill:#f6d2b8;--contents-label:var(--muted);
+/* The sky's bands span the page width; its clouds, hills, moon and stars are
+   the centered SVG (no JavaScript) or the live canvas in assets/scenes.js. */
 --sky:url('sky-day.svg');
+--sky-bands:linear-gradient(#e7ece2 0 22.5%,#ecede1 22.5% 40%,#f0ebdc 40% 55%,#f1eada 55% 100%);
 --shadow-sm:0 2px 0 var(--frame);--shadow-md:0 2px 0 var(--frame);
 --r-s:2px;--r-m:4px;--r-l:4px;--r-pill:2px;
 --header-h:104px;--contents-height:0px;--shell:1120px;
@@ -27,9 +30,10 @@ color-scheme:dark;
 --accent:#e7b3a4;--accent-strong:#f3cec0;--accent-soft:#4a3945;
 --button-bg:#e7b3a4;--button-hover:#f3cec0;--button-ink:#322a34;
 --title-bg:#39445f;--title-ink:#e3e7f2;--strip-bg:#2d364e;--strip-ink:#f0eadb;
---gold:#f0d394;--gold-bg:#4c423b;--gold-rule:#bba26a;
+--gold:#f0d394;--gold-bg:#4c423b;--gold-rule:#bba26a;--glint:#fff4d6;
 --contents-marker:#e7b3a4;--contents-active-fill:#4a3945;
 --sky:url('sky-night.svg');
+--sky-bands:linear-gradient(#20283f 0 22.5%,#20253b 22.5% 40%,#1d2236 40% 55%,#1b2033 55% 100%);
 }
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]){
 color-scheme:dark;
@@ -39,17 +43,22 @@ color-scheme:dark;
 --accent:#e7b3a4;--accent-strong:#f3cec0;--accent-soft:#4a3945;
 --button-bg:#e7b3a4;--button-hover:#f3cec0;--button-ink:#322a34;
 --title-bg:#39445f;--title-ink:#e3e7f2;--strip-bg:#2d364e;--strip-ink:#f0eadb;
---gold:#f0d394;--gold-bg:#4c423b;--gold-rule:#bba26a;
+--gold:#f0d394;--gold-bg:#4c423b;--gold-rule:#bba26a;--glint:#fff4d6;
 --contents-marker:#e7b3a4;--contents-active-fill:#4a3945;
 --sky:url('sky-night.svg');
+--sky-bands:linear-gradient(#20283f 0 22.5%,#20253b 22.5% 40%,#1d2236 40% 55%,#1b2033 55% 100%);
 }}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + var(--contents-height) + 20px);-webkit-text-size-adjust:100%}
-body{margin:0;color:var(--ink);background-color:var(--bg);background-image:var(--sky);background-position:center top;background-size:1440px 640px;background-repeat:no-repeat;font-family:var(--font);font-size:var(--t-body);line-height:1.65}
+body{margin:0;color:var(--ink);background-color:var(--bg);background-image:var(--sky),var(--sky-bands);background-position:center top,0 0;background-size:2560px 640px,100% 640px;background-repeat:no-repeat;font-family:var(--font);font-size:var(--t-body);line-height:1.65}
 ::selection{background:var(--contents-active-fill);color:var(--ink)}
 img{display:block;max-width:100%;height:auto}
 h1,h2,h3,p,figure{margin:0}
 .nowrap{white-space:nowrap}
+/* The live sky (assets/scenes.js) replaces the SVG layer once its first frame is drawn. */
+.pixel-sky{position:absolute;top:0;left:0;width:100%;height:640px;overflow:hidden;z-index:-1;pointer-events:none}
+.pixel-sky canvas{position:absolute;top:0;display:block;image-rendering:pixelated}
+html.sky-live body{background-image:none,var(--sky-bands)}
 h1,h2{font-family:var(--pixel);font-weight:700;line-height:1.1;letter-spacing:0}
 h1{font-size:var(--t-page)}
 h2{font-size:var(--t-section)}
@@ -66,7 +75,7 @@ button{font:inherit}
 .icon-trail{width:16px;height:16px;vertical-align:-3px}
 .site-shell{width:min(var(--shell),calc(100% - 64px));margin:0 auto}
 .site-header{position:sticky;top:0;z-index:50;width:min(var(--shell),calc(100% - 64px));margin:20px auto 0;border:2px solid var(--frame);border-radius:4px;background:var(--card);box-shadow:inset 0 0 0 2px var(--frame-light),0 2px 0 var(--frame)}
-.header-title-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--strip-bg);color:var(--strip-ink);padding:2px 16px;border-bottom:2px solid var(--frame);font-family:var(--pixel);font-size:20px;line-height:24px}
+.header-title-strip{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--strip-bg);color:var(--strip-ink);padding:2px 16px;border-bottom:2px solid var(--frame);font-family:var(--pixel);font-size:20px;line-height:24px}
 .header-title{flex:0 0 auto;white-space:nowrap}
 .header-status{font-size:18px;opacity:.9}
 .header-inner{height:64px;padding:8px 16px;display:flex;align-items:center;gap:16px}
@@ -79,6 +88,17 @@ button{font:inherit}
 .js .theme-toggle-desktop{display:inline-flex}
 .js .theme-toggle-mobile{display:none}
 .theme-toggle .icon{width:20px;height:20px}
+.header-tools{display:flex;align-items:center;gap:8px;margin-left:auto}
+.header-tools .theme-toggle{margin-left:0}
+.motion-toggle{display:none;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:5px;background:var(--title-bg);color:var(--title-ink);border:2px solid var(--frame);border-radius:2px;cursor:pointer}
+.motion-toggle .icon{width:20px;height:20px}
+.motion-toggle .icon-play,.motion-toggle[aria-pressed=true] .icon-pause{display:none}
+.motion-toggle[aria-pressed=true] .icon-play{display:block}
+.motion-toggle[aria-pressed=true]{background:var(--contents-active-fill)}
+.js .motion-toggle-desktop{display:inline-flex}
+/* Reading progress fills the title strip's lower edge in four-pixel steps (app.js). */
+.read-progress{position:absolute;left:0;right:0;bottom:-2px;height:2px;pointer-events:none}
+.read-progress span{display:block;width:0;height:100%;background:var(--accent)}
 .nav-burger{display:none}
 main{padding:24px 0 8px;min-height:60vh}
 .game-window,.profile-window,.page-heading,.chapter,.personal-panel,.publication,.contents,.personal-nav,.contact-note,.site-footer,.interest-section,.news-section,.personal-teaser{border:2px solid var(--frame);border-radius:3px;background:var(--card);box-shadow:inset 0 0 0 2px var(--frame-light),inset 0 0 0 3px var(--frame-mid),0 2px 0 var(--frame-mid)}
@@ -241,7 +261,7 @@ a.btn:hover,button.btn:hover{background:var(--fill-hover);color:var(--ink);text-
 }
 @media(max-width:600px){
 :root{--header-h:132px;--t-page:2.5rem}
-body{background-size:960px 427px}
+body{background-size:1706.67px 427px,100% 427px}
 .site-shell,.site-header{width:calc(100% - 24px)}
 .site-header{margin-top:12px}
 .header-title-strip{padding:1px 10px;font-size:18px;line-height:22px}
@@ -249,6 +269,11 @@ body{background-size:960px 427px}
 .js .theme-toggle-desktop{display:none}
 .js .theme-toggle-mobile{display:inline-flex;min-height:26px;font-size:14px;padding:1px 5px;gap:3px}
 .theme-toggle .icon{width:16px;height:16px}
+.js .motion-toggle-desktop{display:none}
+.js .motion-toggle-mobile{display:inline-flex;min-width:26px;min-height:26px;padding:1px 3px}
+.motion-toggle .icon{width:16px;height:16px}
+.header-tools{display:none}
+.pixel-sky{height:427px}
 .site-header nav{order:2;flex:1 1 100%;margin:0;justify-content:space-between;gap:0;overflow-x:auto;scrollbar-width:none}
 .site-header nav a{flex:0 0 auto;min-height:44px;padding:6px 2px 6px 0;font-size:18px;gap:0;white-space:nowrap}
 .nav-cursor{width:12px;height:12px}

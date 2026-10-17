@@ -1,6 +1,53 @@
 (() => {
   const root = document.documentElement;
   root.classList.add('js');
+
+  // One switch for decorative motion: it follows the system's reduced-motion
+  // preference, the header's motion button holds every animation still (and the
+  // site remembers it), and pressing it again plays them for this visit.
+  const motionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const motionListeners = new Set();
+  let motionHeld = false;
+  let motionPlayed = false;
+  try { motionHeld = localStorage.getItem('tariq-motion') === 'held'; } catch (_) { /* storage unavailable */ }
+  const siteMotion = {
+    get reduced() { return motionHeld || (motionMedia.matches && !motionPlayed); },
+    play() {
+      motionHeld = false;
+      motionPlayed = true;
+      try { localStorage.removeItem('tariq-motion'); } catch (_) {}
+      motionChanged();
+    },
+    hold() {
+      motionHeld = true;
+      try { localStorage.setItem('tariq-motion', 'held'); } catch (_) {}
+      motionChanged();
+    },
+    subscribe(listener) { motionListeners.add(listener); },
+  };
+  const motionChanged = () => {
+    root.dataset.motion = siteMotion.reduced ? 'still' : 'live';
+    motionListeners.forEach(listener => listener());
+  };
+  // A change to the system setting takes precedence over this visit's choice.
+  motionMedia.addEventListener?.('change', () => { motionPlayed = false; motionChanged(); });
+  root.dataset.motion = siteMotion.reduced ? 'still' : 'live';
+  window.siteMotion = siteMotion;
+
+  const motionButtons = [...document.querySelectorAll('.motion-toggle')];
+  const updateMotionLabel = () => {
+    const still = siteMotion.reduced;
+    motionButtons.forEach((button) => {
+      button.setAttribute('aria-pressed', String(still));
+      button.title = still ? 'Play animations' : 'Pause animations';
+    });
+  };
+  motionButtons.forEach(button => button.addEventListener('click', () => {
+    if (siteMotion.reduced) siteMotion.play(); else siteMotion.hold();
+  }));
+  siteMotion.subscribe(updateMotionLabel);
+  updateMotionLabel();
+
   const themeButtons = [...document.querySelectorAll('.theme-toggle')];
   const menuButton = document.querySelector('.nav-burger');
   const nav = document.querySelector('.site-header nav');
@@ -29,18 +76,82 @@
         themeButton.title = dark ? 'Switch to light theme' : 'Switch to dark theme';
       });
       document.querySelectorAll('meta[name="theme-color"]').forEach(meta => {
-        meta.content = dark ? '#181d30' : '#e8e5ed';
+        meta.content = dark ? '#181d30' : '#f2e9d8';
       });
       const studySource = document.querySelector('.study-picture source');
       if (studySource) studySource.media = dark ? 'all' : 'not all';
     };
+    // The Home picture changes with the theme: wait briefly for the new one, so
+    // the dissolve reveals it rather than the old picture.
+    const studyPictureReady = () => {
+      const image = document.querySelector('.study-picture img');
+      if (!image) return undefined;
+      return new Promise((resolve) => {
+        const done = () => {
+          clearTimeout(timer);
+          image.removeEventListener('load', done);
+          image.removeEventListener('error', done);
+          resolve();
+        };
+        const timer = setTimeout(done, 400);
+        image.addEventListener('load', done);
+        image.addEventListener('error', done);
+      });
+    };
     media.addEventListener?.('change', () => { if (!root.dataset.theme) updateThemeLabel(); });
     updateThemeLabel();
     themeButtons.forEach(themeButton => themeButton.addEventListener('click', () => {
-      root.dataset.theme = effectiveDark() ? 'light' : 'dark';
-      try { localStorage.setItem('tariq-theme', root.dataset.theme); } catch (_) {}
-      updateThemeLabel();
+      const next = effectiveDark() ? 'light' : 'dark';
+      const swap = () => {
+        root.dataset.theme = next;
+        try { localStorage.setItem('tariq-theme', next); } catch (_) {}
+        updateThemeLabel();
+        return studyPictureReady();
+      };
+      // The new palette dissolves in through a pixel dither (interactions.css);
+      // the pixel scenes repaint inside the update, so they dissolve with it.
+      if (document.startViewTransition && !siteMotion.reduced) document.startViewTransition(swap);
+      else swap();
     }));
+  }
+
+  // Reading progress: a bar fills along the header's title strip in whole
+  // four-pixel steps, like a loading gauge.
+  const titleStrip = document.querySelector('.header-title-strip');
+  if (titleStrip) {
+    const gauge = document.createElement('span');
+    gauge.className = 'read-progress';
+    gauge.setAttribute('aria-hidden', 'true');
+    const gaugeFill = document.createElement('span');
+    gauge.append(gaugeFill);
+    titleStrip.append(gauge);
+    let gaugePending = false;
+    const paintGauge = () => {
+      gaugePending = false;
+      const room = document.documentElement.scrollHeight - window.innerHeight;
+      const done = room > 0 ? Math.min(1, Math.max(0, window.scrollY / room)) : 0;
+      gaugeFill.style.width = `${Math.round(done * titleStrip.clientWidth / 4) * 4}px`;
+    };
+    const scheduleGauge = () => {
+      if (!gaugePending) { gaugePending = true; requestAnimationFrame(paintGauge); }
+    };
+    window.addEventListener('scroll', scheduleGauge, { passive: true });
+    window.addEventListener('resize', scheduleGauge);
+    new ResizeObserver(scheduleGauge).observe(document.body);
+    paintGauge();
+  }
+
+  // Accepted seals catch the light once, the first time each scrolls into view.
+  const seals = document.querySelectorAll('.accepted-venue');
+  if (seals.length && 'IntersectionObserver' in window) {
+    const shine = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        shine.unobserve(entry.target);
+        if (!siteMotion.reduced) entry.target.classList.add('is-glinting');
+      });
+    }, { rootMargin: `-${(siteHeader?.offsetHeight || 0) + 12}px 0px -8% 0px`, threshold: 0.9 });
+    seals.forEach(seal => shine.observe(seal));
   }
 
   if (menuButton && nav) {
@@ -67,11 +178,12 @@
   // Subtle tap feedback on touch: brief press state for buttons, topic chips,
   // and favorite cards, so taps feel responsive on phones/tablets. The main
   // page tabs stay still while navigating between documents.
-  // Skipped when reduced motion is preferred.
-  if (window.matchMedia('(hover: none)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  // Skipped while motion is reduced or held.
+  if (window.matchMedia('(hover: none)').matches) {
     const pressable = 'a.btn, button.btn, .page-contents a, .personal-topics a, .topic-grid a, .interest-grid > a';
     let pressed = null;
     const press = (target) => {
+      if (siteMotion.reduced) return;
       const el = target?.closest ? target.closest(pressable) : target?.parentElement?.closest?.(pressable);
       const hit = el || (target?.nodeType === 3 ? target.parentElement?.closest?.(pressable) : null);
       if (hit && hit !== pressed) {
@@ -105,7 +217,7 @@
     let mobileMode = false;
     let plaqueVisible = false;
     let hashCorrectionPending = Boolean(location.hash);
-    const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduceMotion = () => siteMotion.reduced;
     const syncMode = () => {
       const mobile = window.innerWidth <= 600;
       if (mobile === mobileMode) return mobile;
@@ -276,7 +388,7 @@
     slides.forEach(slide => slideResize.observe(slide));
     update();
   });
-  function reduceMotion() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+  function reduceMotion() { return siteMotion.reduced; }
 
   const openFromHash = () => {
     const target = location.hash && document.getElementById(location.hash.slice(1));

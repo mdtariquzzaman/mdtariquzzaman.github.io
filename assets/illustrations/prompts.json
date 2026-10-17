@@ -22,5 +22,7 @@
     ],
     "prompt": "Add one small, blocky 16-bit GBA pixel cat sitting on the windowsill beside the coffee cup and looking out the window. Preserve the bookshelf, books, window, cup, wall, sky, lighting, crop, and composition. Use hard square pixel clusters, a limited flat palette, no anti-aliasing, and no realistic fur or painterly shading.",
     "tail_frames": "Four-frame loop: the tail shifts two pixels left, returns to center, shifts two pixels right, then returns to center. It stays almost flat on the sill; only the tail tip changes between frames."
-  }
+  },
+  "day_palette": "reading-corner-day.gif matches the parchment-and-teal day theme: in its global and three local color tables, entries in the lavender wall ramp (hue 240-300 degrees, saturation below 0.2, lightness above 0.5) moved to hue 140 degrees with the same lightness and saturation, and the dim sunbeam tone #dccbc7 moved to hue 30 degrees. Pixel indices, frames, timings, and disposal are unchanged. The WebP sources keep the original lavender wall.",
+  "live_overlays": "With JavaScript, assets/scenes.js draws original code-generated overlays in two-pixel cells: steam over the cup, clouds and an occasional bird behind the day glass, dust in the day sunbeams, twinkling night stars, and an occasional shooting star. They add no props and leave the cat's GIF tail unchanged."
 }
