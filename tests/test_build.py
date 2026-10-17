@@ -101,7 +101,7 @@ class BuildTests(unittest.TestCase):
         self.assertNotIn('open', archive.attrs)
         self.assertNotIn('hidden', archive.attrs)
 
-    def test_author_disclosure_boundary_preserves_full_order(self):
+    def test_long_author_lists_show_through_site_owner_then_et_al(self):
         for count in (10, 11):
             paper = deepcopy(self.build['papers'][0])
             paper['authors'] = [f'Author {index}' for index in range(count)]
@@ -109,22 +109,27 @@ class BuildTests(unittest.TestCase):
             tree = parse(self.build['publication'](paper, 'C1'))
             authors = tree.find(cls='authors')[0]
             with self.subTest(count=count):
-                if count == 10:
-                    self.assertEqual(authors.tag, 'p')
-                    self.assertEqual(authors.text(), ', '.join(paper['authors']))
-                else:
-                    self.assertEqual(authors.tag, 'details')
-                    self.assertNotIn('open', authors.attrs)
-                    self.assertEqual(authors.find('summary')[0].text(), 'Author 0 et al. (11 authors)')
-                    self.assertEqual(authors.find('p', 'authors-full')[0].text(), ', '.join(paper['authors']))
+                self.assertEqual(authors.tag, 'p')
+                expected = ', '.join(paper['authors'] if count == 10 else paper['authors'][:5])
+                if count > 10: expected += ', et al.'
+                self.assertEqual(authors.text(), expected)
+                self.assertEqual(authors.find('strong')[0].text(), self.build['ME'])
+                self.assertFalse(tree.find('details', 'author-details'))
+                self.assertEqual(len(paper['authors']), count)
 
     def test_publications_preserve_metadata_resources_and_figure_sequence(self):
         for paper in self.build['papers']:
             tree = parse(self.build['publication'](paper, 'TEST'))
             with self.subTest(paper=paper['id']):
                 authors = tree.find(cls='authors')[0]
-                full = authors.find('p', 'authors-full')[0] if authors.tag == 'details' else authors
-                self.assertEqual(full.text(), ', '.join(paper['authors']))
+                shown = paper['authors']
+                if len(shown) > 10:
+                    cutoff = shown.index(self.build['ME']) + 1 if self.build['ME'] in shown else 1
+                    shown = shown[:cutoff]
+                expected_authors = ', '.join(shown) + (', et al.' if len(shown) < len(paper['authors']) else '')
+                self.assertEqual(authors.tag, 'p')
+                self.assertEqual(authors.text(), expected_authors)
+                self.assertEqual(len(self.build['publication_schema'](paper)['author']), len(paper['authors']))
                 self.assertEqual(tree.find('h3')[0].text(), paper['title'])
                 self.assertEqual(tree.find('h3')[0].find('a')[0].attrs['href'], self.build['paper_url'](paper))
                 self.assertFalse(tree.find(cls='pub-status'))
@@ -193,16 +198,119 @@ class BuildTests(unittest.TestCase):
                 self.assertEqual(values, [str(len(context['papers']))] + [('0' if value == 0 else '—')] * 3)
                 self.assertEqual(len(tree.find('span', **{'aria-label': 'Unavailable'})), 0 if value == 0 else 3)
 
-    def test_empty_journal_group_is_hidden_until_a_journal_entry_exists(self):
-        self.assertNotIn('journal-articles', self.build['contents'])
-        self.assertNotIn('Journal articles', self.build['pub_body'])
+    def test_publications_mix_types_in_one_reverse_chronological_catalogue(self):
+        tree = parse(self.build['pub_body'])
+        sections = tree.find('section', 'publication-group')
+        expected_order = ['guise', 'nonlinear-narrative', 'scenario-bias',
+                          'sign-parameters', 'bda', 'informal-bangla']
+        self.assertEqual(len(sections), 1)
+        catalogue = sections[0]
+        self.assertEqual(catalogue.attrs['id'], 'publication-list')
+        self.assertEqual(catalogue.attrs['aria-labelledby'], 'publication-key')
+        self.assertIn('publication-catalogue', catalogue.attrs['class'].split())
+        self.assertEqual(len(catalogue.find('h2')), 1)
+        heading = catalogue.find('h2', 'publication-key', id='publication-key')[0]
+        self.assertEqual(' '.join(heading.text().split()),
+                         'C: Conference · J: Journal · W: Workshop · P: Preprint')
+        self.assertFalse(catalogue.find('section'))
+        self.assertFalse(catalogue.find('span', 'group-count'))
+        self.assertEqual([paper['id'] for paper in self.build['ordered']], expected_order)
+        self.assertEqual([article.attrs['id'] for article in catalogue.find('article', 'publication')],
+                         expected_order)
 
-        papers = deepcopy(self.build['papers'])
-        journal = deepcopy(papers[0])
-        journal.update(type='journal', id='test-journal')
-        context = builder_context(papers=papers + [journal])
-        self.assertIn('journal-articles', context['contents'])
-        self.assertIn('Journal articles', context['pub_body'])
+    def test_publications_omit_contents_and_offer_a_native_back_to_top_link(self):
+        tree = parse(self.build['pub_body'])
+        self.assertFalse(tree.find('nav', 'page-contents'))
+        self.assertFalse(tree.find(cls='reading-layout'))
+        self.assertTrue(tree.find('div', 'publication-sections'))
+        document = parse(self.build['render']('publications', 'Publications', 'Description',
+                                             self.build['SITE'] + 'publications.html',
+                                             self.build['pub_body'], current='publications'))
+        links = document.find('a', 'back-to-top')
+        self.assertEqual(len(links), 1)
+        link = links[0]
+        self.assertEqual(link.attrs['href'], '#main')
+        self.assertEqual(link.attrs['aria-label'], 'Back to top')
+        self.assertEqual(link.attrs['title'], 'Back to top')
+        self.assertTrue(link.find('svg'))
+        self.assertNotIn('hidden', link.attrs)
+        self.assertEqual(len(document.find(id='main')), 1)
+        self.assertEqual(len(document.find('header', 'site-header')[0].find('a', 'back-to-top')), 1)
+        for slug in ('index', 'cv', 'personal'):
+            other = parse(self.build['render'](slug, 'Title', 'Description', self.build['SITE'],
+                                              '<p>Body</p>', current=slug))
+            with self.subTest(page=slug):
+                self.assertFalse(other.find('a', 'back-to-top'))
+
+    def test_chronological_order_uses_dates_before_type_and_falls_back_to_year(self):
+        template = self.build['papers'][0]
+        records = [
+            ('older-conference', 'conference', '2025', '2025-12-31'),
+            ('undated-journal', 'journal', '2026', None),
+            ('midyear-conference', 'conference', '2026', '2026-03-01'),
+            ('latest-preprint', 'preprint', '2026', '2026-08-01'),
+            ('older-workshop', 'workshop', '2025', None),
+            ('midyear-workshop', 'workshop', '2026', '2026-05-01'),
+        ]
+        papers = []
+        for identifier, kind, year, date in records:
+            paper = deepcopy(template)
+            paper.update(id=identifier, type=kind, year=year)
+            paper.pop('date', None)
+            if date:
+                paper['date'] = date
+            papers.append(paper)
+        context = builder_context(papers=papers)
+        self.assertEqual([paper['id'] for paper in context['ordered']], [
+            'latest-preprint', 'midyear-workshop', 'midyear-conference',
+            'undated-journal', 'older-conference', 'older-workshop',
+        ])
+        self.assertEqual(context['labels_by_id'], {
+            'latest-preprint': 'P1', 'midyear-workshop': 'W2', 'midyear-conference': 'C2',
+            'undated-journal': 'J1', 'older-conference': 'C1', 'older-workshop': 'W1',
+        })
+
+    def test_same_day_preprints_use_arxiv_order_independently_of_source_order(self):
+        papers = [deepcopy(next(paper for paper in self.build['papers'] if paper['id'] == identifier))
+                  for identifier in ('nonlinear-narrative', 'guise')]
+        context = builder_context(papers=papers)
+        self.assertEqual([paper['id'] for paper in context['ordered']], ['guise', 'nonlinear-narrative'])
+        self.assertEqual(context['labels_by_id'], {'guise': 'P2', 'nonlinear-narrative': 'P1'})
+
+    def test_publication_type_counters_and_legacy_anchors_survive_combined_catalogue(self):
+        expected_labels = {'guise': 'P3', 'nonlinear-narrative': 'P2', 'scenario-bias': 'C1',
+                           'sign-parameters': 'W2', 'bda': 'P1', 'informal-bangla': 'W1'}
+        self.assertEqual(self.build['labels_by_id'], expected_labels)
+        tree = parse(self.build['pub_body'])
+        for identifier, label in expected_labels.items():
+            article = tree.find('article', 'publication', id=identifier)[0]
+            self.assertEqual(article.find('div', 'pub-year')[0].text(), label)
+        legacy = {'conference-papers': 'scenario-bias', 'workshop-papers': 'sign-parameters',
+                  'preprints': 'guise', 'peer-reviewed': 'scenario-bias',
+                  'year-2026': 'guise', 'year-2025': 'sign-parameters',
+                  'year-2024': 'bda', 'year-2023': 'informal-bangla'}
+        for anchor, identifier in legacy.items():
+            with self.subTest(anchor=anchor):
+                self.assertEqual(len(tree.find(id=anchor)), 1)
+                self.assertLess(self.build['pub_body'].index(f'id="{anchor}"'),
+                                self.build['pub_body'].index(f'id="{identifier}"'))
+                self.assertFalse(tree.find('section', id=anchor))
+        self.assertFalse(tree.find(id='journal-articles'))
+
+    def test_new_journal_joins_the_catalogue_without_a_standalone_type_group(self):
+        journal = deepcopy(self.build['papers'][0])
+        journal.update(type='journal', id='test-journal', date='2026-01-01')
+        context = builder_context(papers=self.build['papers'] + [journal])
+        tree = parse(context['pub_body'])
+        section = tree.find('section', id='publication-list')[0]
+        self.assertEqual([article.attrs['id'] for article in section.find('article', 'publication')],
+                         ['guise', 'nonlinear-narrative', 'scenario-bias', 'test-journal',
+                          'sign-parameters', 'bda', 'informal-bangla'])
+        self.assertEqual(len(tree.find('section', 'publication-group')), 1)
+        self.assertEqual(context['labels_by_id']['test-journal'], 'J1')
+        self.assertEqual(len(tree.find(id='journal-articles')), 1)
+        self.assertFalse(tree.find('section', id='journal-articles'))
+        self.assertFalse(tree.find('nav', 'page-contents'))
 
     def test_favorites_retain_every_entry_in_one_wikipedia_list_row(self):
         tree = parse(self.build['expand_icons'](self.build['personal_body']))
@@ -226,7 +334,6 @@ class BuildTests(unittest.TestCase):
 
     def test_section_navigation_keeps_native_anchors_for_mobile_enhancement(self):
         expected = {
-            'publications': [group[2] for group in self.build['active_groups']] + ['Code & data'],
             'cv': ['Education', 'Research experience', 'Teaching experience', 'Industry experience', 'Awards'],
             'personal': ['Anime', 'Movies', 'TV shows', 'Books', 'Sports'],
         }

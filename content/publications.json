@@ -197,7 +197,8 @@
       ],
       "acknowledgements": "We thank Ming Shan Hee, LIM Jia Peng, and Ethan Bird for the Human-level Performance Measurement part. This work was supported by the computational shared facility at the University of Manchester and the scholar award from the Department of Computer Science at the University of Manchester. This research was supported by the NVIDIA Academic Grant Program using 32K A100 GPU-hours on Brev. This work has been partially supported by project MIS 5154714 of the National Recovery and Resilience Plan Greece 2.0 funded by the European Union under the Next Generation EU Program. The authors acknowledge The Fin AI community for its research support, feedback, and collaborative environment that contributed to this work."
     },
-    "venue_url": "https://2026.aclweb.org/program/findings/"
+    "venue_url": "https://2026.aclweb.org/program/findings/",
+    "date": "2026-07-02"
   },
   {
     "id": "sign-parameters",
@@ -415,7 +416,8 @@
         "title": "Presentation video for Prompting with Sign Parameters"
       }
     },
-    "venue_url": "https://cv4a11y.github.io/ICCV2025/index.html"
+    "venue_url": "https://cv4a11y.github.io/ICCV2025/index.html",
+    "date": "2025-10-20"
   },
   {
     "id": "informal-bangla",
@@ -617,7 +619,8 @@
         "title": "Presentation video for the_linguists at BLP-2023 Task 1"
       }
     },
-    "venue_url": "https://blp-workshop.github.io/2023/accepted"
+    "venue_url": "https://blp-workshop.github.io/2023/accepted",
+    "date": "2023-12-07"
   },
   {
     "id": "guise",
@@ -749,7 +752,8 @@
           ]
         }
       ]
-    }
+    },
+    "date": "2026-10-15"
   },
   {
     "id": "bda",
@@ -993,7 +997,8 @@
           "detail": "BanglaBERT shows the more robust improvement across datasets and sizes, as it captures the contextual variation augmentation introduces. Model-based and rule-based augmentation land within one to two F1 points of each other."
         }
       ]
-    }
+    },
+    "date": "2024-12-11"
   },
   {
     "id": "nonlinear-narrative",
@@ -1157,6 +1162,7 @@
           ]
         }
       ]
-    }
+    },
+    "date": "2026-10-15"
   }
 ]

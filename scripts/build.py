@@ -15,7 +15,7 @@ SITE = 'https://mdtariquzzaman.github.io/'
 ME = 'Md. Tariquzzaman'
 GSC_TOKEN = 'boT_CMjz6ow5mcyZhAbCVE0JK2v9CAJwCu424PfT1U0'
 BING_TOKEN = 'E9CE5F8AA8FFFD3C486CAF3DAAAACB56'
-ASSET_VERSION = '20261017nonlinear'
+ASSET_VERSION = '20261017continuous2'
 SOCIAL_LINKS = (
     ('linkedin', 'LinkedIn', 'https://www.linkedin.com/in/md-tariquzzaman/'),
     ('bluesky', 'Bluesky', 'https://bsky.app/profile/mdtariquzzaman.bsky.social'),
@@ -147,15 +147,14 @@ def figure_carousel(p):
 
 def publication(p, label):
     pid = escape(p['id'])
-    authors = ', '.join('<strong>'+escape(a)+'</strong>' if a == ME else escape(a) for a in p['authors'])
+    shown_authors = p['authors']
+    if len(shown_authors) > 10:
+        cutoff = shown_authors.index(ME) + 1 if ME in shown_authors else 1
+        shown_authors = shown_authors[:cutoff]
+    authors = ', '.join('<strong>'+escape(a)+'</strong>' if a == ME else escape(a) for a in shown_authors)
+    if len(shown_authors) < len(p['authors']): authors += ', et al.'
     authors_html = f'<p class="authors">{authors}</p>'
-    if len(p['authors']) > 10:
-        first_author = escape(p['authors'][0])
-        if p['authors'][0] == ME: first_author = f'<strong>{first_author}</strong>'
-        authors_html = (f'<details class="authors author-details"><summary class="authors-summary">{first_author} et al. '
-                        f'<span class="author-count">({len(p["authors"])} authors)</span></summary>'
-                        f'<p class="authors-full">{authors}</p></details>')
-    # The group and venue already convey type/status; retain any distinct supplied status.
+    # The marker and venue convey type/status; retain any distinct supplied status.
     status_text = p.get('status', '')
     repeated_status = {'Conference paper', 'Journal article', 'Workshop paper', 'Preprint', 'Accepted', 'Published'}
     status = f'<p class="pub-status">{escape(status_text)}</p>' if status_text and status_text not in repeated_status else ''
@@ -203,12 +202,28 @@ def publication(p, label):
 def news_list(items):
     return '<dl class="news">'+''.join(f'<div><dt>{escape(x["date"])}</dt><dd>{x["text"]}</dd></div>' for x in items)+'</dl>'
 
-groups = [('conference', 'conference-papers', 'Conference papers', 'C'),
-          ('journal', 'journal-articles', 'Journal articles', 'J'),
-          ('workshop', 'workshop-papers', 'Workshop papers', 'W'),
-          ('preprint', 'preprints', 'Preprints', 'P')]
-GROUP_ICONS = {'conference': 'presentation', 'journal': 'journal', 'workshop': 'users', 'preprint': 'paper'}
-active_groups = [group for group in groups if any(p['type'] == group[0] for p in papers)]
+PUBLICATION_TYPES = {'conference': ('C', 'Conference', 'conference-papers'),
+                     'journal': ('J', 'Journal', 'journal-articles'),
+                     'workshop': ('W', 'Workshop', 'workshop-papers'),
+                     'preprint': ('P', 'Preprint', 'preprints')}
+
+def publication_sort_key(p):
+    # Use the approved record date when available; year-only records keep that precision.
+    if p.get('date'):
+        record_date = date.fromisoformat(p['date'])
+        if record_date.year != int(p['year']):
+            raise ValueError(f'Publication date and year disagree for {p["id"]}')
+    return (p.get('date') or p['year'], p.get('arxiv', ''))
+
+ordered = sorted(papers, key=publication_sort_key, reverse=True)
+publication_years = list(dict.fromkeys(p['year'] for p in ordered))
+remaining = {kind: sum(p['type'] == kind for p in ordered) for kind in PUBLICATION_TYPES}
+labels_by_id = {}
+for p in ordered:
+    labels_by_id[p['id']] = f'{PUBLICATION_TYPES[p["type"]][0]}{remaining[p["type"]]}'
+    remaining[p['type']] -= 1
+publication_key = '<h2 id="publication-key" class="publication-key">' + ' · '.join(
+    f'<span>{prefix}: {label}</span>' for prefix, label, _ in PUBLICATION_TYPES.values()) + '</h2>'
 metric_items = [(len(papers), 'Publications', 'paper'), (metrics['citations'], 'Citations', 'quote'),
                 (metrics['h_index'], 'h-index', 'trending-up'), (metrics['i10_index'], 'i10-index', 'bar-chart')]
 unavailable_metric = '<span aria-label="Unavailable">—</span>'
@@ -234,39 +249,39 @@ if len(ordered_news) > 3:
     news_html += (f'<details class="news-archive"><summary>Earlier updates '
                   f'<span class="archive-count">({len(ordered_news)-3})</span></summary>'
                   f'{news_list(ordered_news[3:])}</details>')
-contents = ''.join(f'<a href="#{anchor}">{icon(GROUP_ICONS[kind])}<span>{escape(heading)}</span></a>' for kind, anchor, heading, _ in active_groups)
-# Home's interest cards link to the four research-area anchors. Entries are grouped by type,
-# so each area anchor is placed before the first paper carrying it, in render order.
+# Home's interest cards link to the four research-area anchors. Each area anchor is
+# placed before the first paper carrying it in the shared chronological catalogue.
 # New interest areas get stable anchors as their publication records arrive. Keep the
 # older anchors because existing links may still point to the historical topics.
-AREA_ANCHORS = ['safety', 'cultural-bias', 'creativity', 'accessibility',
-                'misinformation', 'evaluation', 'bangla']
 AREA_ANCHOR_FOR = {'LLM safety': 'safety', 'Cultural bias': 'cultural-bias',
                    'AI creativity & storytelling': 'creativity', 'Accessibility': 'accessibility',
                    'Misinformation': 'misinformation', 'LLM evaluation': 'evaluation',
                    'Bangla NLP': 'bangla'}
-ordered = [p for kind, _, _, _ in active_groups
-           for p in sorted((x for x in papers if x['type'] == kind), key=lambda x: int(x['year']), reverse=True)]
 first_anchor = {}
 for p in ordered:
     for area in p.get('areas', []):
         key = AREA_ANCHOR_FOR.get(area)
         if key and key not in first_anchor:
             first_anchor[key] = p['id']
+# Keep old type-group links working at the first matching record in the combined list.
+for kind, (_, _, anchor) in PUBLICATION_TYPES.items():
+    first = next((p for p in ordered if p['type'] == kind), None)
+    if first: first_anchor[anchor] = first['id']
+first_accepted = next((p for p in ordered if not is_preprint(p)), None)
+if first_accepted: first_anchor['peer-reviewed'] = first_accepted['id']
+for year in publication_years:
+    first_anchor[f'year-{year}'] = next(p['id'] for p in ordered if p['year'] == year)
 
 def area_anchors(p):
     return ''.join(f'<span id="{key}" class="legacy-anchor"></span>'
-                   for key in AREA_ANCHORS if first_anchor.get(key) == p['id'])
+                   for key, pid in first_anchor.items() if pid == p['id'])
 
-sections = ''
-for kind, anchor, heading, prefix in active_groups:
-    entries = sorted((p for p in papers if p['type'] == kind), key=lambda p: int(p['year']), reverse=True)
-    listing = ''.join(area_anchors(p) + publication(p, f'{prefix}{len(entries)-i}') for i, p in enumerate(entries))
-    legacy_anchor = '<span id="peer-reviewed" class="legacy-anchor"></span>' if kind == 'conference' else ''
-    sections += f'{legacy_anchor}<section class="publication-group" id="{anchor}" aria-labelledby="{anchor}-heading"><h2 id="{anchor}-heading">{escape(heading)} <span class="group-count">{len(entries)}</span></h2>{listing}</section>'
-pub_body = f'''<header class="page-heading publications-heading"><p class="eyebrow">Research output</p><h1>Publications</h1><p class="lead">A record of my research, in print and in progress.</p></header>
+listing = ''.join(area_anchors(p) + publication(p, labels_by_id[p['id']]) for p in ordered)
+sections = (f'<section class="publication-group publication-catalogue" id="publication-list" '
+            f'aria-labelledby="publication-key">{publication_key}{listing}</section>')
+pub_body = f'''<header class="page-heading publications-heading"><p class="eyebrow">Research output</p><h1>Publications</h1><p class="lead">A record of my research, in print and in progress, from newest to oldest.</p></header>
 <div class="publications-summary"><dl class="publication-metrics">{metric_html}</dl><div class="publication-actions"><a class="btn" data-kind="scholar" href="https://scholar.google.com/citations?user=LWB_NzwAAAAJ">{icon("scholar")}<span>Google Scholar</span>{icon("external", "icon icon-trail")}</a><a class="btn" data-kind="cv" href="files/cv/tariq.pdf" target="_blank" rel="noopener">{icon("pdf")}<span>Download CV</span>{icon("external", "icon icon-trail")}</a></div></div><p class="metrics-note">{metric_note}</p>
-<div class="reading-layout publications-layout"><nav class="contents page-contents" aria-label="On this page"><p class="eyebrow">On this page</p>{contents}<a href="#resources">{icon("code")}<span>Code &amp; data</span></a></nav><div class="publication-sections">{sections}<section class="section" id="resources"><h2>Code &amp; data</h2><div class="resource-list"><article><h3><a href="https://github.com/mohsinulkabir14/guise">{icon("code")}GUISE{icon("external", "icon icon-trail")}</a></h3><p>LLM safety evaluation across request framings and cultures, grounded in real-world criminal cases.</p></article><article><h3><a href="https://github.com/lzw108/FMD">{icon("code")}FMD{icon("external", "icon icon-trail")}</a></h3><p>Scenario-induced bias benchmarking for multilingual financial misinformation detection.</p></article><article><h3><a href="https://huggingface.co/datasets/aplycaebous/BdSLIG">{icon("dataset")}BdSLIG{icon("external", "icon icon-trail")}</a></h3><p>Bangla Sign Language instruction generation dataset.</p></article><article><h3><a href="https://github.com/mdtariquzzaman/SPIP">{icon("code")}SPIP{icon("external", "icon icon-trail")}</a></h3><p>Sign Parameter Informed Prompting: reference implementation.</p></article><article><h3><a href="https://github.com/mdtariquzzaman/VITD">{icon("code")}VITD{icon("external", "icon icon-trail")}</a></h3><p>Informal Bangla embeddings and violence-inciting text detection.</p></article></div></section></div></div>'''
+<div class="publication-sections">{sections}<section class="section" id="resources"><h2>Code &amp; data</h2><div class="resource-list"><article><h3><a href="https://github.com/mohsinulkabir14/guise">{icon("code")}GUISE{icon("external", "icon icon-trail")}</a></h3><p>LLM safety evaluation across request framings and cultures, grounded in real-world criminal cases.</p></article><article><h3><a href="https://github.com/lzw108/FMD">{icon("code")}FMD{icon("external", "icon icon-trail")}</a></h3><p>Scenario-induced bias benchmarking for multilingual financial misinformation detection.</p></article><article><h3><a href="https://huggingface.co/datasets/aplycaebous/BdSLIG">{icon("dataset")}BdSLIG{icon("external", "icon icon-trail")}</a></h3><p>Bangla Sign Language instruction generation dataset.</p></article><article><h3><a href="https://github.com/mdtariquzzaman/SPIP">{icon("code")}SPIP{icon("external", "icon icon-trail")}</a></h3><p>Sign Parameter Informed Prompting: reference implementation.</p></article><article><h3><a href="https://github.com/mdtariquzzaman/VITD">{icon("code")}VITD{icon("external", "icon icon-trail")}</a></h3><p>Informal Bangla embeddings and violence-inciting text detection.</p></article></div></section></div>'''
 
 personal_data = json.loads(read('personal.json'))
 personal_body = read('personal.html')
@@ -322,7 +337,7 @@ def publication_schema(p):
     url = SITE + 'publications.html#' + p['id']
     item = {'@type': 'ScholarlyArticle', '@id': url, 'name': p['title'], 'headline': p['title'],
             'author': [{'@id': PERSON['@id']} if a == ME else {'@type': 'Person', 'name': a} for a in p['authors']],
-            'datePublished': p['year'], 'inLanguage': 'en', 'url': url,
+            'datePublished': p.get('date') or p['year'], 'inLanguage': 'en', 'url': url,
             'creativeWorkStatus': p['status'] or 'Published'}
     if p.get('venue'): item['isPartOf'] = {'@type': 'CreativeWork', 'name': p['venue']}
     if p.get('abstract'): item['abstract'] = p['abstract']
@@ -353,7 +368,9 @@ def render(slug, page_title, description, canonical, body, current=None, head_ex
                      for name, label, href in footer_links)
     theme_mobile = '<button class="theme-toggle theme-toggle-mobile" type="button" aria-label="Switch to dark theme" title="Switch to dark theme"><span aria-hidden="true">Day / night</span></button>'
     theme_desktop = '<button class="theme-toggle theme-toggle-desktop" type="button" aria-label="Switch to dark theme" title="Switch to dark theme"><span aria-hidden="true">Day / night</span></button>'
-    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">{theme_init}<title>{escape(page_title)}</title><meta name="description" content="{escape(description, quote=True)}">{robots}<meta name="google-site-verification" content="{GSC_TOKEN}"><meta name="msvalidate.01" content="{BING_TOKEN}"><meta name="theme-color" content="#e8e5ed" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#181d30" media="(prefers-color-scheme: dark)"><link rel="canonical" href="{canonical}"><meta property="og:type" content="website"><meta property="og:title" content="{escape(page_title, quote=True)}"><meta property="og:description" content="{escape(description, quote=True)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{SITE}profile.jpg"><meta property="og:image:alt" content="Md. Tariquzzaman"><meta name="twitter:card" content="summary"><meta name="twitter:site" content="@mdtariquzzaman_"><meta name="twitter:creator" content="@mdtariquzzaman_"><meta name="twitter:title" content="{escape(page_title, quote=True)}"><meta name="twitter:description" content="{escape(description, quote=True)}"><meta name="twitter:image" content="{SITE}profile.jpg"><link rel="icon" href="{asset}assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="{asset}assets/style.css?v={ASSET_VERSION}"><link rel="stylesheet" href="{asset}assets/interactions.css?v={ASSET_VERSION}">{head_extra}</head><body class="page-{slug}"><a class="skip-link" href="#main">Skip to content</a><header class="site-header"><div class="header-title-strip"><span class="header-title">Md. Tariquzzaman</span>{theme_mobile}</div><div class="header-inner"><nav aria-label="Main navigation">{nav}</nav>{theme_desktop}</div></header><div class="site-shell"><main id="main">{body}</main><footer class="site-footer"><p>© 2026 Md. Tariquzzaman</p><div>{footer}</div></footer></div><script src="{asset}assets/app.js?v={ASSET_VERSION}"></script></body></html>'''
+    back_to_top = f'<a class="btn back-to-top" href="#main" aria-label="Back to top" title="Back to top">{icon("arrow-up")}</a>'
+    header_controls = f'<div class="header-controls">{back_to_top}{theme_mobile}</div>' if slug == 'publications' else theme_mobile
+    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">{theme_init}<title>{escape(page_title)}</title><meta name="description" content="{escape(description, quote=True)}">{robots}<meta name="google-site-verification" content="{GSC_TOKEN}"><meta name="msvalidate.01" content="{BING_TOKEN}"><meta name="theme-color" content="#e8e5ed" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#181d30" media="(prefers-color-scheme: dark)"><link rel="canonical" href="{canonical}"><meta property="og:type" content="website"><meta property="og:title" content="{escape(page_title, quote=True)}"><meta property="og:description" content="{escape(description, quote=True)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{SITE}profile.jpg"><meta property="og:image:alt" content="Md. Tariquzzaman"><meta name="twitter:card" content="summary"><meta name="twitter:site" content="@mdtariquzzaman_"><meta name="twitter:creator" content="@mdtariquzzaman_"><meta name="twitter:title" content="{escape(page_title, quote=True)}"><meta name="twitter:description" content="{escape(description, quote=True)}"><meta name="twitter:image" content="{SITE}profile.jpg"><link rel="icon" href="{asset}assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="{asset}assets/style.css?v={ASSET_VERSION}"><link rel="stylesheet" href="{asset}assets/interactions.css?v={ASSET_VERSION}">{head_extra}</head><body class="page-{slug}"><a class="skip-link" href="#main">Skip to content</a><header class="site-header"><div class="header-title-strip"><span class="header-title">Md. Tariquzzaman</span>{header_controls}</div><div class="header-inner"><nav aria-label="Main navigation">{nav}</nav>{theme_desktop}</div></header><div class="site-shell"><main id="main">{body}</main><footer class="site-footer"><p>© 2026 Md. Tariquzzaman</p><div>{footer}</div></footer></div><script src="{asset}assets/app.js?v={ASSET_VERSION}"></script></body></html>'''
 
 schemas = {'index': ld({'@context': 'https://schema.org', **PERSON}),
            'publications': ld({'@context': 'https://schema.org', '@graph': [PERSON] + [publication_schema(p) for p in papers]})}
