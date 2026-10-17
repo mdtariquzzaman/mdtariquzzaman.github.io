@@ -1,5 +1,9 @@
 [
   {
+    "date": "Oct 2026",
+    "text": "<a href=\"publications.html#guise\">In the Guise of Correction</a> released on arXiv, introducing GUISE for LLM safety evaluation across framings and cultures."
+  },
+  {
     "date": "Mar 2026",
     "text": "<a href=\"publications.html#scenario-bias\">Same Claim, Different Judgment</a> accepted to Findings of ACL 2026."
   },

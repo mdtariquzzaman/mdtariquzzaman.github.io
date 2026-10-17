@@ -16,5 +16,6 @@ Research: LLM safety; cultural bias; AI creativity in storytelling; accessibilit
 - [Same Claim, Different Judgment: Benchmarking Scenario-Induced Bias in Multilingual Financial Misinformation Detection](https://mdtariquzzaman.github.io/publications.html#scenario-bias)
 - [Prompting with Sign Parameters for Low-resource Sign Language Instruction Generation](https://mdtariquzzaman.github.io/publications.html#sign-parameters)
 - [the_linguists at BLP-2023 Task 1: A Novel Informal Bangla Fasttext Embedding for Violence Inciting Text Detection](https://mdtariquzzaman.github.io/publications.html#informal-bangla)
+- [In the Guise of Correction: How Framing and Cultural Adaptation Erode LLM Safety on Real-World Criminal Cases](https://mdtariquzzaman.github.io/publications.html#guise)
 - [BDA: Bangla Text Data Augmentation Framework](https://mdtariquzzaman.github.io/publications.html#bda)
 - [Can LLMs Tell Stories Out of Order? A Corpus and Benchmark for Nonlinear Narrative Generation](https://mdtariquzzaman.github.io/publications.html#nonlinear-narrative)

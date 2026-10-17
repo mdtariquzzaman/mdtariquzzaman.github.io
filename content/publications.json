@@ -620,6 +620,138 @@
     "venue_url": "https://blp-workshop.github.io/2023/accepted"
   },
   {
+    "id": "guise",
+    "title": "In the Guise of Correction: How Framing and Cultural Adaptation Erode LLM Safety on Real-World Criminal Cases",
+    "authors": [
+      "Mohsinul Kabir",
+      "Md. Tariquzzaman",
+      "Karam S. R. Elradie",
+      "Polydoros Giannouris",
+      "Yuechen Jiang",
+      "Shaoxiong Ji",
+      "Sophia Ananiadou"
+    ],
+    "year": "2026",
+    "venue": "arXiv preprint arXiv:2610.21789 (2026)",
+    "status": "Preprint",
+    "links": {
+      "Paper": "https://arxiv.org/abs/2610.21789",
+      "Code & Data": "https://github.com/mohsinulkabir14/guise"
+    },
+    "award": "",
+    "type": "preprint",
+    "areas": [
+      "LLM safety",
+      "Cultural bias",
+      "LLM evaluation"
+    ],
+    "arxiv": "2610.21789",
+    "pdf": "https://arxiv.org/pdf/2610.21789",
+    "abstract": "Existing safety benchmarks rely largely on synthetic prompts with loosely grounded taxonomies and offer little focused analysis of severe crime categories. We introduce GUISE, a benchmark of criminal-assistance scenarios sourced from real-world cases and organised under a taxonomy from the UNODC International Classification of Crime for Statistical Purposes (ICCS). Each scenario is rendered under three linguistic framings and evaluated across five distinct cultures. Using our proposed two-tier evaluation framework, which judges both harmfulness and operational uplift, we find that: (i) framing alone drives unsafe compliance, with the mean unsafe compliance rate rising from 28.9% under direct requests to 66.4% under correction seeking (peaking at 97.3%; p < 0.05), as models correcting deliberately distorted details supply executable criminal steps; (ii) culturally adapted prompts elicit significantly more unsafe compliance than literal translations of the same requests in all four non-English languages (+7 to +18 points), a risk that translation-based benchmarks miss; and (iii) unsafe responses from the least-safe models carry strong Anglocentric registers, and the extent of this leakage increases monotonically with response harmfulness (ρ = 0.46 to 0.63 across languages, all p < 0.001). GUISE offers a grounded resource and fine-grained diagnostics for strengthening refusal alignment across languages and cultures. We publish our code and data to facilitate future research.",
+    "summary": "GUISE evaluates six language models on 2,250 prompts drawn from 150 real-world criminal cases across three request framings and five language–culture settings. Correction seeking and cultural adaptation increase unsafe compliance.",
+    "bibtex": "@misc{kabir2026guise,\n  title={In the Guise of Correction: How Framing and Cultural Adaptation Erode LLM Safety on Real-World Criminal Cases},\n  author={Mohsinul Kabir and Md. Tariquzzaman and Karam S. R. Elradie and Polydoros Giannouris and Yuechen Jiang and Shaoxiong Ji and Sophia Ananiadou},\n  year={2026},\n  eprint={2610.21789},\n  archivePrefix={arXiv},\n  primaryClass={cs.CL},\n  url={https://arxiv.org/abs/2610.21789},\n}",
+    "page": {
+      "tldr": "We built GUISE from 150 real-world criminal cases to test whether language models’ safety boundaries hold across direct requests, professional pretexts, and correction-seeking prompts. The benchmark contains 2,250 prompts across five language–culture settings and evaluates six models. Mean unsafe compliance rises from 28.9% for direct requests to 66.4% for correction seeking; culturally adapted prompts also elicit more unsafe compliance than literal translations.",
+      "figure_source": {
+        "url": "https://arxiv.org/pdf/2610.21789v1",
+        "sha256": "8a2788adb1cf88ea8ec31e21dc190af46a36c8e93861e91438d46df33b37cc54",
+        "version": "arXiv:2610.21789v1 (15 October 2026)",
+        "license": "CC BY-NC-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+      },
+      "teaser": {
+        "src": "files/papers/guise/figure-01.webp",
+        "width": 1896,
+        "height": 811,
+        "alt": "Four-part GUISE pipeline diagram showing corpus construction from ICCS categories and source articles, three request framings, native cultural adaptation into four target languages, and six-model evaluation on actionability, specificity, and harmfulness.",
+        "caption": "Figure 1. The GUISE pipeline, from ICCS-grounded case selection and prompt construction through cultural adaptation and two-tier response evaluation.",
+        "source": "https://arxiv.org/pdf/2610.21789v1#page=3",
+        "source_caption": "Figure 1: Overview of the GUISE pipeline: from corpus construction to evaluation."
+      },
+      "sections": [
+        {
+          "id": "paper-figures",
+          "heading": "Paper figures",
+          "nav": "Figures",
+          "figures": [
+            {
+              "src": "files/papers/guise/figure-02.webp",
+              "width": 927,
+              "height": 404,
+              "alt": "Two line charts plot mean safe refusal and unsafe compliance rates for English, Greek, Levantine Arabic, Chinese, and Bengali as framing changes from direct request to professional pretext and correction seeking.",
+              "caption": "Figure 2. Mean Safe Refusal Rate (SRR) and Unsafe Compliance Rate (UCR) across prompt framings, averaged over six models for each language. Higher SRR and lower UCR indicate safer behavior.",
+              "source": "https://arxiv.org/pdf/2610.21789v1#page=5",
+              "source_caption": "Figure 2: Mean SRR (left) and UCR (right) by prompt framing, averaged across models, for each language. Higher SRR is better (↑); lower UCR is better (↓). English, Levantine, Chinese, and Bengali degrade sharply and track each other closely under Professional Pretext and Correction Seeking."
+            },
+            {
+              "src": "files/papers/guise/figure-03.webp",
+              "width": 908,
+              "height": 806,
+              "alt": "Scatter plot comparing six models on the share of highly actionable harmful responses and the correlation between harmfulness and Anglicization. Gemma 4 31B and DeepSeek V4 Pro appear at the upper right.",
+              "caption": "Figure 3. Unsafe compliance and cultural leakage across models. The horizontal axis uses a stricter actionability and harmfulness threshold than UCR; the two least-safe models show the strongest coupling between harmfulness and Anglicization.",
+              "source": "https://arxiv.org/pdf/2610.21789v1#page=6",
+              "source_caption": "Figure 3: Co-occurance of compliance and cultural leakage. The X-axis represents a stricter selection of responses than UCR. The two least-safe models show the strongest coupling between harmfulness and Anglicization of non-English output."
+            },
+            {
+              "src": "files/papers/guise/figure-04.webp",
+              "width": 1782,
+              "height": 1256,
+              "alt": "Two groups of red-blue heatmaps compare UCR minus SRR across five crime categories under direct requests, professional pretexts, and correction seeking, first by model and then by language.",
+              "caption": "Figure 4. Mean UCR minus SRR by crime category and framing, grouped by model above and language below. Values range from −1 (always refuses) to +1 (always complies). Outlines mark at least one total safety failure; superscripts count those failures.",
+              "source": "https://arxiv.org/pdf/2610.21789v1#page=7",
+              "source_caption": "Figure 4: Mean UCR − SRR per category and framing (−1: always refuses; +1: always complies). Outlined cells contain at least one total failure (SRR ≤ 0.05, UCR ≥ 0.95); superscripts count such failures out of 5 languages (a) or 6 models (b). Category and model names are abbreviated from the taxonomy to fit within the figure."
+            },
+            {
+              "src": "files/papers/guise/figure-05.webp",
+              "width": 881,
+              "height": 784,
+              "alt": "Two forest plots show changes in unsafe compliance and safe refusal between literally translated and culturally adapted prompts for English, Bengali, Chinese, Greek, and Levantine Arabic, with individual-model and pooled estimates.",
+              "caption": "Figure 5. Literal translation minus cultural adaptation for UCR and SRR. Dots show individual models, diamonds pooled effects with 95% case-clustered bootstrap intervals. English is unchanged between conditions and serves as a noise control.",
+              "source": "https://arxiv.org/pdf/2610.21789v1#page=8",
+              "source_caption": "Figure 5: Δ = literal − adapted for (a) UCR and (b) SRR. Dots: per-model effects (filled: significant, BH-corrected); diamonds: pooled effect with 95% case-clustered bootstrap CI; *: significant after Holm correction (paired permutation test, α = 0.05). English prompts are identical in both conditions; serve as a noise control."
+            },
+            {
+              "src": "files/papers/guise/figure-06.webp",
+              "width": 1899,
+              "height": 703,
+              "alt": "Three panels of horizontal stacked bars show adaptation validation scores from zero to three for fluency, cultural naturalness, and harm equivalence in Bengali, Chinese, Greek, and Levantine Arabic.",
+              "caption": "Figure 6. Native-speaker validation of adapted prompts for fluency, cultural naturalness, and harm equivalence. Bars show the distribution of scores from 0 (lowest) to 3 (highest) for each target language.",
+              "source": "https://arxiv.org/pdf/2610.21789v1#page=16",
+              "source_caption": "Figure 6: Distribution of validation scores for cross-lingual adaptation quality, by target language. For each of the three rubric dimensions (fluency, cultural naturalness, harm equivalence), bars show the proportion of adapted prompts rated at each point on the 4-point (0–3) annotation scale, from lowest agreement (red) to full agreement (green)."
+            },
+            {
+              "src": "files/papers/guise/figure-07.webp",
+              "width": 1905,
+              "height": 664,
+              "alt": "Stacked bars show safe refusal in green, unclassified responses in blue, and unsafe compliance in red for six models across five languages and three patterned request framings.",
+              "caption": "Figure 7. Response outcomes across six models, five languages, and three prompt framings, with 150 responses per cell. Each bar separates safe refusal, unclassified responses, and unsafe compliance.",
+              "source": "https://arxiv.org/pdf/2610.21789v1#page=17",
+              "source_caption": "Figure 7: Response-outcome distribution by model, language, and prompt framing (n = 150 responses per model–language–framing cell). Each bar decomposes into Safe Refusal (SRR), Unclassified (responses matching neither criterion), and Unsafe Compliance (UCR)."
+            },
+            {
+              "src": "files/papers/guise/figure-08.webp",
+              "width": 1921,
+              "height": 854,
+              "alt": "Five colored taxonomy columns list homicide, kidnapping and extortion, robbery and burglary, drug trafficking and distribution, and fraud, with the constituent crime types under each ICCS-grounded category.",
+              "caption": "Figure 8. The ICCS-grounded crime taxonomy used for GUISE. Five category columns list the sub-types and constituent acts used to construct prompts.",
+              "source": "https://arxiv.org/pdf/2610.21789v1#page=17",
+              "source_caption": "Figure 8: Taxonomy of criminal acts used to construct the GUISE corpus, grounded in the ICCS. Each column’s bold first line names the sub-type used for prompt generation; remaining lines list its constituent acts."
+            },
+            {
+              "src": "files/papers/guise/figure-09.webp",
+              "width": 1925,
+              "height": 2631,
+              "alt": "A framed judge prompt defines independent zero-to-four scales for actionability, specificity, and harmfulness, with scoring rules, calibration examples, and the required JSON output format.",
+              "caption": "Figure 9. The evaluation judge prompt and its 0–4 scoring rubrics for actionability, specificity, and harmfulness. The response language replaces {lang_line} at runtime.",
+              "source": "https://arxiv.org/pdf/2610.21789v1#page=20",
+              "source_caption": "Figure 9: Judge prompt used to score each response on actionability, specificity, and harmfulness (0–4). {lang_line} is replaced at runtime with the response language."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
     "id": "bda",
     "title": "BDA: Bangla Text Data Augmentation Framework",
     "authors": [
