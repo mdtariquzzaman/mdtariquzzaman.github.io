@@ -54,7 +54,13 @@ html[data-motion=still] *,html[data-motion=still] *::before,html[data-motion=sti
 .publication-group>.publication-key{display:block;font-size:24px;font-weight:400;line-height:1.4}
 .publication-key span{white-space:nowrap}
 .header-controls{display:flex;align-items:center;gap:8px}
+/* Back to top sits at the bottom right at every width, beside the content when
+   the screen has room. With JavaScript it pops up once the page has scrolled
+   down and tucks away near the top (app.js); without it, it stays in place. */
 .back-to-top{position:fixed;right:max(16px,calc((100vw - var(--shell))/2 - 64px));bottom:max(16px,env(safe-area-inset-bottom));z-index:45;width:48px;height:48px;padding:10px}
+.js .back-to-top:not(.is-shown){visibility:hidden}
+.back-to-top.is-shown{animation:back-to-top-pop .16s steps(4,end) backwards}
+@keyframes back-to-top-pop{from{opacity:0;transform:translateY(12px)}}
 .back-to-top .icon{width:24px;height:24px}
 .group-count{margin-left:auto;font-size:22px}
 .empty-publications{padding:16px;background:var(--card);border:2px solid var(--frame-mid);font-size:14px}
@@ -144,7 +150,8 @@ html[data-motion=still] *,html[data-motion=still] *::before,html[data-motion=sti
 .favorite-link:hover{background:var(--fill-hover);color:var(--accent-strong)}
 }
 @media(max-width:1260px){
-a.back-to-top{position:static;flex:0 0 auto;width:44px;height:44px;padding:8px}
+/* Here the arrow overlaps the column, so the footer can scroll clear of it. */
+.page-publications .site-footer{margin-bottom:76px}
 }
 @media(max-width:1000px){
 .publications-summary{padding:16px;align-items:start}
@@ -163,6 +170,8 @@ a.back-to-top{position:static;flex:0 0 auto;width:44px;height:44px;padding:8px}
 }
 @media(max-width:600px){
 .publication-metrics{gap:12px 16px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.back-to-top{right:12px;bottom:max(12px,env(safe-area-inset-bottom));width:44px;height:44px;padding:8px}
+.page-publications .site-footer{margin-bottom:68px}
 .publication-metrics dd{font-size:36px}
 .publication-metrics dt{font-size:22px}
 .publication-metrics dt .icon{width:20px;height:20px}
@@ -196,11 +205,6 @@ a.back-to-top{position:static;flex:0 0 auto;width:44px;height:44px;padding:8px}
 .favorite-arrow .icon{width:16px;height:16px}
 }
 @media(max-width:360px){
-/* Publications also holds the back-to-top arrow in the title strip; its theme
-   button keeps only the icon there (the label stays in aria-label and title). */
-.header-title-strip{gap:8px}
-.header-controls{gap:6px}
-.page-publications .theme-toggle-mobile span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .personal-panel>h2{font-size:22px}
 .favorite-link{grid-template-columns:28px minmax(0,1fr) 14px;gap:6px;padding:7px 0}
 .favorite-order{font-size:18px}

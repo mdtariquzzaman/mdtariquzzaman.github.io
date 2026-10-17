@@ -235,7 +235,11 @@ class BuildTests(unittest.TestCase):
         self.assertTrue(link.find('svg'))
         self.assertNotIn('hidden', link.attrs)
         self.assertEqual(len(document.find(id='main')), 1)
-        self.assertEqual(len(document.find('header', 'site-header')[0].find('a', 'back-to-top')), 1)
+        # It floats at the bottom right, so it follows the footer rather than sitting in the header.
+        self.assertFalse(document.find('header', 'site-header')[0].find('a', 'back-to-top'))
+        shell = document.find('div', 'site-shell')[0]
+        order = [child.tag + '.' + child.attrs.get('class', '') for child in shell.children if not isinstance(child, str)]
+        self.assertEqual(order[-2:], ['footer.site-footer', 'a.btn back-to-top'])
         for slug in ('index', 'cv', 'personal'):
             other = parse(self.build['render'](slug, 'Title', 'Description', self.build['SITE'],
                                               '<p>Body</p>', current=slug))

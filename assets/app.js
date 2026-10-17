@@ -141,6 +141,21 @@
     paintGauge();
   }
 
+  // Back to top pops up at the bottom right once the page has scrolled down, and
+  // tucks away again near the top (interactions.css).
+  const backToTop = document.querySelector('.back-to-top');
+  if (backToTop) {
+    let backPending = false;
+    const syncBackToTop = () => {
+      backPending = false;
+      backToTop.classList.toggle('is-shown', window.scrollY > 160);
+    };
+    window.addEventListener('scroll', () => {
+      if (!backPending) { backPending = true; requestAnimationFrame(syncBackToTop); }
+    }, { passive: true });
+    syncBackToTop();
+  }
+
   // Accepted seals catch the light once, the first time each scrolls into view.
   const seals = document.querySelectorAll('.accepted-venue');
   if (seals.length && 'IntersectionObserver' in window) {
