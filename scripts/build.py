@@ -15,7 +15,7 @@ SITE = 'https://mdtariquzzaman.github.io/'
 ME = 'Md. Tariquzzaman'
 GSC_TOKEN = 'boT_CMjz6ow5mcyZhAbCVE0JK2v9CAJwCu424PfT1U0'
 BING_TOKEN = 'E9CE5F8AA8FFFD3C486CAF3DAAAACB56'
-ASSET_VERSION = '20261017continuous2'
+ASSET_VERSION = '20261017cv'
 SOCIAL_LINKS = (
     ('linkedin', 'LinkedIn', 'https://www.linkedin.com/in/md-tariquzzaman/'),
     ('bluesky', 'Bluesky', 'https://bsky.app/profile/mdtariquzzaman.bsky.social'),
@@ -311,7 +311,7 @@ social_links = ''.join(f'<a class="btn" data-kind="{name}" href="{escape(href, q
                        for name, label, href in SOCIAL_LINKS)
 pages = [('index', 'Home', 'LLM safety, cultural bias, AI creativity in storytelling, and accessibility research by Md. Tariquzzaman, Junior Lecturer at IUT.', read('home.html').replace('{{NEWS}}', news_html).replace('{{PERSONAL_TOPICS}}', personal_topics).replace('{{SOCIAL_LINKS}}', social_links)),
          ('publications', 'Publications', 'Publications, preprints, code, and datasets by Md. Tariquzzaman.', pub_body),
-         ('cv', 'CV', 'Education, research publications and experience, teaching experience, industry experience, and awards of Md. Tariquzzaman.', read('cv.html')),
+         ('cv', 'CV', 'Education, research and teaching experience, technical skills, industry experience, awards, certifications, and languages of Md. Tariquzzaman.', read('cv.html')),
          ('personal', 'Personal', 'Favorite anime, movies, TV shows, books, and sports beyond the academic work of Md. Tariquzzaman.', personal_body)]
 
 PERSON = {'@type': 'Person', '@id': SITE + '#person', 'name': ME,

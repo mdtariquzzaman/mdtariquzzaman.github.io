@@ -334,7 +334,8 @@ class BuildTests(unittest.TestCase):
 
     def test_section_navigation_keeps_native_anchors_for_mobile_enhancement(self):
         expected = {
-            'cv': ['Education', 'Research experience', 'Teaching experience', 'Industry experience', 'Awards'],
+            'cv': ['Education', 'Research experience', 'Technical skills', 'Teaching experience',
+                   'Industry experience', 'Awards', 'Certifications', 'Languages'],
             'personal': ['Anime', 'Movies', 'TV shows', 'Books', 'Sports'],
         }
         for slug, labels in expected.items():

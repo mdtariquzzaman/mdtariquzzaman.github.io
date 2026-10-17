@@ -169,7 +169,10 @@
       });
       if (mobile) {
         const heading = headings[active];
-        const visible = Boolean(heading && heading.getBoundingClientRect().bottom <= headerBottom);
+        const nextHeading = headings[active + 1];
+        const nextHeadingNearPlaque = nextHeading &&
+          nextHeading.getBoundingClientRect().top < headerBottom + currentPlaque.offsetHeight + 12;
+        const visible = Boolean(heading && heading.getBoundingClientRect().bottom <= headerBottom && !nextHeadingNearPlaque);
         const reveal = visible && (!plaqueVisible || active !== lastActive);
         if (active !== lastActive && active >= 0) renderCurrent(active);
         contents.toggleAttribute('data-contents-visible', visible);
