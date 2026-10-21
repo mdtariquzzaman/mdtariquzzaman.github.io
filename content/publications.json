@@ -1194,7 +1194,66 @@
     "summary": "BanglaShield tests safety classification across native-script, romanized, and code-mixed Bangla. It aligns 10,245 prompts from six sources, evaluates six LLMs and three guard models, and releases a compact classifier that reaches 87.8 macro-F1 on native-script prompts and 84.4 on romanized prompts.",
     "bibtex": "@misc{kabir2026banglashieldscriptrobustsafetyclassifier,\n      title={BanglaShield: A Script-Robust Safety Classifier and Benchmark for Bangla Native, Romanized, and Code-Mixed Prompts},\n      author={Mohsinul Kabir and Md. Tariquzzaman and Mohammad Rashidujjaman Rifat and Tharindu Ranasinghe and Nishat Raihan},\n      year={2026},\n      eprint={2610.24288},\n      archivePrefix={arXiv},\n      primaryClass={cs.CL},\n      url={https://arxiv.org/abs/2610.24288},\n}",
     "page": {
-      "tldr": "BanglaShield tests safety classification across native-script, romanized, and code-mixed Bangla. It aligns 10,245 prompts from six sources, evaluates six LLMs and three guard models, and releases a compact classifier that reaches 87.8 macro-F1 on native-script prompts and 84.4 on romanized prompts."
+      "figure_source": {
+        "url": "https://arxiv.org/pdf/2610.24288v1",
+        "sha256": "b0ea357a285b0bfe17777d7a56dab717139ffb94399641ef9b8f0376da5de3b8",
+        "version": "arXiv:2610.24288v1 (16 October 2026)",
+        "license": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/"
+      },
+      "teaser": {
+        "src": "files/papers/banglashield/figure-02.webp",
+        "width": 2040,
+        "height": 515,
+        "alt": "Pipeline diagram. Six Bangla resources feed a four-level safety taxonomy; prompts are rendered in Bangla script, romanized Bangla, and code-mixed forms, then split into paired train, validation, and test sets for the LLM benchmark and BanglaShield classifier.",
+        "caption": "Figure 2. Overview of BanglaShield. Six resources are mapped to a four-level taxonomy, every prompt is rendered in three aligned written forms, and the paired partition supports both the LLM benchmark and the training of the BanglaShield classifier. Counts refer to the full corpus. *BanglaEcomReviewCorpus negative reviews converted into benign prompts.",
+        "source": "https://arxiv.org/pdf/2610.24288v1#page=2",
+        "source_caption": "Figure 2: Overview of BANGLASHIELD. Six resources are mapped to a four-level taxonomy, every prompt is rendered in three aligned written forms, and the paired partition supports both the LLM benchmark and the training of the BANGLASHIELD classifier. Counts refer to the full corpus. * BanglaEcomReviewCorpus negative reviews converted into benign prompts."
+      },
+      "tldr": "BanglaShield tests safety classification across native-script, romanized, and code-mixed Bangla. It aligns 10,245 prompts from six sources, evaluates six LLMs and three guard models, and releases a compact classifier that reaches 87.8 macro-F1 on native-script prompts and 84.4 on romanized prompts.",
+      "sections": [
+        {
+          "id": "corpus",
+          "heading": "Paired Bangla safety benchmark",
+          "nav": "Benchmark",
+          "figures": [
+            {
+              "src": "files/papers/banglashield/figure-03.webp",
+              "width": 2000,
+              "height": 800,
+              "alt": "Three-panel chart showing label counts by source, Unicode-script shares for script, code-mixed, and romanized forms, and the code-mixing substitution-rate distribution.",
+              "caption": "Figure 3. Corpus statistics. (a) Label composition per source; the benign reviews supply most Safe items, while BanglaSafe is dominated by Severe items. (b) Share of letters by Unicode script in each test form. (c) Distribution of the realized word-substitution rate in the code-mixed test form (mean 0.40 +/- 0.07; English 1,229, Hindi 511, Urdu 309 prompts).",
+              "source": "https://arxiv.org/pdf/2610.24288v1#page=3",
+              "source_caption": "Figure 3: Corpus statistics. (a) Label composition per source; the benign reviews supply most Safe items, while BanglaSafe is dominated by Severe items. (b) Share of letters by Unicode script in each test form. (c) Distribution of the realized word-substitution rate in the code-mixed test form (mean 0.40 ± 0.07; English 1,229, Hindi 511, Urdu 309 prompts)."
+            }
+          ]
+        },
+        {
+          "id": "results",
+          "heading": "Script-robust evaluation",
+          "nav": "Results",
+          "figures": [
+            {
+              "src": "files/papers/banglashield/figure-07.webp",
+              "width": 1100,
+              "height": 550,
+              "alt": "Dot plot of macro-F1 for BanglaShield and six language models across Bangla-script, code-mixed, and romanized prompts, with the romanization change shown at right.",
+              "caption": "Figure 7. Macro-F1 of each system on the three forms of the same items; Delta Rom. is the change from Bangla script to romanized. Command A+ drops most.",
+              "source": "https://arxiv.org/pdf/2610.24288v1#page=7",
+              "source_caption": "Figure 7: [M-F1↑] Macro-F1 of each system on the three forms of the same items; ΔRom. is the change from Bangla script to romanized. Command A+ drops most."
+            },
+            {
+              "src": "files/papers/banglashield/figure-08.webp",
+              "width": 1050,
+              "height": 330,
+              "alt": "Heatmap of BanglaShield macro-F1 when trained on script, code-mixed, romanized, or all three forms and tested on each form.",
+              "caption": "Figure 8. BanglaShield trained on one written form or on all three (full model), tested on each form. Only pooled training is strong on every form.",
+              "source": "https://arxiv.org/pdf/2610.24288v1#page=8",
+              "source_caption": "Figure 8: [M-F1↑] BANGLASHIELD trained on one written form or on all three (full model), tested on each form. Only pooled training is strong on every form."
+            }
+          ]
+        }
+      ]
     },
     "date": "2026-10-16"
   }
