@@ -444,7 +444,6 @@
     "award_url": "https://blp-workshop.github.io/2023/awards",
     "type": "workshop",
     "areas": [
-      "Bangla NLP",
       "LLM safety"
     ],
     "pdf": "https://aclanthology.org/2023.banglalp-1.26.pdf",

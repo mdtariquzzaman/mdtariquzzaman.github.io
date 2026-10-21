@@ -312,7 +312,7 @@ personal_topics = '<ul class="topic-grid" role="list">' + ''.join(
 social_links = ''.join(f'<a class="btn" data-kind="{name}" href="{escape(href, quote=True)}">'
                        f'{icon(name)}<span>{label}</span>{icon("external", "icon icon-trail")}</a>'
                        for name, label, href in SOCIAL_LINKS)
-pages = [('index', 'Home', 'LLM safety, cultural bias, AI creativity in storytelling, and accessibility research by Md. Tariquzzaman, Junior Lecturer at IUT.', read('home.html').replace('{{NEWS}}', news_html).replace('{{PERSONAL_TOPICS}}', personal_topics).replace('{{SOCIAL_LINKS}}', social_links)),
+pages = [('index', 'Home', 'LLM safety, cultural bias, AI creativity in storytelling, and research in low-resource NLP methods by Md. Tariquzzaman, Junior Lecturer at IUT.', read('home.html').replace('{{NEWS}}', news_html).replace('{{PERSONAL_TOPICS}}', personal_topics).replace('{{SOCIAL_LINKS}}', social_links)),
          ('publications', 'Publications', 'Publications, preprints, code, and datasets by Md. Tariquzzaman.', pub_body),
          ('cv', 'CV', 'Education, research and teaching experience, technical skills, industry experience, awards, certifications, and languages of Md. Tariquzzaman.', read('cv.html')),
          ('personal', 'Personal', 'Favorite anime, movies, TV shows, books, and sports beyond the academic work of Md. Tariquzzaman.', personal_body)]
@@ -323,7 +323,7 @@ PERSON = {'@type': 'Person', '@id': SITE + '#person', 'name': ME,
           'affiliation': {'@type': 'CollegeOrUniversity', 'name': 'Islamic University of Technology', 'url': 'https://www.iutoic-dhaka.edu/'},
           'memberOf': {'@type': 'ResearchOrganization', 'name': 'Systems and Software Lab', 'url': 'https://cse.iutoic-dhaka.edu/ssl'},
           'alumniOf': {'@type': 'CollegeOrUniversity', 'name': 'Islamic University of Technology'},
-          'knowsAbout': ['LLM safety', 'Cultural bias', 'AI creativity & storytelling', 'Accessibility'],
+          'knowsAbout': ['LLM safety', 'Cultural bias', 'AI creativity & storytelling', 'Low resource methods for NLP'],
           'sameAs': ['https://scholar.google.com/citations?user=LWB_NzwAAAAJ', 'https://github.com/mdtariquzzaman', 'https://www.linkedin.com/in/md-tariquzzaman/', 'https://bsky.app/profile/mdtariquzzaman.bsky.social', 'https://x.com/mdtariquzzaman_', 'https://orcid.org/0009-0002-3322-8741', 'https://huggingface.co/md-tariquzzaman']}
 
 def ld(payload):
@@ -423,6 +423,6 @@ Allow: /
 
 Sitemap: {SITE}sitemap.xml
 ''')
-llms = '# Md. Tariquzzaman\n\nAcademic website: '+SITE+'\n\nResearch: LLM safety; cultural bias; AI creativity in storytelling; accessibility. I am particularly interested in applying language models to real-world problems.\n\n## Profiles\n- [Bluesky](https://bsky.app/profile/mdtariquzzaman.bsky.social)\n- [X](https://x.com/mdtariquzzaman_)\n\n## Pages\n- [Publications]('+SITE+'publications.html)\n- [CV]('+SITE+'cv.html)\n\n## Publications\n' + ''.join(f'- [{p["title"]}]({SITE}publications.html#{p["id"]})\n' for p in papers)
+llms = '# Md. Tariquzzaman\n\nAcademic website: '+SITE+'\n\nResearch: LLM safety; cultural bias; AI creativity in storytelling; Low resource methods for NLP. I am particularly interested in applying language models to real-world problems.\n\n## Profiles\n- [Bluesky](https://bsky.app/profile/mdtariquzzaman.bsky.social)\n- [X](https://x.com/mdtariquzzaman_)\n\n## Pages\n- [Publications]('+SITE+'publications.html)\n- [CV]('+SITE+'cv.html)\n\n## Publications\n' + ''.join(f'- [{p["title"]}]({SITE}publications.html#{p["id"]})\n' for p in papers)
 (ROOT / 'llms.txt').write_text(llms)
 print(f'Built {len(pages)} static pages, {len(papers)} paper redirects, plus 404.html, sitemap.xml, robots.txt, and llms.txt.')
