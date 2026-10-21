@@ -1164,5 +1164,38 @@
       ]
     },
     "date": "2026-10-15"
+  },
+  {
+    "id": "banglashield",
+    "title": "BanglaShield: A Script-Robust Safety Classifier and Benchmark for Bangla Native, Romanized, and Code-Mixed Prompts",
+    "authors": [
+      "Mohsinul Kabir",
+      "Md. Tariquzzaman",
+      "Mohammad Rashidujjaman Rifat",
+      "Tharindu Ranasinghe",
+      "Nishat Raihan"
+    ],
+    "year": "2026",
+    "venue": "arXiv preprint arXiv:2610.24288 (2026)",
+    "status": "Preprint",
+    "links": {
+      "Paper": "https://arxiv.org/abs/2610.24288",
+      "Code & Data": "https://github.com/mraihan-gmu/BanglaShield-Model-Benchmark",
+      "Dataset": "https://huggingface.co/datasets/md-nishat-008/BanglaShield-Dataset"
+    },
+    "award": "",
+    "type": "preprint",
+    "areas": [
+      "LLM safety"
+    ],
+    "arxiv": "2610.24288",
+    "pdf": "https://arxiv.org/pdf/2610.24288",
+    "abstract": "Safety classifiers for large language models (LLMs) are typically built and evaluated on standard-script text, yet Bangla, like many lower-resource languages, is routinely written in native script, in Latin-script romanization, and code-mixed with English, Hindi, or Urdu. We introduce BanglaShield, a resource and model for graded prompt-safety classification across these written forms. We consolidate 10,245 Bangla prompts from six sources under a four-level taxonomy (Safe, Offensive, Harmful, Severe) and render each prompt in three aligned forms that share labels and a group-aware split, enabling strictly paired comparisons. Benchmarking six contemporary LLMs, including a Bangla-specialized one, on 36,882 classification queries and 24,318 judged responses, we find that LLM classifiers label 47.0% of unsafe native-script prompts as Safe, rising to 63.4% under romanization, while response-level safety accuracy drops by 10.3 points. Three multilingual guard models also pass 30.3-57.3% of unsafe native-script prompts. Using a model's own classification as an input filter reduces harmful compliance by only about five points. In contrast, BanglaShield, a compact fine-tuned encoder, reaches 87.8 macro-F1 on native-script and 84.4 on romanized prompts, outperforming the best LLM on each form by 42.8-46.1 points with ~130x fewer parameters than Gemma 4 31B. We release the corpus, splits, judgments, and model.",
+    "summary": "BanglaShield tests safety classification across native-script, romanized, and code-mixed Bangla. It aligns 10,245 prompts from six sources, evaluates six LLMs and three guard models, and releases a compact classifier that reaches 87.8 macro-F1 on native-script prompts and 84.4 on romanized prompts.",
+    "bibtex": "@misc{kabir2026banglashieldscriptrobustsafetyclassifier,\n      title={BanglaShield: A Script-Robust Safety Classifier and Benchmark for Bangla Native, Romanized, and Code-Mixed Prompts},\n      author={Mohsinul Kabir and Md. Tariquzzaman and Mohammad Rashidujjaman Rifat and Tharindu Ranasinghe and Nishat Raihan},\n      year={2026},\n      eprint={2610.24288},\n      archivePrefix={arXiv},\n      primaryClass={cs.CL},\n      url={https://arxiv.org/abs/2610.24288},\n}",
+    "page": {
+      "tldr": "BanglaShield tests safety classification across native-script, romanized, and code-mixed Bangla. It aligns 10,245 prompts from six sources, evaluates six LLMs and three guard models, and releases a compact classifier that reaches 87.8 macro-F1 on native-script prompts and 84.4 on romanized prompts."
+    },
+    "date": "2026-10-16"
   }
 ]
