@@ -1,7 +1,15 @@
 [
   {
     "date": "Oct 2026",
-    "text": "<a href=\"publications.html#guise\">In the Guise of Correction</a> released on arXiv, introducing GUISE for LLM safety evaluation across framings and cultures."
+    "text": "<a href=\"publications.html#banglashield\">BanglaShield</a> released as an arXiv preprint, introducing a safety classifier and benchmark for native-script, romanized, and code-mixed Bangla prompts."
+  },
+  {
+    "date": "Oct 2026",
+    "text": "<a href=\"publications.html#guise\">In the Guise of Correction</a> released as an arXiv preprint, introducing GUISE for LLM safety evaluation across framings and cultures."
+  },
+  {
+    "date": "Oct 2026",
+    "text": "<a href=\"publications.html#nonlinear-narrative\">Can LLMs Tell Stories Out of Order?</a> released as an arXiv preprint, introducing a corpus and benchmark for nonlinear narrative generation."
   },
   {
     "date": "Mar 2026",

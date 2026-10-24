@@ -201,7 +201,7 @@ class BuildTests(unittest.TestCase):
     def test_publications_mix_types_in_one_reverse_chronological_catalogue(self):
         tree = parse(self.build['pub_body'])
         sections = tree.find('section', 'publication-group')
-        expected_order = ['guise', 'nonlinear-narrative', 'scenario-bias',
+        expected_order = ['banglashield', 'guise', 'nonlinear-narrative', 'scenario-bias',
                           'sign-parameters', 'bda', 'informal-bangla']
         self.assertEqual(len(sections), 1)
         catalogue = sections[0]
@@ -282,7 +282,7 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(context['labels_by_id'], {'guise': 'P2', 'nonlinear-narrative': 'P1'})
 
     def test_publication_type_counters_and_legacy_anchors_survive_combined_catalogue(self):
-        expected_labels = {'guise': 'P3', 'nonlinear-narrative': 'P2', 'scenario-bias': 'C1',
+        expected_labels = {'banglashield': 'P4', 'guise': 'P3', 'nonlinear-narrative': 'P2', 'scenario-bias': 'C1',
                            'sign-parameters': 'W2', 'bda': 'P1', 'informal-bangla': 'W1'}
         self.assertEqual(self.build['labels_by_id'], expected_labels)
         tree = parse(self.build['pub_body'])
@@ -290,8 +290,8 @@ class BuildTests(unittest.TestCase):
             article = tree.find('article', 'publication', id=identifier)[0]
             self.assertEqual(article.find('div', 'pub-year')[0].text(), label)
         legacy = {'conference-papers': 'scenario-bias', 'workshop-papers': 'sign-parameters',
-                  'preprints': 'guise', 'peer-reviewed': 'scenario-bias',
-                  'year-2026': 'guise', 'year-2025': 'sign-parameters',
+                  'preprints': 'banglashield', 'peer-reviewed': 'scenario-bias',
+                  'year-2026': 'banglashield', 'year-2025': 'sign-parameters',
                   'year-2024': 'bda', 'year-2023': 'informal-bangla'}
         for anchor, identifier in legacy.items():
             with self.subTest(anchor=anchor):
@@ -308,7 +308,7 @@ class BuildTests(unittest.TestCase):
         tree = parse(context['pub_body'])
         section = tree.find('section', id='publication-list')[0]
         self.assertEqual([article.attrs['id'] for article in section.find('article', 'publication')],
-                         ['guise', 'nonlinear-narrative', 'scenario-bias', 'test-journal',
+                         ['banglashield', 'guise', 'nonlinear-narrative', 'scenario-bias', 'test-journal',
                           'sign-parameters', 'bda', 'informal-bangla'])
         self.assertEqual(len(tree.find('section', 'publication-group')), 1)
         self.assertEqual(context['labels_by_id']['test-journal'], 'J1')

@@ -156,17 +156,28 @@
     syncBackToTop();
   }
 
-  // Accepted seals catch the light once, the first time each scrolls into view.
+  // Accepted bands loop while visible; hold them off-screen, in hidden tabs,
+  // and whenever decorative motion is paused or reduced.
   const seals = document.querySelectorAll('.accepted-venue');
   if (seals.length && 'IntersectionObserver' in window) {
-    const shine = new IntersectionObserver((entries) => {
+    const visibleSeals = new Set();
+    const syncSeals = () => {
+      const live = !document.hidden && !siteMotion.reduced;
+      seals.forEach(seal => seal.classList.toggle('is-animating', live && visibleSeals.has(seal)));
+    };
+    const sealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        shine.unobserve(entry.target);
-        if (!siteMotion.reduced) entry.target.classList.add('is-glinting');
+        if (entry.isIntersecting) visibleSeals.add(entry.target);
+        else visibleSeals.delete(entry.target);
       });
-    }, { rootMargin: `-${(siteHeader?.offsetHeight || 0) + 12}px 0px -8% 0px`, threshold: 0.9 });
-    seals.forEach(seal => shine.observe(seal));
+      syncSeals();
+    }, { rootMargin: `-${(siteHeader?.offsetHeight || 0) + 12}px 0px 0px 0px`, threshold: 0 });
+    seals.forEach((seal, index) => {
+      seal.style.setProperty('--accepted-phase', `${index * -1.6}s`);
+      sealObserver.observe(seal);
+    });
+    siteMotion.subscribe(syncSeals);
+    document.addEventListener('visibilitychange', syncSeals);
   }
 
   if (menuButton && nav) {

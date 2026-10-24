@@ -5,23 +5,23 @@
 .profile-art{position:relative}
 .scene-canvas{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;pointer-events:none}
 .profile-art.is-still img{opacity:0}
-/* Small motions, all in whole steps: a menu cursor nudges while an item is
-   pointed at, icons hop once, drawers open like a game window, and an accepted
-   seal catches the light the first time it scrolls into view (app.js). */
+/* Menu feedback stays stepped; accepted badges use a slow, smooth tonal loop. */
 @keyframes cursor-nudge{50%{transform:translateX(2px)}}
 .site-header nav a:hover .nav-cursor,.site-header nav a:focus-visible .nav-cursor,.interest-grid>a:hover .menu-cursor,.interest-grid>a:focus-visible .menu-cursor{animation:cursor-nudge .8s steps(1,end) infinite}
 @keyframes icon-hop{0%{transform:translateY(-2px)}}
 .social-links>.btn:hover>.icon:first-child,.topic-grid a:hover .icon,.personal-topics a:hover .icon,.back-to-top:hover .icon{animation:icon-hop .2s steps(1,end)}
 @keyframes window-open{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0)}}
 .pub-drawer[open],.news-archive[open]{animation:window-open .16s steps(4,start)}
-.accepted-head{position:relative}
-.accepted-venue.is-glinting .accepted-head::before{content:'';position:absolute;left:16px;top:0;width:2px;height:2px;pointer-events:none;animation:seal-glint .72s steps(1,end) both}
-@keyframes seal-glint{
-  0%,100%{background:transparent;box-shadow:none}
-  16%,84%{background:var(--glint);box-shadow:none}
-  32%,68%{background:var(--glint);box-shadow:-2px 0 var(--glint),2px 0 var(--glint),0 -2px var(--glint),0 2px var(--glint)}
-  50%{background:var(--glint);box-shadow:-2px 0 var(--glint),2px 0 var(--glint),0 -2px var(--glint),0 2px var(--glint),-4px 0 var(--gold-rule),4px 0 var(--gold-rule),0 -4px var(--gold-rule),0 4px var(--gold-rule)}
-}
+/* Only the background and a fixed inset rim change intensity. Seal, label,
+   venue text, and frame geometry stay still throughout the seamless loop. */
+.accepted-venue{position:relative;isolation:isolate}
+.accepted-venue>span{position:relative;z-index:1}
+.accepted-venue::before,.accepted-venue::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;animation-duration:7s;animation-delay:var(--accepted-phase,0s);animation-timing-function:cubic-bezier(.45,0,.55,1);animation-iteration-count:infinite;animation-play-state:paused}
+.accepted-venue::before{background:var(--glint);animation-name:accepted-tone}
+.accepted-venue::after{border:1px solid var(--gold);animation-name:accepted-rim}
+.accepted-venue.is-animating::before,.accepted-venue.is-animating::after{animation-play-state:running}
+@keyframes accepted-tone{0%,100%{opacity:0}50%{opacity:.07}}
+@keyframes accepted-rim{0%,100%{opacity:0}50%{opacity:.55}}
 /* Day and night: the new palette dissolves in through a 4×4 ordered dither, two
    CSS pixels per mask pixel, in eight steps (View Transitions; app.js switches
    instantly without them or while motion is reduced or held). */
