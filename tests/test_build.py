@@ -386,7 +386,7 @@ class BuildTests(unittest.TestCase):
                    'publications': build['ld']({'@context': 'https://schema.org', '@graph': [build['PERSON']] + [build['publication_schema'](paper) for paper in build['papers']]})}
         for slug, title, description, body in build['pages']:
             canonical = build['SITE'] + ('' if slug == 'index' else slug + '.html')
-            page_title = 'Md. Tariquzzaman · Junior Lecturer & NLP Researcher at IUT' if slug == 'index' else title + ' · Md. Tariquzzaman'
+            page_title = 'Md. Tariquzzaman · Junior Lecturer at IUT' if slug == 'index' else title + ' · Md. Tariquzzaman'
             expected = build['render'](slug, page_title, description, canonical, body, current=slug, head_extra=schemas.get(slug, ''))
             with self.subTest(page=slug):
                 self.assertEqual((ROOT / f'{slug}.html').read_text(), expected)
