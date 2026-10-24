@@ -15,7 +15,7 @@ SITE = 'https://mdtariquzzaman.github.io/'
 ME = 'Md. Tariquzzaman'
 GSC_TOKEN = 'boT_CMjz6ow5mcyZhAbCVE0JK2v9CAJwCu424PfT1U0'
 BING_TOKEN = 'E9CE5F8AA8FFFD3C486CAF3DAAAACB56'
-ASSET_VERSION = '20261022badge-soft'
+ASSET_VERSION = '20261024interests'
 SOCIAL_LINKS = (
     ('linkedin', 'LinkedIn', 'https://www.linkedin.com/in/md-tariquzzaman/'),
     ('bluesky', 'Bluesky', 'https://bsky.app/profile/mdtariquzzaman.bsky.social'),
@@ -252,11 +252,11 @@ if len(ordered_news) > 3:
     news_html += (f'<details class="news-archive"><summary>Earlier updates '
                   f'<span class="archive-count">({len(ordered_news)-3})</span></summary>'
                   f'{news_list(ordered_news[3:])}</details>')
-# Home's interest cards link to the four research-area anchors. Each area anchor is
-# placed before the first paper carrying it in the shared chronological catalogue.
-# New interest areas get stable anchors as their publication records arrive. Keep the
-# older anchors because existing links may still point to the historical topics.
-AREA_ANCHOR_FOR = {'LLM safety': 'safety', 'Cultural bias': 'cultural-bias',
+# Home's three interest cards link to the Publications catalogue. Research-area
+# anchors remain before the first matching paper, including historical topic links.
+# New labels share the existing anchors without changing approved paper metadata.
+AREA_ANCHOR_FOR = {'Safety': 'safety', 'Creativity': 'creativity', 'Cultural Bias': 'cultural-bias',
+                   'LLM safety': 'safety', 'Cultural bias': 'cultural-bias',
                    'AI creativity & storytelling': 'creativity', 'Accessibility': 'accessibility',
                    'Misinformation': 'misinformation', 'LLM evaluation': 'evaluation',
                    'Bangla NLP': 'bangla'}
@@ -312,7 +312,7 @@ personal_topics = '<ul class="topic-grid" role="list">' + ''.join(
 social_links = ''.join(f'<a class="btn" data-kind="{name}" href="{escape(href, quote=True)}">'
                        f'{icon(name)}<span>{label}</span>{icon("external", "icon icon-trail")}</a>'
                        for name, label, href in SOCIAL_LINKS)
-pages = [('index', 'Home', 'LLM safety, cultural bias, AI creativity in storytelling, and research in low-resource NLP methods by Md. Tariquzzaman, Junior Lecturer at IUT.', read('home.html').replace('{{NEWS}}', news_html).replace('{{PERSONAL_TOPICS}}', personal_topics).replace('{{SOCIAL_LINKS}}', social_links)),
+pages = [('index', 'Home', 'Safety, creativity, and cultural bias in large language models: research by Md. Tariquzzaman, Junior Lecturer at IUT.', read('home.html').replace('{{NEWS}}', news_html).replace('{{PERSONAL_TOPICS}}', personal_topics).replace('{{SOCIAL_LINKS}}', social_links)),
          ('publications', 'Publications', 'Publications, preprints, code, and datasets by Md. Tariquzzaman.', pub_body),
          ('cv', 'CV', 'Education, research and teaching experience, technical skills, industry experience, awards, certifications, and languages of Md. Tariquzzaman.', read('cv.html')),
          ('personal', 'Personal', 'Favorite anime, movies, TV shows, books, and sports beyond the academic work of Md. Tariquzzaman.', personal_body)]
@@ -323,7 +323,7 @@ PERSON = {'@type': 'Person', '@id': SITE + '#person', 'name': ME,
           'affiliation': {'@type': 'CollegeOrUniversity', 'name': 'Islamic University of Technology', 'url': 'https://www.iutoic-dhaka.edu/'},
           'memberOf': {'@type': 'ResearchOrganization', 'name': 'Systems and Software Lab', 'url': 'https://cse.iutoic-dhaka.edu/ssl'},
           'alumniOf': {'@type': 'CollegeOrUniversity', 'name': 'Islamic University of Technology'},
-          'knowsAbout': ['LLM safety', 'Cultural bias', 'AI creativity & storytelling', 'Low resource methods for NLP'],
+          'knowsAbout': ['Safety', 'Creativity', 'Cultural Bias'],
           'sameAs': ['https://scholar.google.com/citations?user=LWB_NzwAAAAJ', 'https://github.com/mdtariquzzaman', 'https://www.linkedin.com/in/md-tariquzzaman/', 'https://bsky.app/profile/mdtariquzzaman.bsky.social', 'https://x.com/mdtariquzzaman_', 'https://orcid.org/0009-0002-3322-8741', 'https://huggingface.co/md-tariquzzaman']}
 
 def ld(payload):
@@ -423,6 +423,6 @@ Allow: /
 
 Sitemap: {SITE}sitemap.xml
 ''')
-llms = '# Md. Tariquzzaman\n\nAcademic website: '+SITE+'\n\nResearch: LLM safety; cultural bias; AI creativity in storytelling; Low resource methods for NLP. I am particularly interested in applying language models to real-world problems.\n\n## Profiles\n- [Bluesky](https://bsky.app/profile/mdtariquzzaman.bsky.social)\n- [X](https://x.com/mdtariquzzaman_)\n\n## Pages\n- [Publications]('+SITE+'publications.html)\n- [CV]('+SITE+'cv.html)\n\n## Publications\n' + ''.join(f'- [{p["title"]}]({SITE}publications.html#{p["id"]})\n' for p in papers)
+llms = '# Md. Tariquzzaman\n\nAcademic website: '+SITE+'\n\nResearch: Safety; Creativity; Cultural Bias in large language models. I study how cultural context, task framing, and data contamination shape their behavior. I aim to build trustworthy and reliable language models with creative capabilities to solve real-world problems.\n\n## Profiles\n- [Bluesky](https://bsky.app/profile/mdtariquzzaman.bsky.social)\n- [X](https://x.com/mdtariquzzaman_)\n\n## Pages\n- [Publications]('+SITE+'publications.html)\n- [CV]('+SITE+'cv.html)\n\n## Publications\n' + ''.join(f'- [{p["title"]}]({SITE}publications.html#{p["id"]})\n' for p in papers)
 (ROOT / 'llms.txt').write_text(llms)
 print(f'Built {len(pages)} static pages, {len(papers)} paper redirects, plus 404.html, sitemap.xml, robots.txt, and llms.txt.')

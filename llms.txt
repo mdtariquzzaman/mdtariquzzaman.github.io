@@ -2,7 +2,7 @@
 
 Academic website: https://mdtariquzzaman.github.io/
 
-Research: LLM safety; cultural bias; AI creativity in storytelling; Low resource methods for NLP. I am particularly interested in applying language models to real-world problems.
+Research: Safety; Creativity; Cultural Bias in large language models. I study how cultural context, task framing, and data contamination shape their behavior. I aim to build trustworthy and reliable language models with creative capabilities to solve real-world problems.
 
 ## Profiles
 - [Bluesky](https://bsky.app/profile/mdtariquzzaman.bsky.social)
