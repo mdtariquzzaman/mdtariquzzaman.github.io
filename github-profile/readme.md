@@ -15,7 +15,7 @@
   <a href="https://mdtariquzzaman.github.io/files/cv/tariq.pdf"><img src="https://img.shields.io/badge/Download_CV-68665d?style=flat-square" width="116" alt="Download CV"></a>
 </p>
 
-I work on natural language processing. I’m a Junior Lecturer in Computer Science & Engineering at the [Islamic University of Technology](https://www.iutoic-dhaka.edu/), based in Dhaka, Bangladesh, and a member of the [Systems and Software Lab (SSL)](https://cse.iutoic-dhaka.edu/ssl).
+I research safety, creativity, and cultural bias in large language models. I’m a Junior Lecturer in Computer Science & Engineering at the [Islamic University of Technology](https://www.iutoic-dhaka.edu/), based in Dhaka, Bangladesh, and a member of the [Systems and Software Lab (SSL)](https://cse.iutoic-dhaka.edu/ssl).
 
 <h2>
   <picture>
@@ -27,19 +27,9 @@ I work on natural language processing. I’m a Junior Lecturer in Computer Scien
   </picture>
 </h2>
 
-<p align="center">
-  <picture>
-    <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="assets/research-domains-night-mobile.png">
-    <source media="(max-width: 600px)" srcset="assets/research-domains-day-mobile.png">
-    <source media="(prefers-color-scheme: dark)" srcset="assets/research-domains-night.png">
-    <img src="assets/research-domains-day.png" width="960" alt="Four pixel-framed research-interest cards with shield, cultural-context, storytelling, and visual-instruction icons.">
-  </picture>
-</p>
-
-- <a href="https://mdtariquzzaman.github.io/publications.html"><img src="https://img.shields.io/badge/LLM_safety-a3864e?style=flat-square" width="90" alt="LLM safety"></a> Exploring safer behavior in language models.
-- <a href="https://mdtariquzzaman.github.io/publications.html"><img src="https://img.shields.io/badge/Cultural_bias-a3864e?style=flat-square" width="103" alt="Cultural bias"></a> Evaluating how cultural context and identity shape LLM judgments.
-- <a href="https://mdtariquzzaman.github.io/publications.html"><img src="https://img.shields.io/badge/AI_creativity_%26_storytelling-a3864e?style=flat-square" width="202" alt="AI creativity &amp; storytelling"></a> Exploring how language models create and structure stories.
-- <a href="https://mdtariquzzaman.github.io/publications.html"><img src="https://img.shields.io/badge/Accessibility-a3864e?style=flat-square" width="100" alt="Accessibility"></a> Using vision-language models to support sign-language learning.
+- <a href="https://mdtariquzzaman.github.io/publications.html"><img src="https://img.shields.io/badge/Safety-a3864e?style=flat-square" width="68" alt="Safety"></a> Studying the safety and reliability of language models.
+- <a href="https://mdtariquzzaman.github.io/publications.html"><img src="https://img.shields.io/badge/Creativity-a3864e?style=flat-square" width="90" alt="Creativity"></a> Understanding creative capabilities in language models.
+- <a href="https://mdtariquzzaman.github.io/publications.html"><img src="https://img.shields.io/badge/Cultural_Bias-a3864e?style=flat-square" width="103" alt="Cultural Bias"></a> Examining how cultural context shapes model judgments.
 
 <h2>
   <picture>
