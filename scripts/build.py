@@ -384,7 +384,7 @@ schemas = {'index': ld({'@context': 'https://schema.org', **PERSON}),
            'publications': ld({'@context': 'https://schema.org', '@graph': [PERSON] + [publication_schema(p) for p in papers]})}
 for slug, title, description, body in pages:
     canonical = SITE + ('' if slug == 'index' else slug + '.html')
-    page_title = 'Md. Tariquzzaman · Junior Lecturer at IUT' if slug == 'index' else title + ' · Md. Tariquzzaman'
+    page_title = 'Md. Tariquzzaman - Junior Lecturer at IUT' if slug == 'index' else title + ' · Md. Tariquzzaman'
     (ROOT / (slug + '.html')).write_text(render(slug, page_title, description, canonical, body, current=slug, head_extra=schemas.get(slug, '')))
 
 # Paper pages were folded into the Publications listing. Old /publications/<id>/ links land on the entry.
