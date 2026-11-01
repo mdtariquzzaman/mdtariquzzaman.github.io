@@ -369,6 +369,28 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(scene.attrs.get('data-scene'), 'reading-corner')
         self.assertEqual(len(scene.find('img')), 1)
 
+    def test_playful_scenes_keep_static_fallbacks_and_direct_navigation(self):
+        home = parse((ROOT / 'index.html').read_text())
+        cards = home.find('div', 'interest-grid')[0].find('a')
+        self.assertEqual([card.find('h3')[0].text() for card in cards], ['Safety', 'Inclusivity', 'Creativity'])
+        self.assertTrue(all(card.attrs['href'] == 'publications.html' for card in cards))
+        scenes = home.find('span', 'interest-scene')
+        self.assertEqual([scene.attrs['data-scene'] for scene in scenes],
+                         ['interest-safety', 'interest-inclusivity', 'interest-creativity'])
+        for scene in scenes:
+            self.assertEqual(scene.attrs['aria-hidden'], 'true')
+            self.assertTrue(scene.find('svg'))
+            self.assertFalse(scene.find('canvas'))
+        # The greeting button is a JS enhancement; the unscripted picture stays visible.
+        self.assertFalse(home.find('button', 'cat-hello'))
+        self.assertEqual(len(home.find('figure', 'profile-art')[0].find('img')), 1)
+        not_found = parse((ROOT / '404.html').read_text())
+        companion = not_found.find('span', 'not-found-companion')[0]
+        self.assertEqual(companion.attrs['data-scene'], 'sentinel-404')
+        self.assertTrue(companion.find('svg'))
+        app = (ROOT / 'assets' / 'app.js').read_text()
+        self.assertIn("new CustomEvent('site:celebrate'", app)
+
     def test_theme_color_meta_matches_page_backgrounds(self):
         css = (ROOT / 'assets' / 'style.css').read_text()
         day = css.split(':root{', 1)[1].split('--bg:', 1)[1][:7]

@@ -15,7 +15,7 @@
   <a href="https://mdtariquzzaman.github.io/files/cv/tariq.pdf"><img src="https://img.shields.io/badge/Download_CV-68665d?style=flat-square" width="116" alt="Download CV"></a>
 </p>
 
-I research safety, creativity, and cultural bias in large language models. I’m a Junior Lecturer in Computer Science & Engineering at the [Islamic University of Technology](https://www.iutoic-dhaka.edu/), based in Dhaka, Bangladesh, and a member of the [Systems and Software Lab (SSL)](https://cse.iutoic-dhaka.edu/ssl).
+My research interests are safety and robustness of large language models; inclusivity across languages and cultures; benchmark contamination; and creativity and storytelling. I’m a Junior Lecturer in Computer Science & Engineering at the [Islamic University of Technology](https://www.iutoic-dhaka.edu/), based in Dhaka, Bangladesh, and a member of the [Systems and Software Lab (SSL)](https://cse.iutoic-dhaka.edu/ssl).
 
 <h2>
   <picture>
@@ -27,9 +27,9 @@ I research safety, creativity, and cultural bias in large language models. I’m
   </picture>
 </h2>
 
-- <a href="https://mdtariquzzaman.github.io/publications.html"><img src="https://img.shields.io/badge/Safety-a3864e?style=flat-square" width="68" alt="Safety"></a> Studying the safety and reliability of language models.
-- <a href="https://mdtariquzzaman.github.io/publications.html"><img src="https://img.shields.io/badge/Creativity-a3864e?style=flat-square" width="90" alt="Creativity"></a> Understanding creative capabilities in language models.
-- <a href="https://mdtariquzzaman.github.io/publications.html"><img src="https://img.shields.io/badge/Cultural_Bias-a3864e?style=flat-square" width="103" alt="Cultural Bias"></a> Examining how cultural context shapes model judgments.
+- <a href="https://mdtariquzzaman.github.io/publications.html"><img src="https://img.shields.io/badge/Safety-a3864e?style=flat-square" width="68" alt="Safety"></a> Studying safety and robustness in large language models, including benchmark contamination.
+- <a href="https://mdtariquzzaman.github.io/publications.html"><img src="https://img.shields.io/badge/Inclusivity-a3864e?style=flat-square" width="86" alt="Inclusivity"></a> Examining inclusivity across languages and cultures.
+- <a href="https://mdtariquzzaman.github.io/publications.html"><img src="https://img.shields.io/badge/Creativity-a3864e?style=flat-square" width="90" alt="Creativity"></a> Exploring creativity and storytelling with language models.
 
 <h2>
   <picture>

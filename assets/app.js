@@ -435,6 +435,7 @@
         const label = button.querySelector('.copy-label') || button;
         label.textContent = 'Copied BibTeX';
         button.classList.add('is-copied');
+        document.dispatchEvent(new CustomEvent('site:celebrate', { detail: { anchor: button } }));
         window.setTimeout(() => { label.textContent = 'Copy BibTeX'; button.classList.remove('is-copied'); }, 1600);
       } catch (_) {
         target.focus();

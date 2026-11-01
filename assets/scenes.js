@@ -1,4 +1,4 @@
-// Pixel scenes: the sky across the top of every page and the Home still-life.
+// Pixel scenes: the sky, the Home still-life, and original research companions.
 // Each scene paints whole art pixels into an ImageData at art resolution, and
 // CSS scales its canvas up without smoothing. One requestAnimationFrame loop
 // advances every visible scene at its own low frame rate, stops a scene while
@@ -33,6 +33,15 @@
     return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
   };
   const mod = (a, n) => ((a % n) + n) % n;
+  // The Konami-code celebration shares one wall clock across every visible scene.
+  // It never changes content or navigation and becomes a still tableau under reduced motion.
+  const PARTY_SECONDS = 9;
+  let partyAt = null, partyTimer = 0;
+  const partyTime = () => {
+    if (partyAt === null) return null;
+    const elapsed = (performance.now() - partyAt) / 1000;
+    return elapsed >= 0 && elapsed < PARTY_SECONDS ? elapsed : null;
+  };
   // Sprites are rows of '#' (paint) and '.' (leave).
   const sprite = rows => rows.map(row => [...row].map(cell => cell === '#'));
   const BIRD = [sprite(['#...#', '.#.#.', '..#..']), sprite(['.....', '##.##', '..#..'])];
@@ -155,6 +164,36 @@
       }
     }
 
+    // A short flock or meteor parade for the secret celebration. The still mode
+    // uses one arranged frame rather than playing the sequence.
+    function skyParty(out, elapsed, still) {
+      if (dark) {
+        for (let m = 0; m < 5; m++) {
+          const local = still ? 1 : elapsed - m * 0.32;
+          if (local < 0 || local > 2.2) continue;
+          const step = still ? 7 : Math.floor(local * 10);
+          const x0 = Math.floor((m + 1) * W / 6), y0 = 5 + (m % 3) * 13;
+          for (let i = 0; i < 6; i++) {
+            const p = step - i;
+            if (p < 0) continue;
+            for (let k = 0; k < 2; k++) {
+              const x = x0 - p * 2 - k, y = y0 + p;
+              if (i === 0) dot(out, x, y, P.meteor);
+              else if (bayer(x, y) < 1 - i / 6) dot(out, x, y, i < 2 ? P.meteor : P.star);
+            }
+          }
+        }
+      } else {
+        const travel = still ? Math.floor(W * 0.55) : Math.floor(elapsed * 24);
+        for (let b = 0; b < 7; b++) {
+          const x = travel - b * 12, y = 10 + (b % 3) * 11;
+          BIRD[(still ? b : Math.floor(elapsed * 6) + b) % 2].forEach((cells, j) => cells.forEach((on, i) => {
+            if (on) dot(out, x + i, y + j, P.bird);
+          }));
+        }
+      }
+    }
+
     return {
       fps: 12,
       still: 0,
@@ -182,6 +221,7 @@
       },
       render(t, out, still) {
         out.set(base);
+        const celebration = partyTime();
         if (dark) {
           for (const star of stars) {
             const level = still ? 1 : twinkle(star.seed, t);
@@ -192,6 +232,7 @@
             }
           }
           if (!still) meteors(out, t);
+          if (celebration !== null) skyParty(out, celebration, still);
           return;
         }
         for (const cloud of clouds) {
@@ -202,6 +243,7 @@
           for (const [x, y, w, h] of cloud.rects) rect(out, ox + x / 4 + dx, y / 4, w / 4, h / 4, P.cloud);
         }
         if (!still) birds(out, t);
+        if (celebration !== null) skyParty(out, celebration, still);
       },
       shown() { root.classList.add('sky-live'); },
     };
@@ -229,9 +271,9 @@
     sparkle: [[414, 112, 2, 2], [414, 111, 2, 1], [412, 112, 2, 2], [416, 112, 2, 2], [414, 114, 2, 2]],
   };
   const CORNER_COLORS = {
-    day: { cloud: '#f7faff', shade: '#d6e3f7', bird: '#56637a', steam: '#ffffff', wisp: '#eef3fb', mote: '#fffaf0' },
+    day: { cloud: '#f7faff', shade: '#d6e3f7', bird: '#56637a', steam: '#ffffff', wisp: '#eef3fb', mote: '#fffaf0', catInk: '#574852' },
     night: { steam: '#8f96b8', wisp: '#5f678c', star: '#fff1d6', arm: '#66635a', dim: '#66635a', core: '#b98f79',
-      meteor: '#fff1d6', tail: '#d8b394', fade: '#66635a' },
+      meteor: '#fff1d6', tail: '#d8b394', fade: '#66635a', catInk: '#372f3c' },
   };
   const CORNER_BIRD_EVERY = 27;
   const CORNER_METEOR_EVERY = 17;
@@ -244,6 +286,7 @@
     scratch.height = H;
     const sctx = scratch.getContext('2d', { willReadFrequently: true });
     let base = null, glass = null, beam = null, night = false, pending = false, P = null, glassColor = 0;
+    let helloAt = null, helloTimer = 0;
 
     const inside = (x, y) => x >= 0 && x < W && y >= 0 && y < H;
     // One art cell (2 × 2 pixels), optionally only where a mask is set.
@@ -368,6 +411,46 @@
       }
     }
 
+    // The cat normally faces away, so a greeting reveals one eye and a tiny
+    // smile rather than redrawing the original sprite. It reads as a quick look
+    // back; the GIF's own tail animation continues underneath the canvas.
+    function catGreeting(out, elapsed, still) {
+      if (elapsed === null || elapsed > 2.4) return;
+      const blink = !still && elapsed >= 0.3 && elapsed < 0.55;
+      if (blink) block(out, 352, 181, 4, 2, P.catInk);
+      else block(out, 352, 180, 3, 3, P.catInk);
+      if (still || elapsed >= 0.55) {
+        block(out, 353, 189, 2, 2, P.catInk);
+        block(out, 355, 191, 2, 2, P.catInk);
+      }
+      if (night && (still || elapsed < 1.4)) {
+        block(out, 430, 57, 2, 6, P.star);
+        block(out, 428, 59, 6, 2, P.star);
+      }
+    }
+
+    function cornerParty(out, elapsed, still) {
+      if (night) {
+        for (let m = 0; m < 3; m++) {
+          const local = still ? 1 : elapsed - m * 0.4;
+          if (local < 0 || local > 1.8) continue;
+          const step = still ? 6 : Math.floor(local * 9);
+          for (let i = 0; i < 5; i++) {
+            const p = step - i;
+            if (p >= 0) cell(out, 444 - p * 4 - m * 22, 20 + m * 30 + p * 2, i < 2 ? P.meteor : P.tail, glass);
+          }
+        }
+      } else {
+        const travel = still ? 36 : Math.floor(elapsed * 24);
+        for (let b = 0; b < 3; b++) {
+          const x = 336 + travel - b * 16, y = 28 + b * 22;
+          BIRD[(still ? b : Math.floor(elapsed * 6) + b) % 2].forEach((row, j) => row.forEach((on, i) => {
+            if (on) cell(out, x + i * 2, y + j * 2, P.bird, glass);
+          }));
+        }
+      }
+    }
+
     const scene = {
       fps: 10,
       still: 6,
@@ -390,6 +473,12 @@
           .filter(Boolean).forEach((url) => { new Image().src = url; }));
       },
       fit: () => CORNER.size,
+      hello() {
+        helloAt = performance.now();
+        scene.redraw?.();
+        clearTimeout(helloTimer);
+        helloTimer = setTimeout(() => scene.redraw?.(), 2450);
+      },
       theme() { pending = Boolean(base) && night !== isDark(); },
       setStill(still) { figure.classList.toggle('is-still', still && Boolean(base)); },
       render(t, out, still) {
@@ -404,8 +493,177 @@
           motes(out, t);
         }
         steam(out, t);
+        const celebration = partyTime();
+        const greeting = helloAt === null ? null : (performance.now() - helloAt) / 1000;
+        catGreeting(out, celebration !== null ? celebration : greeting, still);
+        if (celebration !== null) cornerParty(out, celebration, still);
       },
     };
+    return scene;
+  }
+
+  // ---- Original research companions ------------------------------------------------
+  // Compact 32 × 32 code-drawn scenes replace inline SVG fallbacks. Each card has
+  // a quiet, repeating pixel loop: a layered shield, a three-way conversation,
+  // and a compact book with a turning page. No character artwork or sprite
+  // atlas is downloaded.
+  const MINI_COLORS = {
+    day: { outline: '#29434a', body: '#fff7e8', shade: '#bdd3c7', face: '#203d43', eye: '#bdd3c7', accent: '#a64a35' },
+    night: { outline: '#8791aa', body: '#f0eadb', shade: '#8791aa', face: '#181d30', eye: '#e7b3a4', accent: '#e7b3a4' },
+  };
+
+  function createMiniScene(host, mode) {
+    let P = null, artPalette = {}, reactAt = null;
+    // The inline SVG is both the unscripted artwork and the live scene's source.
+    const artwork = [...host.querySelectorAll('svg rect[data-tone]')].map(rect => ({
+      x: Number(rect.getAttribute('x')), y: Number(rect.getAttribute('y')),
+      w: Number(rect.getAttribute('width')), h: Number(rect.getAttribute('height')),
+      tone: rect.dataset.tone, part: rect.dataset.part,
+    }));
+    const card = host.closest('a');
+    const block = (out, x, y, w, h, c) => {
+      for (let row = Math.max(0, y); row < Math.min(32, y + h); row++) {
+        for (let col = Math.max(0, x); col < Math.min(32, x + w); col++) out[row * 32 + col] = c;
+      }
+    };
+    const check = (out, x, y, c) => {
+      block(out, x, y + 2, 2, 2, c); block(out, x + 2, y + 4, 2, 2, c);
+      block(out, x + 4, y + 2, 2, 2, c); block(out, x + 6, y, 2, 4, c);
+    };
+    function shield(out, frame, still) {
+      // A single art-pixel lift, held for half the two-second loop.
+      const dy = !still && frame % 16 >= 8 ? -1 : 0;
+      for (const r of artwork) block(out, r.x, r.y + dy, r.w, r.h, artPalette[r.tone]);
+    }
+
+    function sentinel(out, pose, frame) {
+      const sleep = pose === 'sleep', dy = sleep ? 1 : 0;
+      const leftUp = pose === 'celebrate', rightUp = pose === 'wave' || pose === 'celebrate';
+      // Arms sit behind the stepped body and move only between discrete poses.
+      if (leftUp) {
+        block(out, 3, 7, 3, 10, P.outline); block(out, 1, 3, 3, 7, P.outline);
+        block(out, 4, 8, 2, 8, P.body); block(out, 2, 4, 2, 6, P.body);
+        block(out, 0, 2, 4, 3, P.outline);
+      } else if (pose === 'confused') {
+        block(out, 1, 15, 5, 3, P.outline); block(out, 2, 16, 4, 1, P.body);
+      } else {
+        block(out, 3, 13, 3, 9, P.outline); block(out, 4, 14, 2, 7, P.shade);
+      }
+      if (rightUp) {
+        block(out, 25, 8, 3, 10, P.outline); block(out, 27, 4, 3, 7, P.outline);
+        block(out, 26, 9, 2, 8, P.body); block(out, 28, 5, 2, 6, P.body);
+        block(out, 27, 3 + (frame % 2), 4, 3, P.outline);
+      } else {
+        block(out, 26, 13, 3, 9, P.outline); block(out, 27, 14, 2, 7, P.shade);
+      }
+      block(out, 15, 1 + dy, 2, 5, P.outline); block(out, 14, dy, 4, 2, P.accent);
+      block(out, 7, 6 + dy, 18, 2, P.outline); block(out, 5, 8 + dy, 22, 15, P.outline);
+      block(out, 7, 23 + dy, 18, 3, P.outline); block(out, 8, 8 + dy, 16, 2, P.body);
+      block(out, 7, 10 + dy, 18, 11, P.body); block(out, 9, 21 + dy, 14, 2, P.shade);
+      block(out, 10, 26 + dy, 12, 2, P.outline); block(out, 11, 26 + dy, 10, 1, P.shade);
+      block(out, 8, 10 + dy, 16, 8, P.face);
+      if (sleep || pose === 'blink') {
+        block(out, 11, 14 + dy, 3, 1, P.eye); block(out, 19, 14 + dy, 3, 1, P.eye);
+      } else if (pose === 'confused') {
+        block(out, 11, 13, 3, 2, P.eye); block(out, 19, 14, 3, 1, P.eye);
+      } else {
+        block(out, 11, 13 + dy, 3, 2, P.eye); block(out, 19, 13 + dy, 3, 2, P.eye);
+      }
+      block(out, 14, 21 + dy, 4, 2, pose === 'check' ? P.face : P.accent);
+      if (pose === 'scan') block(out, 9 + (frame % 14), 11, 1, 6, P.accent);
+      if (pose === 'check') check(out, 23, 0, P.outline);
+      if (pose === 'confused') {
+        block(out, 28, 1, 3, 2, P.accent); block(out, 30, 3, 2, 3, P.accent);
+        block(out, 28, 6, 2, 2, P.accent); block(out, 28, 10, 2, 2, P.accent);
+      }
+    }
+
+    function bubble(out, x, y, w, h, active, variant) {
+      block(out, x + 2, y, w - 4, 2, P.outline); block(out, x, y + 2, 2, h - 2, P.outline);
+      block(out, x + w - 2, y + 2, 2, h - 2, P.outline); block(out, x + 2, y + h, w - 4, 2, P.outline);
+      block(out, x + 2, y + 2, w - 4, h - 2, active ? P.shade : P.body);
+      block(out, x + 2, y + h + 2, 2, 2, P.outline);
+      block(out, x + 3, y + 3, 3, 3, active ? P.accent : P.outline);
+      block(out, x + 7, y + 3, Math.max(2, w - 10), 1, P.face);
+      block(out, x + 7, y + 5, Math.max(2, w - 11 - (variant % 2)), 1, P.face);
+    }
+
+    function dialogue(out, frame, reacting, still) {
+      const active = still ? 1 : Math.floor((frame % 18) / 6);
+      bubble(out, 0, 1, 14, 8, active === 0 || reacting, 0);
+      bubble(out, 18, 8, 14, 8, active === 1 || reacting, 1);
+      bubble(out, 3, 20, 15, 8, active === 2 || reacting, 2);
+    }
+
+    function storybook(out, frame, still) {
+      // Briefly lift the cover one pixel and expose a pale leaf beneath it.
+      // The book then rests closed; no spin, shimmer or extra effects.
+      const phase = frame % 24;
+      const lifted = !still && phase >= 12 && phase < 18;
+      for (const r of artwork) {
+        const dy = lifted && r.part === 'cover' ? -1 : 0;
+        block(out, r.x, r.y + dy, r.w, r.h, artPalette[r.tone]);
+      }
+      if (lifted) {
+        block(out, 10, 21, phase < 15 ? 15 : 12, 1, artPalette.paper);
+        block(out, 10, 22, 15, 1, artPalette['paper-shade']);
+      }
+    }
+
+    const scene = {
+      fps: 12,
+      still: 0,
+      fit: () => [32, 32],
+      theme() {
+        P = colors(MINI_COLORS[isDark() ? 'night' : 'day']);
+        const style = getComputedStyle(host);
+        artPalette = Object.fromEntries([...new Set(artwork.map(r => r.tone))]
+          .map(tone => [tone, color(style.getPropertyValue(`--art-${tone}`).trim())]));
+      },
+      shown() { host.classList.add('scene-live'); },
+      render(t, out, still) {
+        out.fill(0);
+        const celebration = partyTime();
+        const elapsed = reactAt === null ? Infinity : (performance.now() - reactAt) / 1000;
+        const stillReaction = Boolean(card && (card.matches(':hover') || card.contains(document.activeElement)));
+        const reacting = still ? stillReaction : elapsed < 1.6;
+        const frame = still ? 0 : Math.floor(t * 8);
+        if (mode === 'cameo') {
+          sentinel(out, 'celebrate', frame);
+          return;
+        }
+        if (mode === 'interest-safety') {
+          shield(out, frame, still);
+          return;
+        }
+        if (mode === 'interest-inclusivity') {
+          dialogue(out, frame, reacting || celebration !== null, still);
+          return;
+        }
+        if (mode === 'interest-creativity') {
+          storybook(out, frame, still);
+          return;
+        }
+        let pose;
+        if (celebration !== null) pose = 'celebrate';
+        else if (reacting) pose = still ? 'check' : elapsed < 0.45 ? 'wave' : elapsed < 1.05 ? 'scan' : 'check';
+        else if (mode === 'sentinel-404') pose = 'confused';
+        else if (isDark()) pose = 'sleep';
+        else {
+          const slot = Math.floor(t / 9), blinkAt = 2 + hash(slot, 82) * 5;
+          pose = t - slot * 9 > blinkAt && t - slot * 9 < blinkAt + 0.25 ? 'blink' : 'idle';
+        }
+        sentinel(out, pose, frame);
+      },
+    };
+    if (card) {
+      const react = () => { reactAt = performance.now(); scene.redraw?.(); };
+      const still = () => { if (motion.reduced) scene.redraw?.(); };
+      card.addEventListener('pointerenter', react);
+      card.addEventListener('focusin', react);
+      card.addEventListener('pointerleave', still);
+      card.addEventListener('focusout', still);
+    }
     return scene;
   }
 
@@ -503,9 +761,10 @@
     }).catch(() => {
       // Fall back to the static sky or the GIF, whichever the scene replaced.
       canvas.remove();
-      node.classList.remove('is-still');
+      node.classList.remove('is-still', 'scene-live');
       items.splice(items.indexOf(item), 1);
     });
+    return item;
   }
 
   // Palettes follow the theme, whether chosen on the page or by the system.
@@ -525,9 +784,78 @@
 
   const corner = document.querySelector('[data-scene="reading-corner"]');
   if (corner?.querySelector('img')) {
+    const scene = createCorner(corner);
+    const picture = corner.querySelector('.study-picture');
+    const hello = document.createElement('button');
+    hello.className = 'cat-hello';
+    hello.type = 'button';
+    hello.setAttribute('aria-label', 'Say hello to the cat');
+    hello.title = 'Say hello to the cat';
+    corner.insertBefore(hello, picture);
+    hello.append(picture);
+    hello.addEventListener('click', () => scene.hello());
     const canvas = document.createElement('canvas');
     canvas.className = 'scene-canvas';
     corner.append(canvas);
-    add(corner, canvas, createCorner(corner));
+    add(corner, canvas, scene);
   }
+
+  document.querySelectorAll('.interest-scene[data-scene],.not-found-companion[data-scene]').forEach((host) => {
+    const canvas = document.createElement('canvas');
+    canvas.className = 'scene-canvas';
+    host.append(canvas);
+    add(host, canvas, createMiniScene(host, host.dataset.scene));
+  });
+
+  // A single framed cameo travels to the Copy BibTeX button only after success.
+  if (document.querySelector('.copy-citation')) {
+    const host = document.createElement('div');
+    host.className = 'companion-cameo';
+    host.hidden = true;
+    host.setAttribute('aria-hidden', 'true');
+    const canvas = document.createElement('canvas');
+    canvas.className = 'scene-canvas';
+    host.append(canvas);
+    document.body.append(host);
+    const item = add(host, canvas, createMiniScene(host, 'cameo'));
+    let timer = 0;
+    document.addEventListener('site:celebrate', (event) => {
+      const anchor = event.detail?.anchor;
+      if (!anchor || !item.ready) return;
+      const rect = anchor.getBoundingClientRect();
+      const headerBottom = document.querySelector('.site-header')?.getBoundingClientRect().bottom || 0;
+      const left = Math.max(8, Math.min(window.innerWidth - 76, rect.left + rect.width / 2 - 34));
+      let top = rect.top - 78;
+      if (top < headerBottom + 8) top = rect.bottom + 10;
+      top = Math.max(8, Math.min(window.innerHeight - 78, top));
+      Object.assign(host.style, { left: `${Math.round(left)}px`, top: `${Math.round(top)}px` });
+      host.hidden = false;
+      item.visible = true; item.t = 0; item.last = null; item.frame = -1;
+      fit(item); draw(item); sync();
+      clearTimeout(timer);
+      timer = setTimeout(() => { host.hidden = true; item.visible = false; sync(); }, 1800);
+    });
+  }
+
+  function startParty() {
+    partyAt = performance.now();
+    items.forEach((item) => { if (item.ready) draw(item); });
+    sync();
+    clearTimeout(partyTimer);
+    partyTimer = setTimeout(() => {
+      partyAt = null;
+      items.forEach((item) => { if (item.ready) draw(item); });
+    }, PARTY_SECONDS * 1000);
+  }
+  const konami = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a'];
+  let entered = [];
+  document.addEventListener('keydown', (event) => {
+    if (event.ctrlKey || event.metaKey || event.altKey || event.target.closest?.('input,textarea,select,[contenteditable]')) return;
+    entered.push(event.key.toLowerCase());
+    entered = entered.slice(-konami.length);
+    if (entered.every((key, index) => key === konami[index])) {
+      entered = [];
+      startParty();
+    }
+  });
 })();

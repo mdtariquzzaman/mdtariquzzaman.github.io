@@ -2,7 +2,7 @@
 
 Academic website: https://mdtariquzzaman.github.io/
 
-Research: Safety; Creativity; Cultural Bias in large language models. I study how cultural context, task framing, and data contamination shape their behavior. I aim to build trustworthy and reliable language models with creative capabilities to solve real-world problems.
+Research: Safety; Inclusivity; Creativity. I study safety and robustness of large language models, inclusivity across languages and cultures, benchmark contamination, and creativity and storytelling.
 
 ## Profiles
 - [Bluesky](https://bsky.app/profile/mdtariquzzaman.bsky.social)
