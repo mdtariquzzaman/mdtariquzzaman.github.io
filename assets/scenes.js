@@ -578,21 +578,15 @@
       }
     }
 
-    function bubble(out, x, y, w, h, active, variant) {
-      block(out, x + 2, y, w - 4, 2, P.outline); block(out, x, y + 2, 2, h - 2, P.outline);
-      block(out, x + w - 2, y + 2, 2, h - 2, P.outline); block(out, x + 2, y + h, w - 4, 2, P.outline);
-      block(out, x + 2, y + 2, w - 4, h - 2, active ? P.shade : P.body);
-      block(out, x + 2, y + h + 2, 2, 2, P.outline);
-      block(out, x + 3, y + 3, 3, 3, active ? P.accent : P.outline);
-      block(out, x + 7, y + 3, Math.max(2, w - 10), 1, P.face);
-      block(out, x + 7, y + 5, Math.max(2, w - 11 - (variant % 2)), 1, P.face);
-    }
-
     function dialogue(out, frame, reacting, still) {
-      const active = still ? 1 : Math.floor((frame % 18) / 6);
-      bubble(out, 0, 1, 14, 8, active === 0 || reacting, 0);
-      bubble(out, 18, 8, 14, 8, active === 1 || reacting, 1);
-      bubble(out, 3, 20, 15, 8, active === 2 || reacting, 2);
+      // The three bubbles take turns lifting one art pixel; a hover or focus
+      // lifts all three together. The still frame matches the SVG fallback.
+      const active = still ? -1 : Math.floor((frame % 18) / 6);
+      const parts = ['bubble-a', 'bubble-b', 'bubble-c'];
+      for (const r of artwork) {
+        const lifted = reacting || parts.indexOf(r.part) === active;
+        block(out, r.x, r.y - (lifted ? 1 : 0), r.w, r.h, artPalette[r.tone]);
+      }
     }
 
     function storybook(out, frame, still) {

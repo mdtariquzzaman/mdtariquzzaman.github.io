@@ -15,7 +15,7 @@ SITE = 'https://mdtariquzzaman.github.io/'
 ME = 'Md. Tariquzzaman'
 GSC_TOKEN = 'boT_CMjz6ow5mcyZhAbCVE0JK2v9CAJwCu424PfT1U0'
 BING_TOKEN = 'E9CE5F8AA8FFFD3C486CAF3DAAAACB56'
-ASSET_VERSION = '20261102shield'
+ASSET_VERSION = '20261102selected'
 SOCIAL_LINKS = (
     ('linkedin', 'LinkedIn', 'https://www.linkedin.com/in/md-tariquzzaman/'),
     ('bluesky', 'Bluesky', 'https://bsky.app/profile/mdtariquzzaman.bsky.social'),
@@ -126,8 +126,60 @@ def shield_art():
             x = end
     return rectangles
 
+def dialogue_art():
+    # Three speech bubbles in their own hues, lit from the top left like the
+    # shield and book: one shared dark outline with stepped corners, a light
+    # top/left row, a shaded bottom/right row, two text dashes, and a tail.
+    # Each bubble is a separate part so the canvas can lift one at a time.
+    # Overlapping, later bubbles drawn over earlier ones, give the cluster the
+    # same visual mass as the shield and book.
+    bubbles = [(1, 2, 18, 12, 4, 'left', 'green', 'bubble-a'),
+               (13, 8, 18, 12, 26, 'right', 'gold', 'bubble-b'),
+               (3, 16, 18, 12, 6, 'left', 'coral', 'bubble-c')]
+    rectangles = []
+    for x0, y0, w, h, tail, side, hue, part in bubbles:
+        pixels = {}
+        x1, y1 = x0 + w - 1, y0 + h - 1
+        for y in range(y0, y1 + 1):
+            for x in range(x0, x1 + 1):
+                if (x in (x0, x1)) and (y in (y0, y1)):
+                    continue  # stepped corner
+                if x in (x0, x1) or y in (y0, y1):
+                    tone = 'talk-edge'
+                elif y == y1 - 1 or x == x1 - 1:
+                    tone = f'talk-{hue}-dark'
+                elif y == y0 + 1 or x == x0 + 1:
+                    tone = f'talk-{hue}-light'
+                else:
+                    tone = f'talk-{hue}-mid'
+                pixels[x, y] = tone
+        for x in range(x0 + 4, x1 - 3):
+            pixels[x, y0 + 4] = f'talk-{hue}-dark'
+        for x in range(x0 + 4, x1 - 7):
+            pixels[x, y0 + 7] = f'talk-{hue}-dark'
+        # A stepped three-row tail that opens the bottom outline and points
+        # outward and down.
+        d = 1 if side == 'left' else -1
+        pixels[tail, y1] = pixels[tail + d, y1] = f'talk-{hue}-dark'
+        pixels[tail - d, y1 + 1] = 'talk-edge'
+        pixels[tail, y1 + 1] = f'talk-{hue}-dark'
+        pixels[tail + d, y1 + 1] = 'talk-edge'
+        pixels[tail - d, y1 + 2] = pixels[tail, y1 + 2] = 'talk-edge'
+        for y in range(32):
+            x = 0
+            while x < 32:
+                tone = pixels.get((x, y))
+                end = x + 1
+                while end < 32 and pixels.get((end, y)) == tone:
+                    end += 1
+                if tone:
+                    rectangles.append((x, y, end - x, 1, tone, part))
+                x = end
+    return rectangles
+
 RESEARCH_ART = {
     'shield': shield_art(),
+    'dialogue-art': dialogue_art(),
     'book-creative': [
         (4, 5, 2, 24, 'book-edge', 'spine'), (6, 3, 2, 26, 'book-dark', 'spine'),
         (6, 22, 22, 8, 'book-dark', 'base'), (8, 23, 18, 5, 'paper-shade', 'pages'),
@@ -219,15 +271,18 @@ def figure_carousel(p):
     return (f'<div class="figure-carousel" role="region" aria-roledescription="carousel" aria-label="Figures from {escape(p["title"], quote=True)}">'
             f'<div class="carousel-track" tabindex="0">{slides}</div>{controls}</div>')
 
-def publication(p, label):
-    pid = escape(p['id'])
+def author_line(p):
     shown_authors = p['authors']
     if len(shown_authors) > 10:
         cutoff = shown_authors.index(ME) + 1 if ME in shown_authors else 1
         shown_authors = shown_authors[:cutoff]
     authors = ', '.join('<strong>'+escape(a)+'</strong>' if a == ME else escape(a) for a in shown_authors)
     if len(shown_authors) < len(p['authors']): authors += ', et al.'
-    authors_html = f'<p class="authors">{authors}</p>'
+    return f'<p class="authors">{authors}</p>'
+
+def publication(p, label):
+    pid = escape(p['id'])
+    authors_html = author_line(p)
     # The marker and venue convey type/status; retain any distinct supplied status.
     status_text = p.get('status', '')
     repeated_status = {'Conference paper', 'Journal article', 'Workshop paper', 'Preprint', 'Accepted', 'Published'}
@@ -287,7 +342,8 @@ def publication_sort_key(p):
         record_date = date.fromisoformat(p['date'])
         if record_date.year != int(p['year']):
             raise ValueError(f'Publication date and year disagree for {p["id"]}')
-    return (p.get('date') or p['year'], p.get('arxiv', ''))
+    # An owner-pinned record ("pin": true) leads the list without altering its date.
+    return (bool(p.get('pin')), p.get('date') or p['year'], p.get('arxiv', ''))
 
 ordered = sorted(papers, key=publication_sort_key, reverse=True)
 publication_years = list(dict.fromkeys(p['year'] for p in ordered))
@@ -383,7 +439,9 @@ personal_topics = '<ul class="topic-grid" role="list">' + ''.join(
 social_links = ''.join(f'<a class="btn" data-kind="{name}" href="{escape(href, quote=True)}">'
                        f'{icon(name)}<span>{label}</span>{icon("external", "icon icon-trail")}</a>'
                        for name, label, href in SOCIAL_LINKS)
-pages = [('index', 'Home', 'Safety and robustness of large language models; inclusivity across languages and cultures; benchmark contamination; creativity and storytelling — research by Md. Tariquzzaman, Junior Lecturer at IUT.', read('home.html').replace('{{NEWS}}', news_html).replace('{{PERSONAL_TOPICS}}', personal_topics).replace('{{SOCIAL_LINKS}}', social_links)),
+# Home features the selected paper as the same entry the Publications list renders.
+selected_html = ''.join(publication(p, labels_by_id[p['id']]) for p in ordered if p.get('selected'))
+pages = [('index', 'Home', 'Safety and robustness of large language models; inclusivity across languages and cultures; benchmark contamination; creativity and storytelling — research by Md. Tariquzzaman, Junior Lecturer at IUT.', read('home.html').replace('{{SELECTED}}', selected_html).replace('{{NEWS}}', news_html).replace('{{PERSONAL_TOPICS}}', personal_topics).replace('{{SOCIAL_LINKS}}', social_links)),
          ('publications', 'Publications', 'Publications, preprints, code, and datasets by Md. Tariquzzaman.', pub_body),
          ('cv', 'CV', 'Education, research and teaching experience, technical skills, industry experience, awards, certifications, and languages of Md. Tariquzzaman.', read('cv.html')),
          ('personal', 'Personal', 'Favorite anime, movies, TV shows, books, and sports beyond the academic work of Md. Tariquzzaman.', personal_body)]

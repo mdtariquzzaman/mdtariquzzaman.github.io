@@ -230,7 +230,7 @@ body,html.sky-live body{background:#fff;color:#000;font-size:11pt}
 .site-shell{width:100%;max-width:none}
 main{padding:0}
 .reading-layout,.personal-layout,.introduction{display:block}
-.profile-window,.page-heading,.chapter,.personal-panel,.publication,.interest-section,.news-section,.personal-teaser{box-shadow:none;border:1px solid #777;break-inside:avoid}
+.profile-window,.page-heading,.chapter,.personal-panel,.publication,.interest-section,.selected-section,.news-section,.personal-teaser{box-shadow:none;border:1px solid #777;break-inside:avoid}
 .publication h3,.record h3{color:#000}
 .pub-drawer{display:none}
 h1{font-size:32px}h2{font-size:26px}

@@ -623,6 +623,8 @@
   },
   {
     "id": "guise",
+    "pin": true,
+    "selected": true,
     "title": "In the Guise of Correction: How Framing and Cultural Adaptation Erode LLM Safety on Real-World Criminal Cases",
     "authors": [
       "Mohsinul Kabir",
